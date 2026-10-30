@@ -16,13 +16,13 @@ FROM alpine:3.22
 WORKDIR /app
 
 RUN apk add --no-cache ca-certificates \
-    && addgroup -S app \
-    && adduser -S -G app app
+    && addgroup -S -g 10001 app \
+    && adduser -S -D -H -u 10001 -G app app
 
 COPY --from=builder --chown=app:app \
     /app/test-k8s-test-app ./
 
-USER app
+USER 10001:10001
 
 EXPOSE 8081
 
