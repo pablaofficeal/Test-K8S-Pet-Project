@@ -9,10 +9,9 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] })
   ],
   server: {
-    // Запросы к API идут через тот же origin, иначе браузер не сохранит куки (разные "сайты")
     proxy: {
       '/main/api': {
-        target: 'http://192.168.0.30:30080',
+        target: 'https://rknbkk5s-30080.euw.devtunnels.ms',
         changeOrigin: true,
       },
     },
