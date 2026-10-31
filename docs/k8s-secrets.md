@@ -71,6 +71,8 @@ Plain Kubernetes Secrets are only base64 and are readable by anyone with `get se
 - The gateway `routes.yaml` points to `Low-Code-Bot-Platform-*` service hostnames; the Services are named in lowercase
   (`low-code-bot-platform-auth-service`, `...-users-backend`) — DNS is case-insensitive, so the gateway resolves them.
 - `bot` service referenced by the gateway has no manifests yet (no source in the repo).
-- The NetworkPolicy allows the gateway to be reached only from the `ingress-nginx` namespace. Adjust it to your ingress controller; no Ingress is defined yet.
+- The gateway is exposed as a `NodePort` (`30080`) on every node, e.g. `http://192.168.0.31:30080/main/api/v1/`. No Ingress is defined.
+- `networkpolicies.yaml` is enforced: the cluster runs Calico (VXLAN, pod CIDR `10.244.0.0/16`). Ingress is default-deny; the gateway accepts traffic from anywhere (needed for NodePort), `auth`/`backend` only from the gateway, Postgres only from `auth`/`backend`.
+- Replicas are set to 1 and memory limits are low because the workers have ~4 GB RAM. Postgres uses `local-path` storage, so its data is tied to one node.
 - `postgresql.conf` from `Infra/` is not mounted; the stock PostgreSQL config is used.
 - The CI workflow currently builds only `backend` (image `test-k8s-api`); `auth` and `gateway` images need to be built and pushed too.
