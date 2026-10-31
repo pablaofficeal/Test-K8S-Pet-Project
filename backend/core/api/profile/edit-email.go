@@ -1,8 +1,8 @@
 package profile
 
 import (
-	"Low-Code-Bot-Platform-Backend-Service/models"
-	"Low-Code-Bot-Platform-Backend-Service/db"
+	"Test-K8s-Pet-Project-Backend/models"
+	"Test-K8s-Pet-Project-Backend/db"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/mail"

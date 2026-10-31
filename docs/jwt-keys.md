@@ -1,47 +1,49 @@
-# JWT-ключи
+# JWT Keys
 
-> ⚠️ **Обязательно перегенерируй JWT-ключи перед использованием проекта.**
+**English** | [Русский](jwt-keys.ru.md)
+
+> ⚠️ **You MUST regenerate the JWT keys before using this project.**
 >
-> Ключи в `.env` из репозитория — **моковые**, они лежат в открытом доступе и нужны только для того,
-> чтобы проект запускался «из коробки» в dev-окружении. Любой может выпустить валидный токен для твоего
-> сервиса, если ты оставишь их как есть. **Никогда не используй их в продакшене и на любых публичных стендах.**
+> The keys in the repository's `.env` are **mock values**. They are public and exist only so the project
+> runs out of the box in a dev environment. Anyone can mint a valid token for your service if you leave
+> them as they are. **Never use them in production or on any publicly reachable environment.**
 
-## Как это работает
+## How it works
 
-Токены подписываются алгоритмом **EdDSA (Ed25519)**:
+Tokens are signed with **EdDSA (Ed25519)**:
 
-| Переменная       | Что это                        | Кто использует                                  |
-|------------------|--------------------------------|-------------------------------------------------|
-| `JWT_SECRET_KEY` | Приватный ключ (PKCS#8, PEM)   | `auth` — подписывает access/refresh токены      |
-| `JWT_PUBLIC_KEY` | Публичный ключ (PEM)           | `gateway`, `backend`, `auth` — проверяют подпись |
-| `JWT_ALGORITHM`  | Всегда `EdDSA`                 | все сервисы                                     |
+| Variable         | What it is                      | Used by                                           |
+|------------------|---------------------------------|---------------------------------------------------|
+| `JWT_SECRET_KEY` | Private key (PKCS#8, PEM)       | `auth` — signs access/refresh tokens              |
+| `JWT_PUBLIC_KEY` | Public key (PEM)                | `gateway`, `backend`, `auth` — verify signatures  |
+| `JWT_ALGORITHM`  | Always `EdDSA`                  | all services                                      |
 
-Приватный ключ нужен **только** сервису `auth`. Остальным достаточно публичного.
+Only the `auth` service needs the private key. The others only need the public one.
 
-## Перегенерация
+## Regenerating
 
-Нужен `openssl` 1.1.1+.
+Requires `openssl` 1.1.1+.
 
 ```bash
-# 1. Приватный ключ
+# 1. Private key
 openssl genpkey -algorithm ed25519 -out priv.pem
 
-# 2. Публичный ключ из приватного
+# 2. Public key derived from the private one
 openssl pkey -in priv.pem -pubout -out pub.pem
 ```
 
-`priv.pem` и `pub.pem` уже в `.gitignore` — не коммить их и удали после копирования в `.env`.
+`priv.pem` and `pub.pem` are already in `.gitignore` — do not commit them, and delete them once copied into `.env`.
 
-## Запись в `.env`
+## Writing to `.env`
 
-В `.env` PEM хранится **в одну строку**, переводы строк заменены на `\n`, значение в двойных кавычках:
+In `.env` the PEM is stored **on a single line**, with newlines replaced by `\n`, wrapped in double quotes:
 
 ```bash
 echo "JWT_SECRET_KEY=\"$(awk 'NF {printf "%s\\n", $0}' priv.pem)\""
 echo "JWT_PUBLIC_KEY=\"$(awk 'NF {printf "%s\\n", $0}' pub.pem)\""
 ```
 
-Скопируй вывод в `.env`, заменив старые значения:
+Copy the output into `.env`, replacing the old values:
 
 ```env
 JWT_SECRET_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
@@ -49,13 +51,13 @@ JWT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"
 JWT_ALGORITHM=EdDSA
 ```
 
-Затем удали временные файлы:
+Then remove the temporary files:
 
 ```bash
 rm priv.pem pub.pem
 ```
 
-## Проверка пары
+## Verifying the pair
 
 ```bash
 echo test > msg
@@ -64,15 +66,15 @@ openssl pkeyutl -verify -pubin -inkey pub.pem -rawin -in msg -sigfile sig
 # Signature Verified Successfully
 ```
 
-## После смены ключей
+## After rotating keys
 
-- Перезапусти все сервисы (`auth`, `gateway`, `backend`) — они читают ключи при старте/запросе из окружения.
-- Все ранее выданные access- и refresh-токены станут невалидными, пользователям придётся залогиниться заново.
-- В продакшене храни `JWT_SECRET_KEY` в секретах (Kubernetes Secret, Vault и т.п.), а не в репозитории.
-  Значения в `.env` из репозитория — только для локальной разработки.
-- Если приватный ключ утёк — перегенерируй пару немедленно.
+- Restart all services (`auth`, `gateway`, `backend`) so they pick up the new keys.
+- All previously issued access and refresh tokens become invalid; users will have to log in again.
+- In production keep `JWT_SECRET_KEY` in a secret store (Kubernetes Secret, Vault, etc.), not in the repository.
+  The `.env` values in the repo are for local development only.
+- If the private key leaks, regenerate the pair immediately.
 
-## Про `.env` в репозитории
+## About `.env` in the repository
 
-`.env` намеренно лежит в репозитории: там только моковые значения для локального запуска.
-Реальные секреты в него коммитить нельзя.
+`.env` is intentionally committed: it contains only mock values for local startup.
+Never commit real secrets to it.

@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"Low-Code-Bot-Platform-Backend-Service/utils/middleware"
-	"Low-Code-Bot-Platform-Backend-Service/core/api/profile"
+	"Test-K8s-Pet-Project-Backend/utils/middleware"
+	"Test-K8s-Pet-Project-Backend/core/api/profile"
 	"github.com/gin-gonic/gin"
 )
 

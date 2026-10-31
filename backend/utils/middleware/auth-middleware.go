@@ -2,7 +2,7 @@ package middleware
 
 
 import (
-	"Low-Code-Bot-Platform-Backend-Service/utils/jwt"
+	"Test-K8s-Pet-Project-Backend/utils/jwt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"

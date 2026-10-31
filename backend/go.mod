@@ -1,4 +1,4 @@
-module Low-Code-Bot-Platform-Backend-Service
+module Test-K8s-Pet-Project-Backend
 
 go 1.26.0
 

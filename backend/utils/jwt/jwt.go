@@ -1,7 +1,7 @@
 package jwt
 
 import (
-	"Low-Code-Bot-Platform-Backend-Service/configs"
+	"Test-K8s-Pet-Project-Backend/configs"
 	"github.com/golang-jwt/jwt/v5"
 	"errors"
 )

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"Low-Code-Bot-Platform-Backend-Service/utils/middleware"
-	"Low-Code-Bot-Platform-Backend-Service/core/routers"
-	"Low-Code-Bot-Platform-Backend-Service/configs"
-	"Low-Code-Bot-Platform-Backend-Service/models"
-	"Low-Code-Bot-Platform-Backend-Service/db"
+	"Test-K8s-Pet-Project-Backend/utils/middleware"
+	"Test-K8s-Pet-Project-Backend/core/routers"
+	"Test-K8s-Pet-Project-Backend/configs"
+	"Test-K8s-Pet-Project-Backend/models"
+	"Test-K8s-Pet-Project-Backend/db"
 	"github.com/gin-gonic/gin"
 	"fmt"
 	"log"
