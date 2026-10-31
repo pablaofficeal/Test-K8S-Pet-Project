@@ -12,7 +12,7 @@ FROM debian:bookworm-slim
 
 WORKDIR /app
 
-COPY --from=builder /app/target/release/porno ./gateway
+COPY --from=builder /app/target/release/gateway ./gateway
 COPY configs ./configs
 
 EXPOSE 8080
