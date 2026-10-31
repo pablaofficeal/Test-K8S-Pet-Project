@@ -1,4 +1,5 @@
 import Shell from '../../components/menu/shell'
+import ProfileSide from '../../components/components/profile/ProfileSide'
 import ProfileCard from '../../components/components/profile/ProfileCard'
 import TextConfig from '../../lib/configs/site/text.configs'
 import { ROUTES, userProfilePath } from '../../lib/configs/site/routes'
@@ -12,11 +13,19 @@ function Profile() {
     return (
         <Shell dashboard>
             <main className="dashboard">
-                <h1>{TextConfig.ProfileTitle}</h1>
-                <p className="dashboard-muted">{TextConfig.ProfileDescription}</p>
+                {!profile && <h1>{TextConfig.ProfileTitle}</h1>}
                 {error && <p className="dashboard-error" role="alert">{error}</p>}
                 {!profile && !error && <p className="dashboard-muted">{TextConfig.DashboardLoading}</p>}
-                {profile && <ProfileCard profile={profile} />}
+                {profile && (
+                    <div className="profile-layout">
+                        <ProfileSide profile={profile} />
+                        <section className="profile-main">
+                            <p className="profile-label">{TextConfig.ProfileTitle}</p>
+                            <h2 className="profile-heading">{TextConfig.ProfileAccountTitle}</h2>
+                            <ProfileCard profile={profile} />
+                        </section>
+                    </div>
+                )}
             </main>
         </Shell>
     )

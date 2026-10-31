@@ -1,6 +1,109 @@
+.profile-layout {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+    max-width: 1100px;
+}
+
+.profile-side {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.profile-avatar {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid #232a30;
+    border-radius: 28px;
+    color: #ffffff;
+    font-size: 96px;
+    font-weight: 700;
+}
+
+.profile-edit {
+    display: block;
+    margin-top: 14px;
+    padding: 11px 0;
+    border: 1px solid #262e35;
+    border-radius: 10px;
+    background: #12171a;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 0.15s, background-color 0.15s;
+}
+
+.profile-edit:hover {
+    border-color: #3d4750;
+    background: #161c20;
+}
+
+.dashboard .profile-name {
+    margin-top: 24px;
+    font-size: 30px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.profile-handle {
+    margin-top: 6px;
+    color: #9fc1d6;
+    font-size: 15px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.profile-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.profile-badges span {
+    padding: 4px 10px;
+    border: 1px solid #262e35;
+    border-radius: 8px;
+    background: #12171a;
+    color: #aab3bb;
+    font-size: 12px;
+}
+
+.profile-joined {
+    margin-top: 16px;
+    color: #8f9aa3;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.profile-main {
+    min-width: 0;
+}
+
+.profile-label {
+    color: #6f7a83;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.profile-heading {
+    margin-top: 8px;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
 .profile-card {
     max-width: 640px;
-    margin-top: 32px;
+    margin-top: 24px;
     overflow: hidden;
     border: 1px solid #232a30;
     border-radius: 12px;
@@ -132,6 +235,22 @@
 .settings-saved {
     color: #6fae8a;
     font-size: 14px;
+}
+
+@media (max-width: 860px) {
+    .profile-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+    }
+
+    .profile-avatar {
+        width: 160px;
+        font-size: 64px;
+    }
+
+    .profile-edit {
+        max-width: 248px;
+    }
 }
 
 @media (max-width: 560px) {

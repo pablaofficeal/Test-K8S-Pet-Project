@@ -113,6 +113,9 @@ function TextConfig() {
         SettingsSaving: langDict.SettingsSaving,
         SettingsSaved: langDict.SettingsSaved,
         SettingsSaveFailed: langDict.SettingsSaveFailed,
+        ProfileEdit: langDict.ProfileEdit,
+        ProfileUpdated: langDict.ProfileUpdated,
+        ProfileAccountTitle: langDict.ProfileAccountTitle,
 
         // Register page
         HaveAccount: langDict.HaveAccount,

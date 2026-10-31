@@ -99,5 +99,8 @@
     "SettingsSave": "Сохранить",
     "SettingsSaving": "Сохранение...",
     "SettingsSaved": "Сохранено",
-    "SettingsSaveFailed": "Не удалось сохранить"
+    "SettingsSaveFailed": "Не удалось сохранить",
+    "ProfileEdit": "Изменить профиль",
+    "ProfileUpdated": "Обновлён",
+    "ProfileAccountTitle": "Данные аккаунта"
 }

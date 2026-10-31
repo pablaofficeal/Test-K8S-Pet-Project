@@ -99,5 +99,8 @@
     "SettingsSave": "Save",
     "SettingsSaving": "Saving...",
     "SettingsSaved": "Saved",
-    "SettingsSaveFailed": "Could not save"
+    "SettingsSaveFailed": "Could not save",
+    "ProfileEdit": "Edit profile",
+    "ProfileUpdated": "Updated",
+    "ProfileAccountTitle": "Account details"
 }

@@ -1,0 +1,28 @@
+import { Link } from 'react-router-dom'
+import TextConfig from "../../../lib/configs/site/text.configs"
+import { ROUTES } from "../../../lib/configs/site/routes"
+import { avatarGradient, avatarLetter } from "../../../lib/auth/avatar"
+import { formatDate } from "../../../lib/i18n/date"
+import type { ProfileResponse } from "../../../lib/auth/profile"
+
+type ProfileSideProps = {
+    profile: ProfileResponse
+}
+
+function ProfileSide({ profile }: ProfileSideProps) {
+    return (
+        <aside className="profile-side">
+            <div className="profile-avatar" style={{ background: avatarGradient(profile.uuid) }} aria-hidden="true">
+                {avatarLetter(profile.username)}
+            </div>
+            <Link to={ROUTES.SETTINGS} className="profile-edit">{TextConfig.ProfileEdit}</Link>
+            <h1 className="profile-name">{profile.username}</h1>
+            <p className="profile-handle">{profile.email}</p>
+            <div className="profile-badges">
+                <span>{TextConfig.DashboardUserId} {profile.uuid.slice(0, 8)}</span>
+            </div>
+            <p className="profile-joined">{TextConfig.DashboardCreated}: <time dateTime={profile.created_at}>{formatDate(profile.created_at)}</time></p>
+        </aside>
+    )
+}
+export default ProfileSide
