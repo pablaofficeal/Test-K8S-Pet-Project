@@ -15,6 +15,7 @@ k8s/
 ├── networkpolicies.yaml    # default deny + gateway -> auth/backend
 ├── database/               # Service + EndpointSlice -> external PostgreSQL on the host
 ├── auth/ backend/ gateway/
+├── migrations/             # Job: `migrations up` (AutoMigrate + seed), runs as an Argo CD Sync hook
 └── secrets/
     ├── secrets.example.yaml  # template with placeholders (safe to commit)
     ├── create-secrets.sh     # builds real secrets from an env file
@@ -26,6 +27,7 @@ k8s/
 | Secret              | Keys                                                  | Consumers                  |
 |---------------------|-------------------------------------------------------|----------------------------|
 | `database-url`      | `DATABASE_URL`                                        | auth, backend              |
+| `migration-db-url`  | `MIGRATION_DB_URL`                                    | migrations Job             |
 | `jwt-private-key`   | `JWT_SECRET_KEY`                                      | **auth only**              |
 | `jwt-public-key`    | `JWT_PUBLIC_KEY`                                      | auth, backend, gateway     |
 
@@ -64,6 +66,16 @@ Plain Kubernetes Secrets are only base64 and are readable by anyone with `get se
 2. Re-run `create-secrets.sh`.
 3. Restart the workloads: `kubectl -n low-code-bot-platform rollout restart deploy/auth deploy/backend deploy/gateway`.
 4. All issued tokens become invalid; users must log in again.
+
+## Argo CD
+
+Argo CD excludes `Endpoints`/`EndpointSlice` by default, which silently drops `k8s/database/service.yaml`.
+Apply `argocd/resource-exclusions-patch.yaml` once (the command is in the file), then create the app with `kubectl apply -f argocd/application.yaml`.
+
+## Migrations
+
+`auth` and `backend` wait for the DB tables to exist; the tables are created by the `migrations` Job (`migrations up`).
+It runs on every sync (idempotent). Run other commands (`status`, `down`, `seed`) manually with `kubectl run` and the migrations image.
 
 ## Notes and assumptions
 

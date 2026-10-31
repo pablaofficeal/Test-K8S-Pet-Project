@@ -15,6 +15,7 @@ k8s/
 ├── networkpolicies.yaml    # default deny + gateway -> auth/backend
 ├── database/               # Service + EndpointSlice -> внешний PostgreSQL на хосте
 ├── auth/ backend/ gateway/
+├── migrations/             # Job: `migrations up` (AutoMigrate + seed), запускается как Sync-hook Argo CD
 └── secrets/
     ├── secrets.example.yaml  # шаблон с плейсхолдерами (можно коммитить)
     ├── create-secrets.sh     # собирает реальные секреты из env-файла
@@ -26,6 +27,7 @@ k8s/
 | Секрет                 | Ключи                                               | Потребители            |
 |------------------------|-----------------------------------------------------|------------------------|
 | `database-url`         | `DATABASE_URL`                                      | auth, backend          |
+| `migration-db-url`     | `MIGRATION_DB_URL`                                  | Job миграций           |
 | `jwt-private-key`      | `JWT_SECRET_KEY`                                    | **только auth**        |
 | `jwt-public-key`       | `JWT_PUBLIC_KEY`                                    | auth, backend, gateway |
 
@@ -64,6 +66,16 @@ k8s/
 2. Запусти `create-secrets.sh` заново.
 3. Перезапусти сервисы: `kubectl -n low-code-bot-platform rollout restart deploy/auth deploy/backend deploy/gateway`.
 4. Все выданные токены станут невалидными, пользователям придётся войти заново.
+
+## Argo CD
+
+Argo CD по умолчанию исключает `Endpoints`/`EndpointSlice`, из-за чего `k8s/database/service.yaml` тихо не применяется.
+Один раз примени `argocd/resource-exclusions-patch.yaml` (команда в самом файле), затем создай приложение: `kubectl apply -f argocd/application.yaml`.
+
+## Миграции
+
+`auth` и `backend` ждут появления таблиц в БД; таблицы создаёт Job `migrations` (`migrations up`).
+Он запускается при каждой синхронизации (идемпотентно). Остальные команды (`status`, `down`, `seed`) запускай вручную через `kubectl run` с образом миграций.
 
 ## Заметки и допущения
 

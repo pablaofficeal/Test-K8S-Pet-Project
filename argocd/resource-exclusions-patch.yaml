@@ -1,0 +1,20 @@
+# Argo CD excludes Endpoints/EndpointSlice by default, so k8s/database/service.yaml
+# (EndpointSlice -> PostgreSQL on the host) is never applied.
+# Apply once:  kubectl -n argocd patch cm argocd-cm --type merge --patch-file argocd/resource-exclusions-patch.yaml
+# then restart: kubectl -n argocd rollout restart sts/argocd-application-controller deploy/argocd-server
+data:
+  resource.exclusions: |
+    - apiGroups:
+        - coordination.k8s.io
+      kinds:
+        - Lease
+    - apiGroups:
+        - authentication.k8s.io
+        - authorization.k8s.io
+      kinds:
+        - SelfSubjectReview
+        - TokenReview
+        - LocalSubjectAccessReview
+        - SelfSubjectAccessReview
+        - SelfSubjectRulesReview
+        - SubjectAccessReview

@@ -15,7 +15,6 @@ package configs
 import (
 	"github.com/joho/godotenv"
 	"time"
-	"fmt"
 	"os"
 )
 
@@ -25,7 +24,7 @@ func EnvLoad() error {
 	}
 
 	if err := godotenv.Load("../.env"); err != nil {
-		return fmt.Errorf("load .env: %w", err)
+		return nil
 	}
 
 	return nil

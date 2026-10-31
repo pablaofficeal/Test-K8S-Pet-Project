@@ -8,6 +8,7 @@ on:
       - 'backend/**'
       - 'auth/**'
       - 'gateway/**'
+      - 'migrations/**'
       - '.github/workflows/docker-publish.yml'
   workflow_dispatch: {}
 
@@ -24,6 +25,8 @@ jobs:
             image: low-code-bot-platform-auth
           - context: gateway
             image: low-code-bot-platform-gateway
+          - context: migrations
+            image: low-code-bot-platform-migrations
 
     steps:
       - name: Checkout repository
@@ -71,7 +74,7 @@ jobs:
           DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           TAG="${GITHUB_SHA::7}"
-          for image in test-k8s-api low-code-bot-platform-auth low-code-bot-platform-gateway; do
+          for image in test-k8s-api low-code-bot-platform-auth low-code-bot-platform-gateway low-code-bot-platform-migrations; do
             sed -i "/^  - name: $image\$/{n;s|newName: .*|newName: $DH_USER/$image|;n;s|newTag: .*|newTag: $TAG|}" k8s/kustomization.yaml
           done
 

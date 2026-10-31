@@ -15,6 +15,7 @@ resources:
   - backend/service.yaml
   - gateway/deployment.yaml
   - gateway/service.yaml
+  - migrations/job.yaml
 
 # Set your registry/tags here (or with `kustomize edit set image`)
 images:
@@ -24,6 +25,9 @@ images:
   - name: test-k8s-api
     newName: pablaofficeal/test-k8s-api
     newTag: 22be2c9
+  - name: low-code-bot-platform-migrations
+    newName: pablaofficeal/low-code-bot-platform-migrations
+    newTag: latest
   - name: low-code-bot-platform-gateway
     newName: pablaofficeal/low-code-bot-platform-gateway
     newTag: 22be2c9

@@ -54,9 +54,11 @@ if [[ $SEAL -eq 0 ]]; then
 fi
 
 put DATABASE_URL "$(get DATABASE_URL)"
+put MIGRATION_DB_URL "$(get DATABASE_URL)"
 put JWT_SECRET_KEY "$(get JWT_SECRET_KEY)"
 put JWT_PUBLIC_KEY "$(get JWT_PUBLIC_KEY)"
 
 publish database-url --from-file=DATABASE_URL="$TMP/DATABASE_URL"
+publish migration-db-url --from-file=MIGRATION_DB_URL="$TMP/MIGRATION_DB_URL"
 publish jwt-private-key --from-file=JWT_SECRET_KEY="$TMP/JWT_SECRET_KEY"
 publish jwt-public-key --from-file=JWT_PUBLIC_KEY="$TMP/JWT_PUBLIC_KEY"
