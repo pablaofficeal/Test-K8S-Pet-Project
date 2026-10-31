@@ -14,9 +14,6 @@ microservices_hosts:
   backend:
     host: http://Low-Code-Bot-Platform-users-backend:8989
     timeout: ${microservices_timeouts.backend}
-  bot:
-    host: http://Low-Code-Bot-Platform-bot-service:8990
-    timeout: ${microservices_timeouts.bot}
 
 public_routes:
   - path: /main/api/v1/
