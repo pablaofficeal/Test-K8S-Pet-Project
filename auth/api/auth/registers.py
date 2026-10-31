@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from db.import_all_models import *
 from db.init_db import db
 from utils.password.hash import *
+from utils.password.validate import password_length_error
 import logging
 import uuid
 
@@ -17,6 +18,10 @@ def create_account():
 
     if not username or not email or not password:
         return jsonify({"error": "username, email and password are required"}), 400
+
+    password_error = password_length_error(password)
+    if password_error:
+        return jsonify({"error": password_error}), 400
 
     existing_user = Users.query.filter((Users.username == username) | (Users.email == email)).first()
     if existing_user:

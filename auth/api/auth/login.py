@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from db.import_all_models import *
 from db.init_db import db
 from utils.password.check import *
+from utils.password.validate import password_too_long
 from utils.jwt.jwt import *
 from utils.cookies.auth_cookies import *
 
@@ -20,6 +21,9 @@ def login():
 
     if not email or not password:
         return jsonify({"error": "email and password are required"}), 400
+
+    if password_too_long(password):
+        return jsonify({"error": "invalid credentials"}), 401
 
     user = Users.query.filter(Users.email == email).first()
 
@@ -47,4 +51,4 @@ def login():
         "token_type": "Bearer",
         "expires_in": int((access_exp - datetime.now(timezone.utc)).total_seconds()),
     })
-    return set_auth_cookies(response, access_token, access_exp, refresh_token, refresh_exp), 200
+    return set_auth_cookies(response, access_token, access_exp, refresh_token, refresh_exp, user.uuid), 200

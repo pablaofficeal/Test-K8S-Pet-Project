@@ -5,7 +5,12 @@ import { hasAuthSession } from '../../lib/auth/session'
 import { isSidebarCollapsed, saveSidebarCollapsed } from '../../lib/auth/sidebar'
 import '../../assets/css/sidebar.css'
 
-function Shell({ children }: { children: ReactNode }) {
+type ShellProps = {
+    children: ReactNode
+    dashboard?: boolean
+}
+
+function Shell({ children, dashboard = false }: ShellProps) {
     const [collapsed, setCollapsed] = useState(isSidebarCollapsed)
 
     function handleToggle() {
@@ -13,7 +18,7 @@ function Shell({ children }: { children: ReactNode }) {
         setCollapsed(!collapsed)
     }
 
-    if (!hasAuthSession()) {
+    if (!dashboard || !hasAuthSession()) {
         return (
             <div className="main-pages">
                 <MainMenu />

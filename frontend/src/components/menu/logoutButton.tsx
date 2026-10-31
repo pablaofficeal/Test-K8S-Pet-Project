@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import TextConfig from '../../lib/configs/site/text.configs'
+import { ROUTES } from '../../lib/configs/site/routes'
 import { clearAuthSession } from '../../lib/auth/session'
 import { logout } from '../../lib/auth/logout'
 
@@ -9,7 +10,7 @@ function LogoutButton() {
     async function handleLogout() {
         await logout()
         clearAuthSession()
-        navigate('/Start/log/in/my/account/login.php', { replace: true })
+        navigate(ROUTES.LOGIN, { replace: true })
     }
 
     return (

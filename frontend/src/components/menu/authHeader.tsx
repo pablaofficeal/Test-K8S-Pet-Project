@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Brand from './brand'
 import TextConfig from '../../lib/configs/site/text.configs'
+import { ROUTES } from '../../lib/configs/site/routes'
 
 type AuthHeaderProps = {
     mode: 'login' | 'register'
@@ -14,7 +15,7 @@ function AuthHeader({ mode }: AuthHeaderProps) {
             <Brand />
             <p>
                 {isLogin ? TextConfig.AuthNoAccount : TextConfig.HaveAccount}{' '}
-                <Link to={isLogin ? '/Start/create/my/account/register.php' : '/Start/log/in/my/account/login.php'}>
+                <Link to={isLogin ? ROUTES.REGISTER : ROUTES.LOGIN}>
                     {isLogin ? TextConfig.AuthCreateShort : TextConfig.NavLogin}
                 </Link>
             </p>

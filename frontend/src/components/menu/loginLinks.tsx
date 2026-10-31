@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom'
 import LoginText from './loginText'
+import { ROUTES } from '../../lib/configs/site/routes'
 
 
 function LoginLinks() {
     return (
-        <Link to="/Start/log/in/my/account/login.php">
+        <Link to={ROUTES.LOGIN}>
             <LoginText />
         </Link>
     )

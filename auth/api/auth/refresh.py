@@ -71,4 +71,4 @@ def refresh():
         "token_type": "Bearer",
         "expires_in": int((access_exp - datetime.now(timezone.utc)).total_seconds()),
     })
-    return set_auth_cookies(response, access_token, access_exp, new_refresh, refresh_exp), 200
+    return set_auth_cookies(response, access_token, access_exp, new_refresh, refresh_exp, user.uuid), 200
