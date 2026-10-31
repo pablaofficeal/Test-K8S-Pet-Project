@@ -4,6 +4,7 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 	"context"
 	"errors"
+	"time"
 	"log"
 	"fmt"
 )
@@ -50,6 +51,7 @@ func ConsumeOnce(ctx context.Context, url string, handle func(context.Context, [
 				d.Reject(false)
 			default:
 				log.Printf("message will be retried: %v", err)
+				time.Sleep(2 * time.Second)
 				d.Nack(false, true)
 			}
 		}

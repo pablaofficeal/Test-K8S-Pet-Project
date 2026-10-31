@@ -5,6 +5,7 @@ import (
 	"Test-K8s-Pet-Project-Verify/models"
 	"gorm.io/gorm"
 	"context"
+	"strings"
 	"errors"
 	"math"
 	"time"
@@ -46,7 +47,7 @@ func Status(ctx context.Context, gdb *gorm.DB, cfg configs.VerifyConfig, userUUI
 	if wait := last.CreatedAt.Add(cfg.ResendCooldown).Sub(now); wait > 0 {
 		result.ResendIn = int(math.Ceil(wait.Seconds()))
 	}
-	if last.ConsumedAt == nil && last.ExpiresAt.After(now) {
+	if last.ConsumedAt == nil && last.ExpiresAt.After(now) && strings.EqualFold(last.Email, user.Email) {
 		result.ExpiresIn = int(math.Ceil(last.ExpiresAt.Sub(now).Seconds()))
 	}
 	return result, nil
