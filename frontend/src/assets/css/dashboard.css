@@ -25,59 +25,45 @@
     font-size: 14px;
 }
 
-.dashboard-card {
+.dashboard-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
     max-width: 640px;
     margin-top: 32px;
-    overflow: hidden;
+}
+
+.dashboard-links a {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
     border: 1px solid #232a30;
     border-radius: 12px;
     background: #13181b;
+    color: #ffffff;
+    text-decoration: none;
+    transition: border-color 0.15s, background-color 0.15s;
 }
 
-.dashboard-card > div {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 16px 20px;
-    border-bottom: 1px solid #1e252a;
+.dashboard-links a:hover {
+    border-color: #3d4750;
+    background: #161c20;
 }
 
-.dashboard-card > div:last-child {
-    border-bottom: 0;
+.dashboard-links strong {
+    font-size: 17px;
+    font-weight: 600;
 }
 
-.dashboard-card dt {
-    flex: none;
+.dashboard-links span {
     color: #8f9aa3;
     font-size: 14px;
-}
-
-.dashboard-card dd {
-    min-width: 0;
-    font-size: 16px;
-    text-align: right;
-    overflow-wrap: anywhere;
-}
-
-.dashboard-card code {
-    color: #b6bec5;
-    font-family: 'IBM Plex Mono', ui-monospace, monospace;
-    font-size: 13px;
+    line-height: 1.45;
 }
 
 @media (max-width: 560px) {
     .dashboard h1 {
         font-size: 26px;
-    }
-
-    .dashboard-card > div {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-    }
-
-    .dashboard-card dd {
-        text-align: left;
     }
 }

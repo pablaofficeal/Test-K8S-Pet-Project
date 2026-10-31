@@ -89,5 +89,15 @@
     "LoginHash1": "a7f2d4e9b1c83a05f6e2d7",
     "LoginHash2": "3c8b05fa72e4d19c6b0f83e5",
     "LoginHash3": "e1d960c4a8b2f37d",
-    "LoginHash4": "9b4e720dfc6a85e3d1072c"
+    "LoginHash4": "9b4e720dfc6a85e3d1072c",
+    "ProfileTitle": "Профиль",
+    "ProfileDescription": "Данные вашего аккаунта.",
+    "SettingsTitle": "Настройки",
+    "SettingsDescription": "Изменение имени и почты.",
+    "SettingsNameHint": "До 64 символов, имя должно быть уникальным.",
+    "SettingsEmailHint": "Этот адрес используется для входа.",
+    "SettingsSave": "Сохранить",
+    "SettingsSaving": "Сохранение...",
+    "SettingsSaved": "Сохранено",
+    "SettingsSaveFailed": "Не удалось сохранить"
 }

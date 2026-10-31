@@ -89,5 +89,15 @@
     "LoginHash1": "a7f2d4e9b1c83a05f6e2d7",
     "LoginHash2": "3c8b05fa72e4d19c6b0f83e5",
     "LoginHash3": "e1d960c4a8b2f37d",
-    "LoginHash4": "9b4e720dfc6a85e3d1072c"
+    "LoginHash4": "9b4e720dfc6a85e3d1072c",
+    "ProfileTitle": "Profile",
+    "ProfileDescription": "Your account details.",
+    "SettingsTitle": "Settings",
+    "SettingsDescription": "Change your name and email.",
+    "SettingsNameHint": "Up to 64 characters, the name must be unique.",
+    "SettingsEmailHint": "This address is used to log in.",
+    "SettingsSave": "Save",
+    "SettingsSaving": "Saving...",
+    "SettingsSaved": "Saved",
+    "SettingsSaveFailed": "Could not save"
 }

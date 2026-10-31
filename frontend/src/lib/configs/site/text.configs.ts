@@ -103,6 +103,16 @@ function TextConfig() {
         DashboardUserId: langDict.DashboardUserId,
         DashboardCreated: langDict.DashboardCreated,
         PasswordRulesHint: langDict.PasswordRulesHint,
+        ProfileTitle: langDict.ProfileTitle,
+        ProfileDescription: langDict.ProfileDescription,
+        SettingsTitle: langDict.SettingsTitle,
+        SettingsDescription: langDict.SettingsDescription,
+        SettingsNameHint: langDict.SettingsNameHint,
+        SettingsEmailHint: langDict.SettingsEmailHint,
+        SettingsSave: langDict.SettingsSave,
+        SettingsSaving: langDict.SettingsSaving,
+        SettingsSaved: langDict.SettingsSaved,
+        SettingsSaveFailed: langDict.SettingsSaveFailed,
 
         // Register page
         HaveAccount: langDict.HaveAccount,

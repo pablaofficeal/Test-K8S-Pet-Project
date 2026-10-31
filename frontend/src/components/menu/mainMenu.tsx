@@ -5,6 +5,7 @@ import NavItems from './navItems'
 import LoginLinks from './loginLinks'
 import RegisterLinks from './registerLinks'
 import DashboardLinks from './dashboardLinks'
+import UserLinks from './userLinks'
 import LogoutButton from './logoutButton'
 import LanguageSwitcher from './languageSwitcher'
 import TextConfig from '../../lib/configs/site/text.configs'
@@ -64,7 +65,7 @@ function MainMenu() {
                 )}
                 <div className="main-menu-action">
                     <LanguageSwitcher />
-                    {hasAuthSession() ? <><DashboardLinks /><LogoutButton /></> : <><LoginLinks /><RegisterLinks /></>}
+                    {hasAuthSession() ? <>{pathname.startsWith('/users/') ? <UserLinks /> : <DashboardLinks />}<LogoutButton /></> : <><LoginLinks /><RegisterLinks /></>}
                 </div>
             </div>
         </header>
