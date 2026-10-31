@@ -14,6 +14,8 @@
 | `backend/`  | Backend service (Go)                          |
 | `gateway/`  | API gateway (Rust): routing, middleware, metrics |
 | `frontend/` | Web client (React + Vite + TypeScript)        |
+| `verify/`   | Email verification service (Go, RabbitMQ)     |
+| `migrations/` | Database schema migrations (Go)             |
 | `Infra/`    | Infrastructure configs (PostgreSQL)           |
 | `k8s/`      | Kubernetes manifests                          |
 

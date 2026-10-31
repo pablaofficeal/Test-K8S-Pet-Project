@@ -14,6 +14,8 @@
 | `backend/`  | Бэкенд-сервис (Go)                                |
 | `gateway/`  | API-шлюз (Rust): маршрутизация, middleware, метрики |
 | `frontend/` | Веб-клиент (React + Vite + TypeScript)            |
+| `verify/`   | Подтверждение почты (Go, RabbitMQ)                |
+| `migrations/` | Миграции схемы БД (Go)                          |
 | `Infra/`    | Конфиги инфраструктуры (PostgreSQL)               |
 | `k8s/`      | Манифесты Kubernetes                              |
 
