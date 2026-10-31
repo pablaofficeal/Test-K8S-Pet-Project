@@ -1,0 +1,19 @@
+policies:
+  strict:
+    - by: ip
+      limit: 10
+      window: 1m
+  standard:
+    - by: ip
+      limit: 100
+      window: 1m
+
+microservices:
+  auth:
+    - by: ip
+      limit: 30
+      window: 1m
+  bot:
+    - by: ip
+      limit: 30
+      window: 1m

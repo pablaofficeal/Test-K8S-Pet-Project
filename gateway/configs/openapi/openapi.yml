@@ -1,0 +1,183 @@
+openapi: 3.0.3
+info:
+  title: Low-Code-Bot-Platform Api documentation
+  version: 1.0.0
+  description: OpenAPI documentation for the Low-Code-Bot-Platform Api.
+
+tags:
+  - name: Health
+  - name: Auth
+  - name: Profile
+
+paths:
+  /main/api/v1/:
+    get:
+      tags: [Health]
+      summary: Health check
+      description: Check if the service is running.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+
+  /main/api/v1/start/log/in/my/account:
+    post:
+      tags: [Auth]
+      summary: User login
+      description: Authenticate a user and return a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: test@test.test
+                password:
+                  type: string
+                  example: 11072008
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  user:
+                    type: object
+                    properties:
+                      uuid:
+                        type: string
+                        example: a1b2c3d4-e5f6-7890-1234-567890abcdef
+                      email:
+                        type: string
+                        example: test@test.test
+                      first_name:
+                        type: string
+                        example: John
+                      last_name:
+                        type: string
+                        example: Doe
+                      role:
+                        type: string
+                        example: admin
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: "2026-10-22T09:14:25Z"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid credentials
+
+  /main/api/v1/start/create/my/account:
+    post:
+      tags: [Auth]
+      summary: User registration
+      description: Register a new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: test
+                email:
+                  type: string
+                  example: test@test.test
+                password:
+                  type: string
+                  example: 11072008
+              required:
+                - username
+                - email
+                - password
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User created successfully
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: Invalid data
+
+  /main/api/v1/get/my/profile/info:
+    get:
+      tags: [Profile]
+      summary: Get user profile
+      description: Retrieve the profile information of the authenticated user.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    example: a1b2c3d4-e5f6-7890-1234-567890abcdef
+                  email:
+                    type: string
+                    example: test@test.test
+                  first_name:
+                    type: string
+                    example: John
+                  last_name:
+                    type: string
+                    example: Doe
+                  role:
+                    type: string
+                    example: admin
+                  created_at:
+                    type: string
+                    format: date-time
+                    example: "2026-10-22T09:14:25Z"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Session JWT.

@@ -1,0 +1,171 @@
+server:
+  port: 8080
+  gateway_host: 0.0.0.0
+  microservices_host: 192.168.0.15
+
+microservices_timeouts:
+  auth: 40s
+  backend: 20s
+  bot: 50s
+
+microservices_hosts:
+  auth:
+    host: http://Low-Code-Bot-Platform-auth-service:6637
+    timeout: ${microservices_timeouts.auth}
+  backend:
+    host: http://Low-Code-Bot-Platform-users-backend:8989
+    timeout: ${microservices_timeouts.backend}
+  bot:
+    host: http://Low-Code-Bot-Platform-bot-service:8990
+    timeout: ${microservices_timeouts.bot}
+
+public_routes:
+  - path: /main/api/v1/
+    method: GET
+    target: local
+    handler: hello
+
+  - path: /main/api/v1/docs
+    method: GET
+    target: local
+    handler: docs
+
+  - path: /main/api/v1/openapi/openapi.yml
+    method: GET
+    target: local
+    handler: openapi
+
+  - path: /main/api/v1/start/log/in/my/account
+    method: POST
+    target: ${microservices_hosts.auth}
+    timeout: ${microservices_hosts.auth.timeout}
+    prefix: /main/api/v1/start/log/in/my/account
+
+  - path: /main/api/v1/start/create/my/account
+    method: POST
+    target: ${microservices_hosts.auth}
+    timeout: ${microservices_hosts.auth.timeout}
+    prefix: /main/api/v1/start/create/my/account
+
+  - path: /main/api/v1/start/refresh/my/token
+    method: POST
+    target: ${microservices_hosts.auth}
+    timeout: ${microservices_hosts.auth.timeout}
+    prefix: /main/api/v1/start/refresh/my/token
+
+  - path: /main/api/v1/start/log/out/my/account
+    method: POST
+    target: ${microservices_hosts.auth}
+    timeout: ${microservices_hosts.auth.timeout}
+    prefix: /main/api/v1/start/log/out/my/account
+
+private_routes: 
+  - path: /main/api/v1/get/my/profile/info
+    method: GET
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/get/my/profile/info
+
+  - path: /main/api/v1/edit/my/name
+    method: PATCH
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/edit/my/name
+
+  - path: /main/api/v1/edit/my/email
+    method: PATCH
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/edit/my/email
+
+  - path: /main/api/v1/get/my/bots
+    method: GET
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/get/my/bots
+
+  - path: /main/api/v1/get/my/bot/:uuid
+    method: GET
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/get/my/bot/:uuid
+
+  - path: /main/api/v1/get/templates
+    method: GET
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/get/templates
+
+  - path: /main/api/v1/get/my/limits
+    method: GET
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/get/my/limits
+
+  - path: /main/api/v1/get/my/usage
+    method: GET
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/get/my/usage
+
+  - path: /main/api/v1/get/my/bot/:uuid/status
+    method: GET
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/get/my/bot/:uuid/status
+
+  - path: /main/api/v1/edit/my/bot/:uuid/template
+    method: POST
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/edit/my/bot/:uuid/template
+
+  - path: /main/api/v1/edit/my/bot/:uuid/start
+    method: POST
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/edit/my/bot/:uuid/start
+
+  - path: /main/api/v1/edit/my/bot/:uuid/stop
+    method: POST
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/edit/my/bot/:uuid/stop
+
+  - path: /main/api/v1/create/my/bot
+    method: POST
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/create/my/bot
+
+  - path: /main/api/v1/edit/my/bot/:uuid
+    method: PATCH
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/edit/my/bot/:uuid
+
+  - path: /main/api/v1/edit/my/bot/:uuid/token
+    method: PUT
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/edit/my/bot/:uuid/token
+
+  - path: /main/api/v1/edit/my/bot/:uuid/avatar
+    method: POST
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/edit/my/bot/:uuid/avatar
+
+  - path: /main/api/v1/delete/my/bot/:uuid/avatar
+    method: DELETE
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/delete/my/bot/:uuid/avatar
+
+  - path: /main/api/v1/delete/my/bot/:uuid
+    method: DELETE
+    target: ${microservices_hosts.bot}
+    timeout: ${microservices_hosts.bot.timeout}
+    prefix: /api/v1/main/bot/delete/my/bot/:uuid
+
+rate_limits: ./limits/rate-limits.yaml

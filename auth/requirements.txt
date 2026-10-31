@@ -1,0 +1,10 @@
+Flask
+flask-cors
+Flask-SQLAlchemy
+psycopg2-binary
+psycopg[binary]
+PyJWT
+cryptography
+python-dotenv
+argon2-cffi
+pika

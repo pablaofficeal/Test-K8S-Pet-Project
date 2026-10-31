@@ -1,1 +1,6 @@
-.log
+*.pyc
+*.db
+*.log
+*target/
+pub.pem 
+priv.pem

@@ -1,29 +1,31 @@
 package routers
 
 import (
-	"test-k8s-test-app/core/api"
+	"Low-Code-Bot-Platform-Backend-Service/utils/middleware"
+	"Low-Code-Bot-Platform-Backend-Service/core/api/profile"
 	"github.com/gin-gonic/gin"
 )
 
-func testRouters(app *gin.Engine) {
-    app.GET("/api/hello", func(c *gin.Context) {
-        c.JSON(200, gin.H{"message": "API is working"})
-    })
-
-    app.GET("/", func(c *gin.Context) {
-        c.JSON(200, gin.H{"message": "API is working"})
-    })
-
-    app.GET("/healthz", func(c *gin.Context) {
-        c.JSON(200, gin.H{"status": "ok"})
-    })
+func testrouters(app *gin.RouterGroup) {
+	app.GET("/api/hello", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "API is working"})
+	})
+	app.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "API is working"})
+	})
 }
 
 func AuthRouters(app *gin.Engine) {
-
-	v1 := app.Group("/api/v1/auth")
+	v1 := app.Group("/api/v1/main/backend")
 	{
-		testRouters(app)
-		v1.GET("/hello/k8s", api.TestRouters)
+		testrouters(v1)
+
+	}
+	protected := app.Group("/api/v1/main/backend")
+	protected.Use(middleware.AuthMiddleware())
+	{
+		protected.GET("/get/my/profile/info", profile.GetProfileInfo)
+		protected.PATCH("/edit/my/name", profile.EditMyName)
+		protected.PATCH("/edit/my/email", profile.EditMyEmail)
 	}
 }
