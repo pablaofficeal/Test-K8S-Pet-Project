@@ -1,7 +1,7 @@
-import Logo from './logo'
+import Brand from './brand'
+import NavItems from './navItems'
 import LoginLinks from './loginLinks'
 import RegisterLinks from './registerLinks'
-import HomeLinks from './homeLinks'
 import DashboardLinks from './dashboardLinks'
 import LogoutButton from './logoutButton'
 import LanguageSwitcher from './languageSwitcher'
@@ -11,9 +11,9 @@ import '../../assets/css/menu.css'
 function MainMenu() {
     return (
         <header className="main-menu">
-            <Logo />
+            <Brand />
             <nav className="main-menu-links">
-                <HomeLinks />
+                <NavItems />
             </nav>
             <div className="main-menu-action">
                 <LanguageSwitcher />

@@ -3,7 +3,7 @@ import TextConfig from '../../lib/configs/site/text.configs'
 
 function LoginText() {
   return (
-      <p>{TextConfig.LoginLinks}</p>
+      <p>{TextConfig.NavLogin}</p>
   )
 }
 export default LoginText

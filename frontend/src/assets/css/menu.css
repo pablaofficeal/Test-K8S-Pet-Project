@@ -4,44 +4,73 @@
     z-index: 10;
     display: flex;
     align-items: center;
-    gap: 32px;
-    padding: 10px 24px;
-    border-bottom: 1px solid #1f2a33;
-    background: rgba(18, 21, 27, 0.85);
+    gap: 48px;
+    height: 78px;
+    padding: 0 60px;
+    border-bottom: 1px solid #1c2227;
+    background: rgba(15, 18, 20, 0.92);
     backdrop-filter: blur(12px);
     font-family: 'Inter', system-ui, sans-serif;
 }
 
-.main-menu img {
-    width: 44px;
-    height: auto;
-    margin: 0 auto 0 0 !important;
+.main-menu .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
 }
 
 .main-menu-links {
     display: flex;
     align-items: center;
     gap: 28px;
+    margin-right: auto;
 }
 
-.main-menu-links a,
-.main-menu-action a {
-    color: #c4c9d2;
-    font-size: 14px;
+.main-menu-links span {
+    color: #9aa4ad;
+    font-size: 17px;
     font-weight: 500;
-    text-decoration: none;
-    transition: color 0.15s;
-}
-
-.main-menu-links a:hover,
-.main-menu-action a:hover {
-    color: #3dd1f5;
+    cursor: default;
 }
 
 .main-menu-action {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 24px;
+}
+
+.main-menu-action a {
+    color: #9aa4ad;
+    font-size: 17px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.main-menu-action a:hover {
+    color: #ffffff;
+}
+
+.main-menu-action .main-menu-cta {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #0f1214;
+    font-weight: 600;
+    transition: background-color 0.15s;
+}
+
+.main-menu-action .main-menu-cta:hover {
+    background: #e4e8eb;
+    color: #0f1214;
 }
 
 .main-menu-action .logout-button,
@@ -52,9 +81,9 @@
     padding: 0;
     border: 0;
     background: none;
-    color: #c4c9d2;
+    color: #9aa4ad;
     font: inherit;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 500;
     cursor: pointer;
     transition: color 0.15s;
@@ -62,12 +91,36 @@
 
 .main-menu-action .logout-button:hover,
 .main-menu-action .language-button:hover {
-    color: #3dd1f5;
+    color: #ffffff;
+}
+
+@media (max-width: 960px) {
+    .main-menu {
+        gap: 16px;
+        padding: 0 20px;
+    }
+
+    .main-menu .brand {
+        margin-right: auto;
+    }
+
+    .main-menu-links {
+        display: none;
+    }
 }
 
 @media (max-width: 560px) {
-    .main-menu {
-        padding: 10px 16px;
-        gap: 16px;
+    .main-menu-action {
+        gap: 14px;
+    }
+
+    .main-menu-action a,
+    .main-menu-action .language-button span {
+        font-size: 15px;
+    }
+
+    .main-menu-action .main-menu-cta {
+        height: 40px;
+        padding: 0 14px;
     }
 }

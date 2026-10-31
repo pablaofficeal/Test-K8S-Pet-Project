@@ -4,7 +4,7 @@ import RegisterText from './registerText'
 
 function RegisterLinks() {
     return (
-        <Link to="/Start/create/my/account/register.php">
+        <Link to="/Start/create/my/account/register.php" className="main-menu-cta">
             <RegisterText />
         </Link>
     )
