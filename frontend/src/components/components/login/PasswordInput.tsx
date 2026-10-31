@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import textConfig from "../../../lib/configs/site/text.configs"
+import { PASSWORD_MAX_LENGTH } from "../../../lib/auth/passwordRules"
 
 type PasswordProps = {
     disabled?: boolean
@@ -25,6 +26,7 @@ function LoginPassword({ disabled = false, onChange, value }: PasswordProps) {
                 onChange={(event) => onChange(event.target.value)}
                 autoComplete="current-password"
                 placeholder={textConfig.ExempelPassword}
+                maxLength={PASSWORD_MAX_LENGTH}
                 disabled={disabled}
                 required
             />

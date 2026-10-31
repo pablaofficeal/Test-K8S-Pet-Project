@@ -5,6 +5,11 @@
     font-family: 'Inter', system-ui, sans-serif;
 }
 
+.home-hero,
+.home-features {
+    scroll-margin-top: 78px;
+}
+
 .home-hero {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 430px;

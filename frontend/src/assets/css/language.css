@@ -14,9 +14,9 @@
     width: 100%;
     max-width: 360px;
     padding: 20px;
-    border: 1px solid #1f2a33;
+    border: 1px solid #1c2227;
     border-radius: 20px;
-    background: #0e0e10;
+    background: #0f1214;
     color: #ffffff;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .language-close:hover {
-    background: #1a1c21;
+    background: #1a2025;
     color: #ffffff;
 }
 
@@ -61,7 +61,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border: 1px solid #1f2a33;
+    border: 1px solid #1c2227;
     border-radius: 12px;
     background: none;
     color: #e6e8ec;
@@ -78,11 +78,11 @@
 }
 
 .language-option:hover {
-    background: #1a1c21;
+    background: #1a2025;
 }
 
 .language-option.active {
-    border-color: #3dd1f5;
-    background: #11222b;
-    color: #3dd1f5;
+    border-color: #b6cad8;
+    background: #1a2025;
+    color: #b6cad8;
 }

@@ -2,7 +2,7 @@ import TextConfig from '../../../lib/configs/site/text.configs'
 
 function Features() {
     return (
-        <section className="home-features">
+        <section id="security" className="home-features">
             <article>
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
                 <h2>{TextConfig.HomeFeatureEncTitle}</h2>

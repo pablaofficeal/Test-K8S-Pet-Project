@@ -10,13 +10,16 @@ function Strength({ value }: StrengthProps) {
     const labels = ['', TextConfig.StrengthWeak, TextConfig.StrengthFair, TextConfig.StrengthGood, TextConfig.StrengthStrong]
 
     return (
-        <div className="auth-strength" aria-live="polite">
-            <div className="auth-strength-bars">
-                {[1, 2, 3, 4].map((step) => (
-                    <span key={step} className={step <= score ? 'on' : ''} />
-                ))}
+        <div className="auth-strength">
+            <div className="auth-strength-meter" aria-live="polite">
+                <div className="auth-strength-bars">
+                    {[1, 2, 3, 4].map((step) => (
+                        <span key={step} className={step <= score ? 'on' : ''} />
+                    ))}
+                </div>
+                <span className="auth-strength-label">{labels[score]}</span>
             </div>
-            <span className="auth-strength-label">{labels[score]}</span>
+            <p className="auth-hint">{TextConfig.PasswordRulesHint}</p>
         </div>
     )
 }
