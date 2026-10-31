@@ -3,7 +3,7 @@
 **English** | [Русский](README.ru.md)
 
 > ⚠️ **Before you run this project, regenerate the JWT keys.**
-> The keys in `.env` are public mock values and are not safe to use anywhere real.
+> The keys in `.env.example` are public mock values and are not safe to use anywhere real.
 > See [docs/jwt-keys.md](docs/jwt-keys.md).
 
 ## Services
@@ -19,7 +19,7 @@
 
 ## Configuration
 
-`.env` is committed on purpose and contains **mock values only** for local development.
+`.env.example` is committed on purpose and contains **mock values only** for local development. Copy it to `.env` to run locally; never put real secrets into it.
 Never put real secrets into it.
 
 ## Docs

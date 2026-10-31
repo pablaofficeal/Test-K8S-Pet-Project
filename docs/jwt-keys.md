@@ -4,7 +4,7 @@
 
 > ⚠️ **You MUST regenerate the JWT keys before using this project.**
 >
-> The keys in the repository's `.env` are **mock values**. They are public and exist only so the project
+> The keys in the repository's `.env.example` are **mock values**. They are public and exist only so the project
 > runs out of the box in a dev environment. Anyone can mint a valid token for your service if you leave
 > them as they are. **Never use them in production or on any publicly reachable environment.**
 
@@ -71,10 +71,10 @@ openssl pkeyutl -verify -pubin -inkey pub.pem -rawin -in msg -sigfile sig
 - Restart all services (`auth`, `gateway`, `backend`) so they pick up the new keys.
 - All previously issued access and refresh tokens become invalid; users will have to log in again.
 - In production keep `JWT_SECRET_KEY` in a secret store (Kubernetes Secret, Vault, etc.), not in the repository.
-  The `.env` values in the repo are for local development only.
+  The values in `.env.example` are for local development only.
 - If the private key leaks, regenerate the pair immediately.
 
-## About `.env` in the repository
+## About `.env.example` in the repository
 
-`.env` is intentionally committed: it contains only mock values for local startup.
+`.env.example` is intentionally committed: it contains only mock values for local startup (copy it to `.env`).
 Never commit real secrets to it.
