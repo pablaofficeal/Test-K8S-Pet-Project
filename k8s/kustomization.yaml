@@ -15,6 +15,7 @@ resources:
   - backend/service.yaml
   - gateway/deployment.yaml
   - gateway/service.yaml
+  - gateway/ingress.yaml
   - migrations/job.yaml
 
 # Set your registry/tags here (or with `kustomize edit set image`)

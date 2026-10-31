@@ -72,6 +72,22 @@ k8s/
 Argo CD по умолчанию исключает `Endpoints`/`EndpointSlice`, из-за чего `k8s/database/service.yaml` тихо не применяется.
 Один раз примени `argocd/resource-exclusions-patch.yaml` (команда в самом файле), затем создай приложение: `kubectl apply -f argocd/application.yaml`.
 
+## Ingress
+
+Ingress обслуживает официальный helm-чарт `ingress-nginx`, который ставится отдельным приложением Argo CD:
+
+```bash
+kubectl apply -f argocd/ingress-nginx.yaml
+```
+
+Он слушает NodePort `30080` (HTTP) и `30444` (HTTPS) на каждой ноде. Настройки из `Infra/nginx/nginx.conf` перенесены в ConfigMap контроллера в этом же файле
+(`proxy-read-timeout` 365s, `proxy-buffering` off, тело до 50M, keep-alive, gzip, JSON-лог с `request_id`, `server-tokens` off). `k8s/gateway/ingress.yaml` направляет `/` на шлюз.
+WebSocket upgrade, `X-Real-IP`, `X-Forwarded-For` и `X-Request-ID` ingress-nginx обрабатывает по умолчанию. Зоны `limit_req` и `proxy_cache_path` в `nginx.conf` были объявлены, но ни в одном `location` не использовались, поэтому не переносились (у шлюза свой rate limiting).
+
+Применяй приложение Ingress **после** того, как основное приложение синхронизирует Service шлюза как `ClusterIP`, потому что оба хотят порт `30080`.
+
+> ⚠️ `kubernetes/ingress-nginx` заархивирован в марте 2026 и больше не получает исправлений. Для тестового кластера нормально; для чего-то настоящего планируй переход на другой контроллер.
+
 ## Миграции
 
 `auth` и `backend` ждут появления таблиц в БД; таблицы создаёт Job `migrations` (`migrations up`).
@@ -82,7 +98,7 @@ Argo CD по умолчанию исключает `Endpoints`/`EndpointSlice`, 
 - В `routes.yaml` шлюза хосты записаны как `Low-Code-Bot-Platform-*`; Service названы в нижнем регистре
   (`low-code-bot-platform-auth-service`, `...-users-backend`) — DNS не чувствителен к регистру, так что шлюз их найдёт.
 - Для сервиса `bot`, на который ссылается шлюз, манифестов пока нет (исходников в репозитории нет).
-- Шлюз опубликован как `NodePort` (`30080`) на каждой ноде, например `http://192.168.0.31:30080/main/api/v1/`. Ingress не описан.
+- Service шлюза — `ClusterIP`; снаружи он доступен через ingress-nginx (см. «Ingress»), например `http://192.168.0.31:30080/main/api/v1/`.
 - `networkpolicies.yaml` применяется: в кластере Calico (VXLAN, pod CIDR `10.244.0.0/16`). Входящий трафик по умолчанию закрыт; шлюз принимает отовсюду (нужно для NodePort), `auth`/`backend` — только от шлюза.
 - Реплик по 1 и небольшие лимиты памяти, потому что на воркерах ~4 ГБ RAM.
 - `DATABASE_URL` сохраняет compose-хост `low-code-bot-platform-postgresql:5432`; внутри кластера он резолвится через `k8s/database/service.yaml` в БД на хосте. Если поменяются IP хоста или `POSTGRES_PORT`, правь этот файл. Контейнер БД должен быть запущен и публиковать порт в LAN.

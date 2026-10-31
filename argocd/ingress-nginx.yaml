@@ -1,0 +1,64 @@
+# Ingress controller (official ingress-nginx Helm chart) managed by Argo CD.
+# Settings are ported from Infra/nginx/nginx.conf (timeouts, buffering, body size, JSON logs, gzip, request id).
+# Apply once:  kubectl apply -f argocd/ingress-nginx.yaml
+# NOTE: kubernetes/ingress-nginx was archived (retired) in March 2026 - fine for a test cluster, plan a migration for anything real.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: 4.15.1
+    helm:
+      valuesObject:
+        controller:
+          replicaCount: 1
+          ingressClassResource:
+            name: nginx
+            default: true
+          service:
+            type: NodePort
+            nodePorts:
+              http: 30080
+              https: 30444
+          admissionWebhooks:
+            enabled: false
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          config:
+            max-worker-connections: "4096"
+            keep-alive: "75"
+            keep-alive-requests: "2000"
+            server-tokens: "false"
+            proxy-body-size: "50m"
+            proxy-read-timeout: "365"
+            proxy-buffering: "off"
+            use-gzip: "true"
+            gzip-types: "text/plain text/css application/javascript application/json image/svg+xml"
+            generate-request-id: "true"
+            log-format-escape-json: "true"
+            log-format-upstream: '{"time":"$time_iso8601","client":"$remote_addr","request":"$request","status":$status,"size":$bytes_sent,"upstream_time":"$upstream_response_time","cache":"$upstream_cache_status","request_id":"$req_id","ua":"$http_user_agent"}'
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ingress-nginx
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 10
+      backoff:
+        duration: 20s
+        factor: 2
+        maxDuration: 5m
