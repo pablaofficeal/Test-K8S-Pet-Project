@@ -1,0 +1,48 @@
+
+services:
+  postgres:
+    image: postgres:18.6-trixie
+    container_name: Low-Code-Bot-Platform-postgresql
+    restart: always
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+        reservations:
+          memory: 256M
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+      - ./Infra/db/configs/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    networks:
+      - private-networks-postgres
+      - public-nginx-networks
+
+
+volumes:
+  postgres-data:
+  rabbitmq-data:
+
+networks:
+  public-nginx-networks:
+    driver: bridge
+    internal: false
+    ipam:
+      config:
+        - subnet: 10.228.10.0/24
+
+  private-networks-postgres:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.228.21.0/24
