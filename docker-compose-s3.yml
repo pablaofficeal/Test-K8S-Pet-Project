@@ -1,0 +1,26 @@
+
+services:
+  s3:
+    image: rustfs/rustfs:latest
+    container_name: local_s3
+    restart: unless-stopped
+    ports:
+      - "9002:9000" # S3 API
+      - "9003:9001" # Веб-консоль
+    environment:
+      RUSTFS_ACCESS_KEY: minioadmin
+      RUSTFS_SECRET_KEY: minioadminpassword
+      RUSTFS_CONSOLE_ENABLE: "true"
+    volumes:
+      - s3_data:/data
+    networks:
+      - default
+      - s3net
+
+volumes:
+  s3_data:
+
+networks:
+  s3net:
+    external: true
+    name: love-code-bot-platform_private-networks-s3

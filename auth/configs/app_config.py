@@ -25,6 +25,9 @@ class Config:
     JWT_ACCESS_TTL = os.getenv("JWT_ACCESS_TTL")
     JWT_REFRESH_TTL = os.getenv("JWT_REFRESH_TTL")
 
+    """RabbitMQ configuration"""
+    RABBITMQ_AUTH_URL = os.getenv("RABBITMQ_AUTH_URL", "")
+
     """Cookie configuration"""
     COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
 

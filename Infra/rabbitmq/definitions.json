@@ -1,0 +1,113 @@
+{
+  "users": [
+    {
+      "name": "admin",
+      "password_hash": "3GPiSBUgQ7k+WQarBFJkssGJo13uZ0pdvf0n7xRjC9dANqxf",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": [
+        "administrator"
+      ]
+    },
+    {
+      "name": "auth",
+      "password_hash": "vlrdJPlqhC4KXCjuiz3JfXwKvMXczc/Xhbz/f8B9ViEpqWuC",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": []
+    },
+    {
+      "name": "verify",
+      "password_hash": "XeZ8nG1dywW0tlJdET80FW2lISigWtbSNOa+n3Mc/BLG59Yz",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": []
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "cadence"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "cadence",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "auth",
+      "vhost": "cadence",
+      "configure": "",
+      "write": "^verify\\.events$",
+      "read": ""
+    },
+    {
+      "user": "verify",
+      "vhost": "cadence",
+      "configure": "",
+      "write": "",
+      "read": "^verify\\.requests$"
+    }
+  ],
+  "topic_permissions": [],
+  "exchanges": [
+    {
+      "name": "verify.events",
+      "vhost": "cadence",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "verify.dead",
+      "vhost": "cadence",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "verify.requests",
+      "vhost": "cadence",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum",
+        "x-dead-letter-exchange": "verify.dead",
+        "x-delivery-limit": 5
+      }
+    },
+    {
+      "name": "verify.requests.dead",
+      "vhost": "cadence",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "quorum"
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "verify.events",
+      "vhost": "cadence",
+      "destination": "verify.requests",
+      "destination_type": "queue",
+      "routing_key": "verification.requested",
+      "arguments": {}
+    },
+    {
+      "source": "verify.dead",
+      "vhost": "cadence",
+      "destination": "verify.requests.dead",
+      "destination_type": "queue",
+      "routing_key": "",
+      "arguments": {}
+    }
+  ]
+}

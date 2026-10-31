@@ -28,6 +28,7 @@ func GetProfileInfo(c *gin.Context) {
 		"uuid": user.UUID,
 		"username": user.Username,
 		"email": user.Email,
+		"email_verified": user.EmailVerified,
 		"created_at": user.CreatedAt,
 		"updated_at": user.UpdatedAt,
 	})

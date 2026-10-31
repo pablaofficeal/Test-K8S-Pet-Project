@@ -28,6 +28,28 @@ services:
       - public-nginx-networks
 
 
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: Low-Code-Bot-Platform-rabbitmq
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+    ports:
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - ./Infra/rabbitmq/rabbitmq.conf:/etc/rabbitmq/conf.d/20-bots.conf:ro
+      - ./Infra/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+    networks:
+      - private-networks-queue
+      - public-nginx-networks
+
+
 volumes:
   postgres-data:
   rabbitmq-data:

@@ -22,6 +22,7 @@ func Targets() []any {
 		&models.Roles{},
 		&models.UserRoles{},
 		&models.RefreshToken{},
+		&models.EmailVerification{},
 		&models.Bot{},
 		&models.Plan{},
 		&models.UserLimit{},

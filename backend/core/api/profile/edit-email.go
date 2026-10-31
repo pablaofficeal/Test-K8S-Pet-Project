@@ -48,7 +48,7 @@ func EditMyEmail(c *gin.Context) {
 		return
 	}
 
-	result := db.DB.WithContext(ctx).Model(&models.User{}).Where("uuid = ?", userUUID).Update("email", email)
+	result := db.DB.WithContext(ctx).Model(&models.User{}).Where("uuid = ?", userUUID).Updates(map[string]any{"email": email, "email_verified": false, "email_verified_at": nil})
 	if result.Error != nil {
 		log.Printf("trace_id=%s error updating email: %v", traceID, result.Error)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})

@@ -1,8 +1,9 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 from db.import_all_models import *
 from db.init_db import db
 from utils.password.hash import *
 from utils.password.validate import password_length_error
+from utils.mq.verification_publisher import publish_verification_requested
 import logging
 import uuid
 
@@ -35,5 +36,7 @@ def create_account():
     )
     db.session.add(new_user)
     db.session.commit()
+
+    publish_verification_requested(new_user.uuid, getattr(g, "trace_id", "-"))
 
     return jsonify({"username": new_user.username, "email": new_user.email}), 201
