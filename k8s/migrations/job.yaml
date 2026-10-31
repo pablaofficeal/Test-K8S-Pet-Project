@@ -1,5 +1,6 @@
 # Runs `migrations up` (AutoMigrate + seed) against the database on every Argo CD sync.
-# Runs after the database Service/EndpointSlice (wave 0) are in place.
+# Runs after the database Service/EndpointSlice (wave -2) and BEFORE the Deployments (wave 0):
+# services such as verify wait for their tables, so they cannot become healthy until this Job has finished.
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -7,7 +8,7 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   backoffLimit: 6
   ttlSecondsAfterFinished: 3600
