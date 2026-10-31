@@ -22,16 +22,16 @@ resources:
 images:
   - name: low-code-bot-platform-auth
     newName: pablaofficeal/low-code-bot-platform-auth
-    newTag: 24374f6
+    newTag: ad9fb0a
   - name: test-k8s-api
     newName: pablaofficeal/test-k8s-api
-    newTag: 24374f6
+    newTag: ad9fb0a
   - name: low-code-bot-platform-migrations
     newName: pablaofficeal/low-code-bot-platform-migrations
-    newTag: 24374f6
+    newTag: ad9fb0a
   - name: low-code-bot-platform-gateway
     newName: pablaofficeal/low-code-bot-platform-gateway
-    newTag: 24374f6
+    newTag: ad9fb0a
 
 labels:
   - pairs:
