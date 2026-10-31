@@ -26,19 +26,19 @@ resources:
 images:
   - name: low-code-bot-platform-auth
     newName: pablaofficeal/low-code-bot-platform-auth
-    newTag: ad9fb0a
+    newTag: 4a6b3a9
   - name: test-k8s-api
     newName: pablaofficeal/test-k8s-api
-    newTag: ad9fb0a
+    newTag: 4a6b3a9
   - name: low-code-bot-platform-verify
     newName: pablaofficeal/low-code-bot-platform-verify
-    newTag: latest
+    newTag: 4a6b3a9
   - name: low-code-bot-platform-migrations
     newName: pablaofficeal/low-code-bot-platform-migrations
-    newTag: ad9fb0a
+    newTag: 4a6b3a9
   - name: low-code-bot-platform-gateway
     newName: pablaofficeal/low-code-bot-platform-gateway
-    newTag: ad9fb0a
+    newTag: 4a6b3a9
 
 labels:
   - pairs:
