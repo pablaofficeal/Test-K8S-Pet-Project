@@ -3,7 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import AuthHeader from '../../components/menu/authHeader'
 import LoginEmail from '../../components/components/login/EmailInput'
 import LoginPassword from '../../components/components/login/PasswordInput'
+import Remember from '../../components/components/login/Remember'
 import LoginButtons from '../../components/components/login/Buttons'
+import DevicePanel from '../../components/components/login/DevicePanel'
 import TextConfig from '../../lib/configs/site/text.configs'
 import { describeError } from '../../lib/auth/api'
 import { login } from '../../lib/auth/login'
@@ -36,15 +38,17 @@ function Login() {
     return (
         <div className="auth-page">
             <AuthHeader mode="login" />
-            <main className="auth-main">
+            <main className="auth-main auth-main-split">
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <h1>{TextConfig.LoginTitle}</h1>
                     <p className="auth-intro">{TextConfig.LoginIntro}</p>
                     <LoginEmail value={email} onChange={setEmail} disabled={isLoading} />
                     <LoginPassword value={password} onChange={setPassword} disabled={isLoading} />
+                    <Remember />
                     {error && <p className="auth-error" role="alert">{error}</p>}
                     <LoginButtons disabled={isLoading} isLoading={isLoading} />
                 </form>
+                <DevicePanel />
             </main>
         </div>
     )

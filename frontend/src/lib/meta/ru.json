@@ -16,7 +16,7 @@
     "RegisterCreating": "Создаём аккаунт...",
     "RegisterFooterNote": "Бесплатно до пяти человек в команде. Карта не нужна, счёт в евро с НДС появится только при переходе на платный тариф.",
     "LoginTitle": "Вход в Cadence",
-    "LoginIntro": "Войдите, чтобы открыть задачи вашей команды.",
+    "LoginIntro": "Пароль расшифровывает задачи здесь, в браузере. На сервер он не уходит.",
     "LoginEmailLabel": "Эл. почта",
     "LoginShowPassword": "Показать",
     "LoginHidePassword": "Скрыть",
@@ -77,5 +77,17 @@
     "MenuClose": "Закрыть меню",
     "DashboardUserId": "ID",
     "DashboardCreated": "Аккаунт создан",
-    "PasswordRulesHint": "От 6 до 64 символов."
+    "PasswordRulesHint": "От 6 до 64 символов.",
+    "LoginRemember": "Запомнить это устройство",
+    "LoginForgot": "Забыли пароль?",
+    "LoginSubmit": "Войти и расшифровать",
+    "LoginDeviceKey": "Войти ключом устройства",
+    "OR": "или",
+    "LoginPanelTitle": "На этом устройстве",
+    "LoginPanelEncrypted": "зашифровано",
+    "LoginPanelNote": "Четыре задачи уже скачаны на это устройство. Открыть их можно только вашим паролем — у нас хранятся лишь эти блоки.",
+    "LoginHash1": "a7f2d4e9b1c83a05f6e2d7",
+    "LoginHash2": "3c8b05fa72e4d19c6b0f83e5",
+    "LoginHash3": "e1d960c4a8b2f37d",
+    "LoginHash4": "9b4e720dfc6a85e3d1072c"
 }

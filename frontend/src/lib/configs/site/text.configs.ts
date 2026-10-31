@@ -84,6 +84,18 @@ function TextConfig() {
         LoginShowPassword: langDict.LoginShowPassword,
         LoginHidePassword: langDict.LoginHidePassword,
         LoginSubmitting: langDict.LoginSubmitting,
+        LoginRemember: langDict.LoginRemember,
+        LoginForgot: langDict.LoginForgot,
+        LoginSubmit: langDict.LoginSubmit,
+        LoginDeviceKey: langDict.LoginDeviceKey,
+        OR: langDict.OR,
+        LoginPanelTitle: langDict.LoginPanelTitle,
+        LoginPanelEncrypted: langDict.LoginPanelEncrypted,
+        LoginPanelNote: langDict.LoginPanelNote,
+        LoginHash1: langDict.LoginHash1,
+        LoginHash2: langDict.LoginHash2,
+        LoginHash3: langDict.LoginHash3,
+        LoginHash4: langDict.LoginHash4,
 
         // Menu, dashboard, password
         MenuOpen: langDict.MenuOpen,

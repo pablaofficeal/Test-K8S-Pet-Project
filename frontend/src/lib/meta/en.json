@@ -16,7 +16,7 @@
     "RegisterCreating": "Creating account...",
     "RegisterFooterNote": "Free for teams of up to five. No card needed; invoicing in euros with VAT starts only when you move to a paid plan.",
     "LoginTitle": "Log in to Cadence",
-    "LoginIntro": "Log in to open your team's tasks.",
+    "LoginIntro": "Your password decrypts the tasks here, in the browser. It never leaves for the server.",
     "LoginEmailLabel": "Email",
     "LoginShowPassword": "Show",
     "LoginHidePassword": "Hide",
@@ -77,5 +77,17 @@
     "LanguageTitle": "Language",
     "LanguageClose": "Close",
     "SettingsName": "Name",
-    "SettingsEmail": "Email"
+    "SettingsEmail": "Email",
+    "LoginRemember": "Remember this device",
+    "LoginForgot": "Forgot password?",
+    "LoginSubmit": "Log in and decrypt",
+    "LoginDeviceKey": "Log in with a device key",
+    "OR": "or",
+    "LoginPanelTitle": "On this device",
+    "LoginPanelEncrypted": "encrypted",
+    "LoginPanelNote": "Four tasks are already downloaded to this device. They can only be opened with your password — we store nothing but these blocks.",
+    "LoginHash1": "a7f2d4e9b1c83a05f6e2d7",
+    "LoginHash2": "3c8b05fa72e4d19c6b0f83e5",
+    "LoginHash3": "e1d960c4a8b2f37d",
+    "LoginHash4": "9b4e720dfc6a85e3d1072c"
 }
