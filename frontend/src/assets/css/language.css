@@ -1,0 +1,88 @@
+.language-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.language-modal {
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+    border: 1px solid #1f2a33;
+    border-radius: 20px;
+    background: #0e0e10;
+    color: #ffffff;
+}
+
+.language-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.language-modal-head h2 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.language-close {
+    display: grid;
+    place-items: center;
+    padding: 6px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: #9aa0ab;
+    cursor: pointer;
+}
+
+.language-close:hover {
+    background: #1a1c21;
+    color: #ffffff;
+}
+
+.language-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    list-style: none;
+}
+
+.language-option {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border: 1px solid #1f2a33;
+    border-radius: 12px;
+    background: none;
+    color: #e6e8ec;
+    font: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+.language-option span:last-child {
+    color: #9aa0ab;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+}
+
+.language-option:hover {
+    background: #1a1c21;
+}
+
+.language-option.active {
+    border-color: #3dd1f5;
+    background: #11222b;
+    color: #3dd1f5;
+}

@@ -1,0 +1,15 @@
+{
+    "title": "Cadence",
+    "LoginLinks": "Login",
+    "RegisterLinks": "Register",
+    "HomeLinks": "Home",
+    "LoginsButtons": "Login",
+    "RegistersButtons": "Register",
+    "Email": "Email",
+    "Name": "Name",
+    "Current-Password": "current-password",
+    "ExempelName": "Your Name",
+    "Password": "Password",
+    "ExempelPassword": "yourpassword",
+    "ExempelEmail": "your@email.com"
+}

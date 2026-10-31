@@ -1,0 +1,73 @@
+.main-menu {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 10px 24px;
+    border-bottom: 1px solid #1f2a33;
+    background: rgba(18, 21, 27, 0.85);
+    backdrop-filter: blur(12px);
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.main-menu img {
+    width: 44px;
+    height: auto;
+    margin: 0 auto 0 0 !important;
+}
+
+.main-menu-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.main-menu-links a,
+.main-menu-action a {
+    color: #c4c9d2;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.main-menu-links a:hover,
+.main-menu-action a:hover {
+    color: #3dd1f5;
+}
+
+.main-menu-action {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.main-menu-action .logout-button,
+.main-menu-action .language-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #c4c9d2;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.main-menu-action .logout-button:hover,
+.main-menu-action .language-button:hover {
+    color: #3dd1f5;
+}
+
+@media (max-width: 560px) {
+    .main-menu {
+        padding: 10px 16px;
+        gap: 16px;
+    }
+}
