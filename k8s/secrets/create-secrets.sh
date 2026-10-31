@@ -64,17 +64,10 @@ if [[ $SEAL -eq 0 ]]; then
   kubectl get namespace "$NAMESPACE" >/dev/null 2>&1 || kubectl create namespace "$NAMESPACE"
 fi
 
-put POSTGRES_USER "$(get POSTGRES_USER)"
-put POSTGRES_PASSWORD "$(get POSTGRES_PASSWORD)"
-put POSTGRES_DB "$(get POSTGRES_DB)"
 put DATABASE_URL "$(get DATABASE_URL)"
 put JWT_SECRET_KEY "$(get JWT_SECRET_KEY)"
 put JWT_PUBLIC_KEY "$(get JWT_PUBLIC_KEY)"
 
-publish postgres-credentials \
-  --from-file=POSTGRES_USER="$TMP/POSTGRES_USER" \
-  --from-file=POSTGRES_PASSWORD="$TMP/POSTGRES_PASSWORD" \
-  --from-file=POSTGRES_DB="$TMP/POSTGRES_DB"
 publish database-url --from-file=DATABASE_URL="$TMP/DATABASE_URL"
 publish jwt-private-key --from-file=JWT_SECRET_KEY="$TMP/JWT_SECRET_KEY"
 publish jwt-public-key --from-file=JWT_PUBLIC_KEY="$TMP/JWT_PUBLIC_KEY"

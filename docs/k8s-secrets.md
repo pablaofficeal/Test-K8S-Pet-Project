@@ -2,7 +2,7 @@
 
 **English** | [Русский](k8s-secrets.ru.md)
 
-The frontend is **not** part of the cluster (it is hosted on Vercel). The cluster runs `gateway`, `auth`, `backend` and PostgreSQL.
+The frontend is **not** part of the cluster (it is hosted on Vercel). The cluster runs `gateway`, `auth` and `backend`. **PostgreSQL runs outside the cluster** (docker compose on the host, `192.168.0.15:56750`).
 
 ## Layout
 
@@ -12,8 +12,9 @@ k8s/
 ├── namespace.yaml          # low-code-bot-platform
 ├── configmap.yaml          # non-secret settings (TTLs, algorithm, Argon2, ...)
 ├── serviceaccounts.yaml    # one per workload, API token not mounted
-├── networkpolicies.yaml    # default deny + gateway -> auth/backend -> postgres
-├── postgres/ auth/ backend/ gateway/
+├── networkpolicies.yaml    # default deny + gateway -> auth/backend
+├── database/               # Service + EndpointSlice -> external PostgreSQL on the host
+├── auth/ backend/ gateway/
 └── secrets/
     ├── secrets.example.yaml  # template with placeholders (safe to commit)
     ├── create-secrets.sh     # builds real secrets from an env file
@@ -24,7 +25,6 @@ k8s/
 
 | Secret              | Keys                                                  | Consumers                  |
 |---------------------|-------------------------------------------------------|----------------------------|
-| `postgres-credentials` | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | postgres                   |
 | `database-url`      | `DATABASE_URL`                                        | auth, backend              |
 | `jwt-private-key`   | `JWT_SECRET_KEY`                                      | **auth only**              |
 | `jwt-public-key`    | `JWT_PUBLIC_KEY`                                      | auth, backend, gateway     |
@@ -72,7 +72,7 @@ Plain Kubernetes Secrets are only base64 and are readable by anyone with `get se
   (`low-code-bot-platform-auth-service`, `...-users-backend`) — DNS is case-insensitive, so the gateway resolves them.
 - `bot` service referenced by the gateway has no manifests yet (no source in the repo).
 - The gateway is exposed as a `NodePort` (`30080`) on every node, e.g. `http://192.168.0.31:30080/main/api/v1/`. No Ingress is defined.
-- `networkpolicies.yaml` is enforced: the cluster runs Calico (VXLAN, pod CIDR `10.244.0.0/16`). Ingress is default-deny; the gateway accepts traffic from anywhere (needed for NodePort), `auth`/`backend` only from the gateway, Postgres only from `auth`/`backend`.
-- Replicas are set to 1 and memory limits are low because the workers have ~4 GB RAM. Postgres uses `local-path` storage, so its data is tied to one node.
-- `postgresql.conf` from `Infra/` is not mounted; the stock PostgreSQL config is used.
-- The CI workflow currently builds only `backend` (image `test-k8s-api`); `auth` and `gateway` images need to be built and pushed too.
+- `networkpolicies.yaml` is enforced: the cluster runs Calico (VXLAN, pod CIDR `10.244.0.0/16`). Ingress is default-deny; the gateway accepts traffic from anywhere (needed for NodePort), `auth`/`backend` only from the gateway.
+- Replicas are set to 1 and memory limits are low because the workers have ~4 GB RAM.
+- `DATABASE_URL` keeps the compose-style host `low-code-bot-platform-postgresql:5432`; inside the cluster it resolves via `k8s/database/service.yaml` to the host DB. If the host IP or `POSTGRES_PORT` changes, edit that file. The DB container must be running and publish its port on the LAN.
+- CI (`.github/workflows/docker-publish.yml`) builds and pushes `backend` (`test-k8s-api`), `auth` and `gateway` to Docker Hub. Needs the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repo secrets.

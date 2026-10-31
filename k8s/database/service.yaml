@@ -1,0 +1,27 @@
+# PostgreSQL runs outside the cluster (docker compose on the host, 192.168.0.15:56750).
+# This Service + EndpointSlice give it a stable in-cluster name, so DATABASE_URL can keep
+# the host `low-code-bot-platform-postgresql` and port 5432.
+apiVersion: v1
+kind: Service
+metadata:
+  name: low-code-bot-platform-postgresql
+spec:
+  ports:
+    - name: pg
+      port: 5432
+      targetPort: 56750
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: low-code-bot-platform-postgresql-external
+  labels:
+    kubernetes.io/service-name: low-code-bot-platform-postgresql
+addressType: IPv4
+ports:
+  - name: pg
+    protocol: TCP
+    port: 56750
+endpoints:
+  - addresses:
+      - 192.168.0.15

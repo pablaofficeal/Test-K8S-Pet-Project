@@ -2,7 +2,7 @@
 
 [English](k8s-secrets.md) | **Русский**
 
-Фронтенд **не** входит в кластер (он на Vercel). В кластере работают `gateway`, `auth`, `backend` и PostgreSQL.
+Фронтенд **не** входит в кластер (он на Vercel). В кластере работают `gateway`, `auth` и `backend`. **PostgreSQL работает вне кластера** (docker compose на хосте, `192.168.0.15:56750`).
 
 ## Структура
 
@@ -12,8 +12,9 @@ k8s/
 ├── namespace.yaml          # low-code-bot-platform
 ├── configmap.yaml          # несекретные настройки (TTL, алгоритм, Argon2, ...)
 ├── serviceaccounts.yaml    # по одному на сервис, токен API не монтируется
-├── networkpolicies.yaml    # default deny + gateway -> auth/backend -> postgres
-├── postgres/ auth/ backend/ gateway/
+├── networkpolicies.yaml    # default deny + gateway -> auth/backend
+├── database/               # Service + EndpointSlice -> внешний PostgreSQL на хосте
+├── auth/ backend/ gateway/
 └── secrets/
     ├── secrets.example.yaml  # шаблон с плейсхолдерами (можно коммитить)
     ├── create-secrets.sh     # собирает реальные секреты из env-файла
@@ -24,7 +25,6 @@ k8s/
 
 | Секрет                 | Ключи                                               | Потребители            |
 |------------------------|-----------------------------------------------------|------------------------|
-| `postgres-credentials` | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` | postgres               |
 | `database-url`         | `DATABASE_URL`                                      | auth, backend          |
 | `jwt-private-key`      | `JWT_SECRET_KEY`                                    | **только auth**        |
 | `jwt-public-key`       | `JWT_PUBLIC_KEY`                                    | auth, backend, gateway |
@@ -72,7 +72,7 @@ k8s/
   (`low-code-bot-platform-auth-service`, `...-users-backend`) — DNS не чувствителен к регистру, так что шлюз их найдёт.
 - Для сервиса `bot`, на который ссылается шлюз, манифестов пока нет (исходников в репозитории нет).
 - Шлюз опубликован как `NodePort` (`30080`) на каждой ноде, например `http://192.168.0.31:30080/main/api/v1/`. Ingress не описан.
-- `networkpolicies.yaml` применяется: в кластере Calico (VXLAN, pod CIDR `10.244.0.0/16`). Входящий трафик по умолчанию закрыт; шлюз принимает отовсюду (нужно для NodePort), `auth`/`backend` — только от шлюза, Postgres — только от `auth`/`backend`.
-- Реплик по 1 и небольшие лимиты памяти, потому что на воркерах ~4 ГБ RAM. Postgres на `local-path`, поэтому его данные привязаны к одной ноде.
-- `postgresql.conf` из `Infra/` не монтируется, используется стандартный конфиг PostgreSQL.
-- CI сейчас собирает только `backend` (образ `test-k8s-api`); образы `auth` и `gateway` тоже нужно собирать и пушить.
+- `networkpolicies.yaml` применяется: в кластере Calico (VXLAN, pod CIDR `10.244.0.0/16`). Входящий трафик по умолчанию закрыт; шлюз принимает отовсюду (нужно для NodePort), `auth`/`backend` — только от шлюза.
+- Реплик по 1 и небольшие лимиты памяти, потому что на воркерах ~4 ГБ RAM.
+- `DATABASE_URL` сохраняет compose-хост `low-code-bot-platform-postgresql:5432`; внутри кластера он резолвится через `k8s/database/service.yaml` в БД на хосте. Если поменяются IP хоста или `POSTGRES_PORT`, правь этот файл. Контейнер БД должен быть запущен и публиковать порт в LAN.
+- CI (`.github/workflows/docker-publish.yml`) собирает и пушит `backend` (`test-k8s-api`), `auth` и `gateway` в Docker Hub. Нужны секреты репозитория `DOCKERHUB_USERNAME` и `DOCKERHUB_TOKEN`.

@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Images
 
 on:
   push:
@@ -6,15 +6,24 @@ on:
       - main
     paths:
       - 'backend/**'
+      - 'auth/**'
+      - 'gateway/**'
       - '.github/workflows/docker-publish.yml'
   workflow_dispatch: {}
-
-env:
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/test-k8s-api
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - context: backend
+            image: test-k8s-api
+          - context: auth
+            image: low-code-bot-platform-auth
+          - context: gateway
+            image: low-code-bot-platform-gateway
 
     steps:
       - name: Checkout repository
@@ -36,11 +45,11 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: ./${{ matrix.context }}
+          file: ./${{ matrix.context }}/Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.sha_short }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:${{ steps.vars.outputs.sha_short }}
+          cache-from: type=gha,scope=${{ matrix.context }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.context }}
