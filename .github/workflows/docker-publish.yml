@@ -40,7 +40,7 @@ jobs:
 
       - name: Extract short SHA
         id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+        run: echo "sha_short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
 
       - name: Build and push image
         uses: docker/build-push-action@v6
@@ -53,3 +53,33 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:${{ steps.vars.outputs.sha_short }}
           cache-from: type=gha,scope=${{ matrix.context }}
           cache-to: type=gha,mode=max,scope=${{ matrix.context }}
+
+  bump-manifests:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Point k8s/kustomization.yaml at the new images
+        env:
+          DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          TAG="${GITHUB_SHA::7}"
+          for image in test-k8s-api low-code-bot-platform-auth low-code-bot-platform-gateway; do
+            sed -i "/^  - name: $image\$/{n;s|newName: .*|newName: $DH_USER/$image|;n;s|newTag: .*|newTag: $TAG|}" k8s/kustomization.yaml
+          done
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet; then echo "nothing to bump"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore: bump images to ${GITHUB_SHA::7}"
+          git pull --rebase origin main
+          git push origin HEAD:main

@@ -4,7 +4,7 @@
 
 > ⚠️ **You MUST regenerate the JWT keys before using this project.**
 >
-> The keys in the repository's `.env.example` are **mock values**. They are public and exist only so the project
+> The keys in the repository's `.env` are **mock values**. They are public and exist only so the project
 > runs out of the box in a dev environment. Anyone can mint a valid token for your service if you leave
 > them as they are. **Never use them in production or on any publicly reachable environment.**
 
@@ -32,18 +32,18 @@ openssl genpkey -algorithm ed25519 -out priv.pem
 openssl pkey -in priv.pem -pubout -out pub.pem
 ```
 
-`priv.pem` and `pub.pem` are already in `.gitignore` — do not commit them, and delete them once copied into `.env`.
+`priv.pem` and `pub.pem` are already in `.gitignore` — do not commit them, and delete them once copied into your env file.
 
-## Writing to `.env`
+## Writing to the env file
 
-In `.env` the PEM is stored **on a single line**, with newlines replaced by `\n`, wrapped in double quotes:
+In the env file the PEM is stored **on a single line**, with newlines replaced by `\n`, wrapped in double quotes:
 
 ```bash
 echo "JWT_SECRET_KEY=\"$(awk 'NF {printf "%s\\n", $0}' priv.pem)\""
 echo "JWT_PUBLIC_KEY=\"$(awk 'NF {printf "%s\\n", $0}' pub.pem)\""
 ```
 
-Copy the output into `.env`, replacing the old values:
+Copy the output into your **own, uncommitted** env file (e.g. `.env.prod`), replacing the old values:
 
 ```env
 JWT_SECRET_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
@@ -71,10 +71,10 @@ openssl pkeyutl -verify -pubin -inkey pub.pem -rawin -in msg -sigfile sig
 - Restart all services (`auth`, `gateway`, `backend`) so they pick up the new keys.
 - All previously issued access and refresh tokens become invalid; users will have to log in again.
 - In production keep `JWT_SECRET_KEY` in a secret store (Kubernetes Secret, Vault, etc.), not in the repository.
-  The values in `.env.example` are for local development only.
+  The values in the committed `.env` are for local development only.
 - If the private key leaks, regenerate the pair immediately.
 
-## About `.env.example` in the repository
+## About `.env` in the repository
 
-`.env.example` is intentionally committed: it contains only mock values for local startup (copy it to `.env`).
+`.env` is intentionally committed: it contains only mock values for local startup. Keep real secrets in a separate file such as `.env.prod` (already in `.gitignore`).
 Never commit real secrets to it.

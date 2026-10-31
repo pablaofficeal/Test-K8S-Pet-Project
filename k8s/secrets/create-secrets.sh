@@ -32,13 +32,12 @@ get() {
   printf '%s' "$value"
 }
 
-EXAMPLE="$HERE/../../.env.example"
-if [[ $ALLOW_MOCK -eq 0 && -f "$EXAMPLE" ]]; then
-  if [[ "$(get JWT_SECRET_KEY)" == "$(grep -E '^JWT_SECRET_KEY=' "$EXAMPLE" | tail -n1 | sed -e 's/^[^=]*=//' -e 's/^"//' -e 's/"$//')" ]]; then
-    echo "Refusing: JWT_SECRET_KEY is the public mock key from .env.example." >&2
-    echo "Regenerate the keys first (docs/jwt-keys.md) or pass --allow-mock for a throwaway cluster." >&2
-    exit 1
-  fi
+MOCK="$(git -C "$HERE" show HEAD:.env 2>/dev/null | grep -E '^JWT_SECRET_KEY=' | tail -n1 | sed -e 's/^[^=]*=//' -e 's/^"//' -e 's/"$//' || true)"
+if [[ $ALLOW_MOCK -eq 0 && -n "$MOCK" && "$(get JWT_SECRET_KEY)" == "$MOCK" ]]; then
+  echo "Refusing: JWT_SECRET_KEY is the public mock key committed in .env." >&2
+  echo "Regenerate the keys first (docs/jwt-keys.md) and use a separate env file (e.g. .env.prod)," >&2
+  echo "or pass --allow-mock for a throwaway cluster." >&2
+  exit 1
 fi
 
 TMP="$(mktemp -d)"

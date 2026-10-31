@@ -2,7 +2,7 @@
 
 [English](k8s-secrets.md) | **Русский**
 
-Фронтенд **не** входит в кластер (он на Vercel). В кластере работают `gateway`, `auth` и `backend`. **PostgreSQL работает вне кластера** (docker compose на хосте, `192.168.0.15:56750`).
+Фронтенд **не** входит в кластер (он на Vercel). В кластере работают `gateway`, `auth` и `backend`. **PostgreSQL работает вне кластера** (docker compose на хосте, `192.168.0.15:56799`).
 
 ## Структура
 
@@ -34,14 +34,14 @@ k8s/
 
 ## Деплой
 
-1. **Перегенерируй JWT-ключи** — см. [jwt-keys.ru.md](jwt-keys.ru.md). Реальные значения положи в локальный env-файл (например `.env`, с реальными секретами его не коммитить).
+1. **Перегенерируй JWT-ключи** — см. [jwt-keys.ru.md](jwt-keys.ru.md). Реальные значения положи в локальный некоммитимый env-файл (`.env.prod`).
 2. Создай секреты:
 
    ```bash
-   k8s/secrets/create-secrets.sh --env-file .env
+   k8s/secrets/create-secrets.sh --env-file .env.prod
    ```
 
-   Скрипт откажется работать, если `JWT_SECRET_KEY` совпадает с публичным моковым ключом из `.env.example`
+   Скрипт откажется работать, если `JWT_SECRET_KEY` совпадает с публичным моковым ключом, закоммиченным в `.env`
    (`--allow-mock` отключает проверку, только для одноразовых кластеров).
 3. Впиши свои имена образов в `k8s/kustomization.yaml` (`DOCKERHUB_USERNAME`) и примени:
 
@@ -53,7 +53,7 @@ k8s/
 
 Обычные Secret в Kubernetes — это только base64, их видит любой с правом `get secret`. Рекомендуется:
 
-- **Sealed Secrets** (работает со скриптом): `k8s/secrets/create-secrets.sh --env-file .env --seal`
+- **Sealed Secrets** (работает со скриптом): `k8s/secrets/create-secrets.sh --env-file .env.prod --seal`
   кладёт зашифрованные манифесты в `k8s/secrets/sealed/`. Их можно коммитить и применять через `kubectl apply -f k8s/secrets/sealed/`.
   Нужны контроллер Sealed Secrets и CLI `kubeseal`.
 - **External Secrets Operator** + Vault / облачный менеджер секретов, если он у тебя уже есть.

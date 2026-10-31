@@ -2,7 +2,7 @@
 
 **English** | [Русский](k8s-secrets.ru.md)
 
-The frontend is **not** part of the cluster (it is hosted on Vercel). The cluster runs `gateway`, `auth` and `backend`. **PostgreSQL runs outside the cluster** (docker compose on the host, `192.168.0.15:56750`).
+The frontend is **not** part of the cluster (it is hosted on Vercel). The cluster runs `gateway`, `auth` and `backend`. **PostgreSQL runs outside the cluster** (docker compose on the host, `192.168.0.15:56799`).
 
 ## Layout
 
@@ -34,14 +34,14 @@ The private key is split into its own secret on purpose: only `auth` mounts it.
 
 ## Deploying
 
-1. **Regenerate the JWT keys** — see [jwt-keys.md](jwt-keys.md). Put real values in a local env file (e.g. `.env`, never committed with real secrets).
+1. **Regenerate the JWT keys** — see [jwt-keys.md](jwt-keys.md). Put real values in a local, uncommitted env file (`.env.prod`).
 2. Create the secrets:
 
    ```bash
-   k8s/secrets/create-secrets.sh --env-file .env
+   k8s/secrets/create-secrets.sh --env-file .env.prod
    ```
 
-   The script refuses to run if `JWT_SECRET_KEY` equals the public mock key from `.env.example`
+   The script refuses to run if `JWT_SECRET_KEY` equals the public mock key committed in `.env`
    (`--allow-mock` overrides this, only for throwaway clusters).
 3. Set your image names in `k8s/kustomization.yaml` (`DOCKERHUB_USERNAME`) and apply:
 
@@ -53,7 +53,7 @@ The private key is split into its own secret on purpose: only `auth` mounts it.
 
 Plain Kubernetes Secrets are only base64 and are readable by anyone with `get secret` rights. Recommended options:
 
-- **Sealed Secrets** (works with the script): `k8s/secrets/create-secrets.sh --env-file .env --seal`
+- **Sealed Secrets** (works with the script): `k8s/secrets/create-secrets.sh --env-file .env.prod --seal`
   writes encrypted manifests to `k8s/secrets/sealed/`. They can be committed and applied with `kubectl apply -f k8s/secrets/sealed/`.
   Requires the Sealed Secrets controller and the `kubeseal` CLI.
 - **External Secrets Operator** + Vault / cloud secret manager, if you already have one.
