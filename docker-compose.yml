@@ -46,7 +46,7 @@ services:
       - ./Infra/rabbitmq/rabbitmq.conf:/etc/rabbitmq/conf.d/20-bots.conf:ro
       - ./Infra/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
     networks:
-      - private-networks-queue
+      - private-networks-postgres
       - public-nginx-networks
 
 

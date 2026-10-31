@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: verify
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: verify
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: verify
+    spec:
+      serviceAccountName: verify
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+      containers:
+        - name: verify
+          image: low-code-bot-platform-verify:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8991
+          envFrom:
+            - configMapRef:
+                name: verify-config
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-url
+                  key: DATABASE_URL
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-public-key
+                  key: JWT_PUBLIC_KEY
+            - name: RABBITMQ_VERIFY_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-verify-url
+                  key: RABBITMQ_VERIFY_URL
+            - name: VERIFY_CODE_PEPPER
+              valueFrom:
+                secretKeyRef:
+                  name: verify-pepper
+                  key: VERIFY_CODE_PEPPER
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /api/v1/main/verify/
+              port: http
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/v1/main/verify/
+              port: http
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]

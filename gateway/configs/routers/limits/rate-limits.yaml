@@ -17,3 +17,7 @@ microservices:
     - by: ip
       limit: 30
       window: 1m
+  verify:
+    - by: ip
+      limit: 20
+      window: 1m

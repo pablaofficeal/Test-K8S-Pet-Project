@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: verify-config
+data:
+  VERIFY_PORT: "8991"
+  VERIFY_PROVIDER: "test"
+  VERIFY_ALLOW_TEST_CODE: "true"
+  VERIFY_TEST_CODE: "893658"
+  VERIFY_CODE_TTL: "10m"
+  VERIFY_RESEND_COOLDOWN: "60s"
+  VERIFY_MAX_ATTEMPTS: "5"
+  VERIFY_MAX_SENDS_PER_HOUR: "5"
+  GIN_MODE: "release"

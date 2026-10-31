@@ -9,6 +9,7 @@ resources:
   - serviceaccounts.yaml
   - networkpolicies.yaml
   - database/service.yaml
+  - rabbitmq/service.yaml
   - auth/deployment.yaml
   - auth/service.yaml
   - backend/deployment.yaml
@@ -17,6 +18,9 @@ resources:
   - gateway/service.yaml
   - gateway/ingress.yaml
   - migrations/job.yaml
+  - verify/configmap.yaml
+  - verify/deployment.yaml
+  - verify/service.yaml
 
 # Set your registry/tags here (or with `kustomize edit set image`)
 images:
@@ -26,6 +30,9 @@ images:
   - name: test-k8s-api
     newName: pablaofficeal/test-k8s-api
     newTag: ad9fb0a
+  - name: low-code-bot-platform-verify
+    newName: pablaofficeal/low-code-bot-platform-verify
+    newTag: latest
   - name: low-code-bot-platform-migrations
     newName: pablaofficeal/low-code-bot-platform-migrations
     newTag: ad9fb0a

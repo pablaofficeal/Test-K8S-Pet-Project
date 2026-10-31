@@ -6,6 +6,7 @@ server:
 microservices_timeouts:
   auth: 40s
   backend: 20s
+  verify: 20s
 
 microservices_hosts:
   auth:
@@ -14,6 +15,9 @@ microservices_hosts:
   backend:
     host: http://Low-Code-Bot-Platform-users-backend:8989
     timeout: ${microservices_timeouts.backend}
+  verify:
+    host: http://Low-Code-Bot-Platform-verify-service:8991
+    timeout: ${microservices_timeouts.verify}
 
 public_routes:
   - path: /main/api/v1/
@@ -73,4 +77,23 @@ private_routes:
     target: ${microservices_hosts.backend}
     timeout: ${microservices_hosts.backend.timeout}
     prefix: /api/v1/main/backend/edit/my/email
+
+  - path: /main/api/v1/verify/status
+    method: GET
+    target: ${microservices_hosts.verify}
+    timeout: ${microservices_hosts.verify.timeout}
+    prefix: /api/v1/main/verify/status
+
+  - path: /main/api/v1/verify/resend
+    method: POST
+    target: ${microservices_hosts.verify}
+    timeout: ${microservices_hosts.verify.timeout}
+    prefix: /api/v1/main/verify/resend
+
+  - path: /main/api/v1/verify/confirm
+    method: POST
+    target: ${microservices_hosts.verify}
+    timeout: ${microservices_hosts.verify.timeout}
+    prefix: /api/v1/main/verify/confirm
+
 rate_limits: ./limits/rate-limits.yaml
