@@ -3,8 +3,8 @@ import { useState, useEffect, lazy, Suspense } from 'react'
 import { ROUTES } from './lib/configs/site/routes'
 
 const App = lazy(() => import('./pages/app'))
-const Login = lazy(() => import('./pages/login'))
-const Register = lazy(() => import('./pages/register'))
+const Login = lazy(() => import('./pages/auth/login'))
+const Register = lazy(() => import('./pages/auth/register'))
 const Dashboard = lazy(() => import('./pages/dashboard'))
 const DashboardRedirect = lazy(() => import('./pages/dashboardRedirect'))
 
