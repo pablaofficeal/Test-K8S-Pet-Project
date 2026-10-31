@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Creates the cluster secrets from an env file.
-#   ./create-secrets.sh [--env-file FILE] [--seal] [--allow-mock]
+#   ./create-secrets.sh [--env-file FILE] [--seal]
 # Default: applies the secrets straight to the cluster with kubectl.
 # --seal : writes SealedSecret manifests to ./sealed/ (safe to commit) instead.
 set -euo pipefail
@@ -9,13 +9,11 @@ NAMESPACE="${NAMESPACE:-low-code-bot-platform}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE=".env"
 SEAL=0
-ALLOW_MOCK=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --env-file) ENV_FILE="$2"; shift 2 ;;
     --seal) SEAL=1; shift ;;
-    --allow-mock) ALLOW_MOCK=1; shift ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
@@ -31,14 +29,6 @@ get() {
   value="${value#\"}"
   printf '%s' "$value"
 }
-
-MOCK="$(git -C "$HERE" show HEAD:.env 2>/dev/null | grep -E '^JWT_SECRET_KEY=' | tail -n1 | sed -e 's/^[^=]*=//' -e 's/^"//' -e 's/"$//' || true)"
-if [[ $ALLOW_MOCK -eq 0 && -n "$MOCK" && "$(get JWT_SECRET_KEY)" == "$MOCK" ]]; then
-  echo "Refusing: JWT_SECRET_KEY is the public mock key committed in .env." >&2
-  echo "Regenerate the keys first (docs/jwt-keys.md) and use a separate env file (e.g. .env.prod)," >&2
-  echo "or pass --allow-mock for a throwaway cluster." >&2
-  exit 1
-fi
 
 TMP="$(mktemp -d)"
 umask 077

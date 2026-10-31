@@ -41,8 +41,7 @@ The private key is split into its own secret on purpose: only `auth` mounts it.
    k8s/secrets/create-secrets.sh --env-file .env.prod
    ```
 
-   The script refuses to run if `JWT_SECRET_KEY` equals the public mock key committed in `.env`
-   (`--allow-mock` overrides this, only for throwaway clusters).
+   For a throwaway/learning cluster you can use the committed mock `.env` as is (`--env-file .env`). The script does not check for mock keys — never do that on anything real.
 3. Set your image names in `k8s/kustomization.yaml` (`DOCKERHUB_USERNAME`) and apply:
 
    ```bash
