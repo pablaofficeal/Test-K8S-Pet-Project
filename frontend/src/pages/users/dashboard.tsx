@@ -7,7 +7,7 @@ import { describeError } from '../../lib/auth/api'
 import { getProfile, UnauthorizedError, type ProfileResponse } from '../../lib/auth/profile'
 import { clearAuthSession } from '../../lib/auth/session'
 import { getCurrentLanguage } from '../../lib/i18n/i18n'
-import '../assets/css/dashboard.css'
+import '../../assets/css/dashboard.css'
 
 function Dashboard() {
     const { uuid } = useParams()
