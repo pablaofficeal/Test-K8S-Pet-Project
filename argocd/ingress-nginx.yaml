@@ -25,6 +25,12 @@ spec:
             nodePorts:
               http: 30080
               https: 30444
+          # NodePort has no LoadBalancer address, so Argo CD would wait forever for the Ingress to become healthy.
+          # Publish a node IP into the Ingress status instead.
+          publishService:
+            enabled: false
+          extraArgs:
+            publish-status-address: 192.168.0.31
           admissionWebhooks:
             enabled: false
           resources:

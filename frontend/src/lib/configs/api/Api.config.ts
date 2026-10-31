@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-    BASE: "http://localhost:6372/main/api/v1",
+    BASE: "http://192.168.0.30:30080/main/api/v1",
     AUTH: {
         AUTH_LOGIN: "/start/log/in/my/account",
         REGISTERS: "/start/create/my/account",
