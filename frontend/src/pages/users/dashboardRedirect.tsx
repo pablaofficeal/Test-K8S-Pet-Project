@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom'
-import { getUserId } from '../lib/auth/session'
-import { ROUTES, loginPathWithRedirect, userDashboardPath } from '../lib/configs/site/routes'
+import { getUserId } from '../../lib/auth/session'
+import { ROUTES, loginPathWithRedirect, userDashboardPath } from '../../lib/configs/site/routes'
 
 function DashboardRedirect() {
     const uuid = getUserId()
