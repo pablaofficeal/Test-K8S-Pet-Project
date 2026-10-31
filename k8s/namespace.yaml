@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: low-code-bot-platform
+  labels:
+    app.kubernetes.io/part-of: low-code-bot-platform
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/warn: restricted

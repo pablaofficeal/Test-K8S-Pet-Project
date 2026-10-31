@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  JWT_ALGORITHM: "EdDSA"
+  JWT_ACCESS_TTL: "15m"
+  JWT_REFRESH_TTL: "60d"
+  HOSTS: "0.0.0.0"
+  PORTS: "6637"
+  DEBUGS: "False"
+  COOKIE_SECURE: "true"
+  ARGON2_SALT_LENGTH: "16"
+  ARGON2_KEY_LENGTH: "32"
+  ARGON2_PARALLELISM: "2"
+  ARGON2_ITERATIONS: "3"
+  ARGON2_MEMORY: "64000"
+  ARGON2_VERSION: "19"

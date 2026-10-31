@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# Creates the cluster secrets from an env file.
+#   ./create-secrets.sh [--env-file FILE] [--seal] [--allow-mock]
+# Default: applies the secrets straight to the cluster with kubectl.
+# --seal : writes SealedSecret manifests to ./sealed/ (safe to commit) instead.
+set -euo pipefail
+
+NAMESPACE="${NAMESPACE:-low-code-bot-platform}"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE=".env"
+SEAL=0
+ALLOW_MOCK=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --env-file) ENV_FILE="$2"; shift 2 ;;
+    --seal) SEAL=1; shift ;;
+    --allow-mock) ALLOW_MOCK=1; shift ;;
+    *) echo "unknown argument: $1" >&2; exit 2 ;;
+  esac
+done
+
+[[ -f "$ENV_FILE" ]] || { echo "env file not found: $ENV_FILE" >&2; exit 1; }
+
+get() {
+  local line
+  line="$(grep -E "^$1=" "$ENV_FILE" | tail -n1 || true)"
+  [[ -n "$line" ]] || { echo "missing $1 in $ENV_FILE" >&2; exit 1; }
+  local value="${line#*=}"
+  value="${value%\"}"
+  value="${value#\"}"
+  printf '%s' "$value"
+}
+
+EXAMPLE="$HERE/../../.env.example"
+if [[ $ALLOW_MOCK -eq 0 && -f "$EXAMPLE" ]]; then
+  if [[ "$(get JWT_SECRET_KEY)" == "$(grep -E '^JWT_SECRET_KEY=' "$EXAMPLE" | tail -n1 | sed -e 's/^[^=]*=//' -e 's/^"//' -e 's/"$//')" ]]; then
+    echo "Refusing: JWT_SECRET_KEY is the public mock key from .env.example." >&2
+    echo "Regenerate the keys first (docs/jwt-keys.md) or pass --allow-mock for a throwaway cluster." >&2
+    exit 1
+  fi
+fi
+
+TMP="$(mktemp -d)"
+umask 077
+trap 'rm -rf "$TMP"' EXIT
+
+put() { printf '%s' "$2" > "$TMP/$1"; }
+
+publish() {
+  local name="$1"; shift
+  local manifest
+  manifest="$(kubectl create secret generic "$name" -n "$NAMESPACE" --dry-run=client -o yaml "$@")"
+  if [[ $SEAL -eq 1 ]]; then
+    mkdir -p "$HERE/sealed"
+    printf '%s\n' "$manifest" | kubeseal --format yaml -n "$NAMESPACE" > "$HERE/sealed/$name.yaml"
+    echo "sealed: sealed/$name.yaml"
+  else
+    printf '%s\n' "$manifest" | kubectl apply -f -
+  fi
+}
+
+if [[ $SEAL -eq 0 ]]; then
+  kubectl get namespace "$NAMESPACE" >/dev/null 2>&1 || kubectl create namespace "$NAMESPACE"
+fi
+
+put POSTGRES_USER "$(get POSTGRES_USER)"
+put POSTGRES_PASSWORD "$(get POSTGRES_PASSWORD)"
+put POSTGRES_DB "$(get POSTGRES_DB)"
+put DATABASE_URL "$(get DATABASE_URL)"
+put JWT_SECRET_KEY "$(get JWT_SECRET_KEY)"
+put JWT_PUBLIC_KEY "$(get JWT_PUBLIC_KEY)"
+
+publish postgres-credentials \
+  --from-file=POSTGRES_USER="$TMP/POSTGRES_USER" \
+  --from-file=POSTGRES_PASSWORD="$TMP/POSTGRES_PASSWORD" \
+  --from-file=POSTGRES_DB="$TMP/POSTGRES_DB"
+publish database-url --from-file=DATABASE_URL="$TMP/DATABASE_URL"
+publish jwt-private-key --from-file=JWT_SECRET_KEY="$TMP/JWT_SECRET_KEY"
+publish jwt-public-key --from-file=JWT_PUBLIC_KEY="$TMP/JWT_PUBLIC_KEY"

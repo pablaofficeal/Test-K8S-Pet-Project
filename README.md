@@ -25,3 +25,4 @@ Never put real secrets into it.
 ## Docs
 
 - [JWT keys](docs/jwt-keys.md)
+- [Kubernetes: configuration and secrets](docs/k8s-secrets.md)

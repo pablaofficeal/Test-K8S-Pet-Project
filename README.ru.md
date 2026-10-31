@@ -25,3 +25,4 @@
 ## Документация
 
 - [JWT-ключи](docs/jwt-keys.ru.md)
+- [Kubernetes: конфигурация и секреты](docs/k8s-secrets.ru.md)

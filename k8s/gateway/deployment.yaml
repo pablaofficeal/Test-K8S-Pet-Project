@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gateway
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gateway
+    spec:
+      serviceAccountName: gateway
+      containers:
+        - name: gateway
+          image: low-code-bot-platform-gateway:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: JWT_ALGORITHM
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: JWT_ALGORITHM
+            - name: JWT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-public-key
+                  key: JWT_PUBLIC_KEY
+          readinessProbe:
+            httpGet:
+              path: /main/api/v1/
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /main/api/v1/
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+          volumeMounts:
+            - name: logs
+              mountPath: /app/logs
+      volumes:
+        - name: logs
+          emptyDir: {}

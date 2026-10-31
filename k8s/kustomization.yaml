@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: low-code-bot-platform
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - serviceaccounts.yaml
+  - networkpolicies.yaml
+  - postgres/statefulset.yaml
+  - postgres/service.yaml
+  - auth/deployment.yaml
+  - auth/service.yaml
+  - backend/deployment.yaml
+  - backend/service.yaml
+  - gateway/deployment.yaml
+  - gateway/service.yaml
+
+# Set your registry/tags here (or with `kustomize edit set image`)
+images:
+  - name: low-code-bot-platform-auth
+    newName: DOCKERHUB_USERNAME/low-code-bot-platform-auth
+    newTag: latest
+  - name: test-k8s-api
+    newName: DOCKERHUB_USERNAME/test-k8s-api
+    newTag: latest
+  - name: low-code-bot-platform-gateway
+    newName: DOCKERHUB_USERNAME/low-code-bot-platform-gateway
+    newTag: latest
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: low-code-bot-platform
