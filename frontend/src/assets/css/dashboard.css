@@ -25,6 +25,32 @@
     font-size: 14px;
 }
 
+.verify-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    max-width: 640px;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: 1px solid rgba(214, 166, 74, 0.4);
+    border-radius: 10px;
+    background: rgba(214, 166, 74, 0.08);
+    color: #e6c98a;
+    font-size: 14px;
+}
+
+.verify-banner a {
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.verify-banner a:hover {
+    text-decoration: underline;
+}
+
 .dashboard-links {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

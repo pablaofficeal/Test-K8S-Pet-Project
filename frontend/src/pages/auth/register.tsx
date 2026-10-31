@@ -12,6 +12,7 @@ import { describeError } from '../../lib/auth/api'
 import { login } from '../../lib/auth/login'
 import { register } from '../../lib/auth/registers'
 import { getRedirectTarget } from '../../lib/auth/session'
+import { verifyPathWithRedirect } from '../../lib/configs/site/routes'
 import '../../assets/css/auth.css'
 
 function Register() {
@@ -32,7 +33,7 @@ function Register() {
         try {
             await register(email.trim(), password, name.trim())
             await login(email.trim(), password)
-            navigate(getRedirectTarget(location.search), { replace: true })
+            navigate(verifyPathWithRedirect(getRedirectTarget(location.search)), { replace: true })
         } catch (err) {
             setError(describeError(err, TextConfig.RegisterFailed))
         } finally {

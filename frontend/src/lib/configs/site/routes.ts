@@ -5,6 +5,7 @@ export const ROUTES = {
     DASHBOARD: '/dashboard',
     PROFILE: '/profile',
     SETTINGS: '/settings',
+    VERIFY: '/verify',
 }
 
 export function userDashboardPath(uuid: string) {
@@ -21,4 +22,8 @@ export function userSettingsPath(uuid: string) {
 
 export function loginPathWithRedirect(target: string) {
     return `${ROUTES.LOGIN}?redirect=${encodeURIComponent(target)}`
+}
+
+export function verifyPathWithRedirect(target: string) {
+    return `${ROUTES.VERIFY}?redirect=${encodeURIComponent(target)}`
 }

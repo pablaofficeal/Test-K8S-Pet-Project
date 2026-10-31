@@ -5,6 +5,7 @@ import { ROUTES, userDashboardPath, userProfilePath, userSettingsPath } from './
 const App = lazy(() => import('./pages/app'))
 const Login = lazy(() => import('./pages/auth/login'))
 const Register = lazy(() => import('./pages/auth/register'))
+const Verify = lazy(() => import('./pages/auth/verify'))
 const Dashboard = lazy(() => import('./pages/users/dashboard'))
 const Profile = lazy(() => import('./pages/users/profile'))
 const Settings = lazy(() => import('./pages/users/settings'))
@@ -29,6 +30,7 @@ function Router() {
                 <Route path={ROUTES.HOME} element={<App />} />
                 <Route path={ROUTES.LOGIN} element={<Login />} />
                 <Route path={ROUTES.REGISTER} element={<Register />} />
+                <Route path={ROUTES.VERIFY} element={<Verify />} />
                 <Route path={ROUTES.DASHBOARD} element={<UserRedirect from={ROUTES.DASHBOARD} to={userDashboardPath} />} />
                 <Route path={ROUTES.PROFILE} element={<UserRedirect from={ROUTES.PROFILE} to={userProfilePath} />} />
                 <Route path={ROUTES.SETTINGS} element={<UserRedirect from={ROUTES.SETTINGS} to={userSettingsPath} />} />

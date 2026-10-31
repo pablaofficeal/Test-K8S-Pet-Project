@@ -1,6 +1,7 @@
 import Shell from '../../components/menu/shell'
 import ProfileSide from '../../components/components/profile/ProfileSide'
 import ProfileCard from '../../components/components/profile/ProfileCard'
+import VerifyBanner from '../../components/components/profile/VerifyBanner'
 import TextConfig from '../../lib/configs/site/text.configs'
 import { ROUTES, userProfilePath } from '../../lib/configs/site/routes'
 import { useProfile } from '../../lib/auth/useProfile'
@@ -22,6 +23,7 @@ function Profile() {
                         <section className="profile-main">
                             <p className="profile-label">{TextConfig.ProfileTitle}</p>
                             <h2 className="profile-heading">{TextConfig.ProfileAccountTitle}</h2>
+                            {!profile.email_verified && <VerifyBanner />}
                             <ProfileCard profile={profile} />
                         </section>
                     </div>

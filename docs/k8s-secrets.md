@@ -14,7 +14,8 @@ k8s/
 ├── serviceaccounts.yaml    # one per workload, API token not mounted
 ├── networkpolicies.yaml    # default deny + gateway -> auth/backend
 ├── database/               # Service + EndpointSlice -> external PostgreSQL on the host
-├── auth/ backend/ gateway/
+├── auth/ backend/ gateway/ verify/
+├── rabbitmq/               # Service + EndpointSlice -> external RabbitMQ on the host
 ├── migrations/             # Job: `migrations up` (AutoMigrate + seed), runs as an Argo CD Sync hook
 └── secrets/
     ├── secrets.example.yaml  # template with placeholders (safe to commit)
@@ -28,6 +29,9 @@ k8s/
 |---------------------|-------------------------------------------------------|----------------------------|
 | `database-url`      | `DATABASE_URL`                                        | auth, backend              |
 | `migration-db-url`  | `MIGRATION_DB_URL`                                    | migrations Job             |
+| `rabbitmq-auth-url`  | `RABBITMQ_AUTH_URL`                                  | **auth only** (publishes)  |
+| `rabbitmq-verify-url`| `RABBITMQ_VERIFY_URL`                                | **verify only** (consumes) |
+| `verify-pepper`      | `VERIFY_CODE_PEPPER`                                 | **verify only**            |
 | `jwt-private-key`   | `JWT_SECRET_KEY`                                      | **auth only**              |
 | `jwt-public-key`    | `JWT_PUBLIC_KEY`                                      | auth, backend, gateway     |
 
@@ -66,6 +70,10 @@ Plain Kubernetes Secrets are only base64 and are readable by anyone with `get se
 2. Re-run `create-secrets.sh`.
 3. Restart the workloads: `kubectl -n low-code-bot-platform rollout restart deploy/auth deploy/backend deploy/gateway`.
 4. All issued tokens become invalid; users must log in again.
+
+## Email verification
+
+See [verify-service.md](verify-service.md). RabbitMQ runs on the host like PostgreSQL (`k8s/rabbitmq/service.yaml` maps `low-code-bot-platform-rabbitmq:5672` to `192.168.0.15:56772`); the `verify` Deployment is configured by `k8s/verify/configmap.yaml` and uses the **test provider** with a fixed code for now.
 
 ## Argo CD
 

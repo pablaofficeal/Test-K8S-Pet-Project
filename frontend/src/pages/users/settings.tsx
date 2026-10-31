@@ -1,5 +1,6 @@
 import Shell from '../../components/menu/shell'
 import NameForm from '../../components/components/settings/NameForm'
+import VerifyBanner from '../../components/components/profile/VerifyBanner'
 import EmailForm from '../../components/components/settings/EmailForm'
 import TextConfig from '../../lib/configs/site/text.configs'
 import { ROUTES, userSettingsPath } from '../../lib/configs/site/routes'
@@ -18,10 +19,13 @@ function Settings() {
                 {error && <p className="dashboard-error" role="alert">{error}</p>}
                 {!profile && !error && <p className="dashboard-muted">{TextConfig.DashboardLoading}</p>}
                 {profile && (
-                    <div className="settings-list">
-                        <NameForm current={profile.username} onSaved={(username) => setProfile({ ...profile, username })} />
-                        <EmailForm current={profile.email} onSaved={(email) => setProfile({ ...profile, email })} />
-                    </div>
+                    <>
+                        {!profile.email_verified && <VerifyBanner />}
+                        <div className="settings-list">
+                            <NameForm current={profile.username} onSaved={(username) => setProfile({ ...profile, username })} />
+                            <EmailForm current={profile.email} onSaved={(email) => setProfile({ ...profile, email, email_verified: false })} />
+                        </div>
+                    </>
                 )}
             </main>
         </Shell>

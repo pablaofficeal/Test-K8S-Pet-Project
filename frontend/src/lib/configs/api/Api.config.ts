@@ -6,6 +6,11 @@ export const API_CONFIG = {
         REFRESH: "/start/refresh/my/token",
         LOGOUT: "/start/log/out/my/account"
     },
+    VERIFY: {
+        STATUS: "/verify/status",
+        RESEND: "/verify/resend",
+        CONFIRM: "/verify/confirm"
+    },
     PROFILE: {
         INFO: "/get/my/profile/info",
         EDIT_NAME: "/edit/my/name",

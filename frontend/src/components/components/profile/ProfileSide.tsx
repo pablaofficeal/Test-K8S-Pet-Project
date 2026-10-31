@@ -20,6 +20,7 @@ function ProfileSide({ profile }: ProfileSideProps) {
             <p className="profile-handle">{profile.email}</p>
             <div className="profile-badges">
                 <span>{TextConfig.DashboardUserId} {profile.uuid.slice(0, 8)}</span>
+                <span className={profile.email_verified ? 'ok' : 'warn'}>{profile.email_verified ? TextConfig.VerifyBadgeOk : TextConfig.VerifyBadgeNo}</span>
             </div>
             <p className="profile-joined">{TextConfig.DashboardCreated}: <time dateTime={profile.created_at}>{formatDate(profile.created_at)}</time></p>
         </aside>

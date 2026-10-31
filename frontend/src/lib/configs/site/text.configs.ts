@@ -117,6 +117,28 @@ function TextConfig() {
         ProfileUpdated: langDict.ProfileUpdated,
         ProfileAccountTitle: langDict.ProfileAccountTitle,
 
+        // Email verification
+        VerifyTitle: langDict.VerifyTitle,
+        VerifyIntro: langDict.VerifyIntro,
+        VerifyCodeLabel: langDict.VerifyCodeLabel,
+        VerifySubmit: langDict.VerifySubmit,
+        VerifySubmitting: langDict.VerifySubmitting,
+        VerifyResend: langDict.VerifyResend,
+        VerifyResendIn: langDict.VerifyResendIn,
+        VerifySecondsShort: langDict.VerifySecondsShort,
+        VerifyResent: langDict.VerifyResent,
+        VerifyErrorInvalid: langDict.VerifyErrorInvalid,
+        VerifyErrorNoCode: langDict.VerifyErrorNoCode,
+        VerifyErrorFormat: langDict.VerifyErrorFormat,
+        VerifyErrorAttempts: langDict.VerifyErrorAttempts,
+        VerifyErrorCooldown: langDict.VerifyErrorCooldown,
+        VerifyErrorRateLimit: langDict.VerifyErrorRateLimit,
+        VerifyErrorSend: langDict.VerifyErrorSend,
+        VerifyBannerText: langDict.VerifyBannerText,
+        VerifyBannerAction: langDict.VerifyBannerAction,
+        VerifyBadgeOk: langDict.VerifyBadgeOk,
+        VerifyBadgeNo: langDict.VerifyBadgeNo,
+
         // Register page
         HaveAccount: langDict.HaveAccount,
         RegisterFailed: langDict.RegisterFailed,

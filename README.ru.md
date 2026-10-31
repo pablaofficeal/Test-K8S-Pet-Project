@@ -26,3 +26,4 @@
 
 - [JWT-ключи](docs/jwt-keys.ru.md)
 - [Kubernetes: конфигурация и секреты](docs/k8s-secrets.ru.md)
+- [Сервис подтверждения почты](docs/verify-service.ru.md)

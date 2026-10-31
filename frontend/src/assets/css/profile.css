@@ -75,6 +75,16 @@
     font-size: 12px;
 }
 
+.profile-badges span.ok {
+    border-color: rgba(111, 174, 138, 0.5);
+    color: #8fcaa8;
+}
+
+.profile-badges span.warn {
+    border-color: rgba(214, 166, 74, 0.5);
+    color: #e6c98a;
+}
+
 .profile-joined {
     margin-top: 16px;
     color: #8f9aa3;

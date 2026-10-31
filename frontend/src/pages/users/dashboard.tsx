@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Shell from '../../components/menu/shell'
+import VerifyBanner from '../../components/components/profile/VerifyBanner'
 import TextConfig from '../../lib/configs/site/text.configs'
 import { ROUTES, userDashboardPath } from '../../lib/configs/site/routes'
 import { useProfile } from '../../lib/auth/useProfile'
@@ -17,6 +18,7 @@ function Dashboard() {
                 {profile && (
                     <>
                         <p className="dashboard-muted">{TextConfig.DashboardWelcome} {profile.username}</p>
+                        {!profile.email_verified && <VerifyBanner />}
                         <div className="dashboard-links">
                             <Link to={ROUTES.PROFILE}>
                                 <strong>{TextConfig.ProfileTitle}</strong>

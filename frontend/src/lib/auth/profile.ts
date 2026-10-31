@@ -5,6 +5,7 @@ export interface ProfileResponse {
     uuid: string
     username: string
     email: string
+    email_verified: boolean
     created_at: string
     updated_at: string
 }

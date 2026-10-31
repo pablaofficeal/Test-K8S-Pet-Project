@@ -440,6 +440,45 @@
     line-height: 1.55;
 }
 
+input.verify-code {
+    height: 60px;
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 28px;
+    letter-spacing: 0.5em;
+    text-align: center;
+}
+
+.auth-notice {
+    margin-bottom: 16px;
+    color: #6fae8a;
+    font-size: 14px;
+}
+
+.auth-intro strong {
+    color: #ffffff;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.auth-header .logout-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #9aa4ad;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.auth-header .logout-button:hover {
+    color: #ffffff;
+}
+
 @media (max-width: 960px) {
     .auth-main-split {
         grid-template-columns: minmax(0, 480px);

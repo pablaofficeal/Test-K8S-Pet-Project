@@ -14,7 +14,8 @@ k8s/
 ├── serviceaccounts.yaml    # по одному на сервис, токен API не монтируется
 ├── networkpolicies.yaml    # default deny + gateway -> auth/backend
 ├── database/               # Service + EndpointSlice -> внешний PostgreSQL на хосте
-├── auth/ backend/ gateway/
+├── auth/ backend/ gateway/ verify/
+├── rabbitmq/               # Service + EndpointSlice -> внешний RabbitMQ на хосте
 ├── migrations/             # Job: `migrations up` (AutoMigrate + seed), запускается как Sync-hook Argo CD
 └── secrets/
     ├── secrets.example.yaml  # шаблон с плейсхолдерами (можно коммитить)
@@ -28,6 +29,9 @@ k8s/
 |------------------------|-----------------------------------------------------|------------------------|
 | `database-url`         | `DATABASE_URL`                                      | auth, backend          |
 | `migration-db-url`     | `MIGRATION_DB_URL`                                  | Job миграций           |
+| `rabbitmq-auth-url`    | `RABBITMQ_AUTH_URL`                               | **только auth** (публикует) |
+| `rabbitmq-verify-url`  | `RABBITMQ_VERIFY_URL`                             | **только verify** (читает)  |
+| `verify-pepper`        | `VERIFY_CODE_PEPPER`                              | **только verify**           |
 | `jwt-private-key`      | `JWT_SECRET_KEY`                                    | **только auth**        |
 | `jwt-public-key`       | `JWT_PUBLIC_KEY`                                    | auth, backend, gateway |
 
@@ -66,6 +70,10 @@ k8s/
 2. Запусти `create-secrets.sh` заново.
 3. Перезапусти сервисы: `kubectl -n low-code-bot-platform rollout restart deploy/auth deploy/backend deploy/gateway`.
 4. Все выданные токены станут невалидными, пользователям придётся войти заново.
+
+## Подтверждение почты
+
+См. [verify-service.ru.md](verify-service.ru.md). RabbitMQ работает на хосте, как и PostgreSQL (`k8s/rabbitmq/service.yaml` связывает `low-code-bot-platform-rabbitmq:5672` с `192.168.0.15:56772`); `verify` настраивается через `k8s/verify/configmap.yaml` и пока работает с **тестовым провайдером** и фиксированным кодом.
 
 ## Argo CD
 
