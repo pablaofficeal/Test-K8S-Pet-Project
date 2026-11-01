@@ -15,7 +15,7 @@ import (
 )
 
 func TestImageFlowAgainstS3(t *testing.T) {
-	godotenv.Load("../../.env")
+	godotenv.Load("../../../.env")
 	if err := storage.InitS3(context.Background()); err != nil {
 		t.Skipf("s3 is not available: %v", err)
 	}
