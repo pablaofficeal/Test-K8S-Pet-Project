@@ -171,6 +171,7 @@ function TextConfig() {
         MsgPeerKeyChanged: langDict.MsgPeerKeyChanged,
         MsgImportFailed: langDict.MsgImportFailed,
         MsgSetupLoading: langDict.MsgSetupLoading,
+        MsgCharacterNotAllowed: langDict.MsgCharacterNotAllowed,
         TodoHideDone: langDict.TodoHideDone,
         TodoNoResults: langDict.TodoNoResults,
         TodoNoTasks: langDict.TodoNoTasks,

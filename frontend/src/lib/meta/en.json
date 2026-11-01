@@ -214,6 +214,7 @@
     "MsgPeerKeyChanged": "The key of this user has changed",
     "MsgImportFailed": "Could not read the key file",
     "MsgSetupLoading": "Preparing encryption...",
+    "MsgCharacterNotAllowed": "This character cannot be encrypted with the current dictionaries",
     "TodoTasksLabel": "tasks",
     "TodoBlocksLabel": "blocks",
     "TodoOverdue": "Overdue",

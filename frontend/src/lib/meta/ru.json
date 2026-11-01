@@ -214,6 +214,7 @@
     "MsgPeerKeyChanged": "Ключ этого пользователя изменился",
     "MsgImportFailed": "Не удалось прочитать файл ключа",
     "MsgSetupLoading": "Готовим шифрование...",
+    "MsgCharacterNotAllowed": "Этот символ нельзя зашифровать текущими словарями",
     "TodoTasksLabel": "задач",
     "TodoBlocksLabel": "блоков",
     "TodoOverdue": "Просрочено",

@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TextConfig from '../configs/site/text.configs'
 import { ROUTES, loginPathWithRedirect } from '../configs/site/routes'
-import { describeError } from '../auth/api'
 import { UnauthorizedError } from '../auth/profile'
 import { clearAuthSession, getUserId } from '../auth/session'
 import { getMyKey, putKeyBackup, putMyKey } from './api'
+import { LocalizedError, messageOf } from './errors'
 import { unwrapKey, wrapKey } from './backup'
 import { clearCustomDictionaries, activeAlphabets, saveCustomDictionaries } from './dictionaries'
 import { loadPrivateKey, generateKeyPair } from './crypto/keys.ts'
@@ -43,7 +43,7 @@ export function useMessenger() {
             return
         }
 
-        setError(describeError(err, fallback))
+        setError(messageOf(err, fallback))
     }, [navigate])
 
     const refresh = useCallback(async () => {
@@ -126,7 +126,7 @@ export function useMessenger() {
                 doc = JSON.parse(text) as PrivateKeyDoc
                 await loadPrivateKey(doc)
             } catch {
-                throw new Error(TextConfig.MsgImportFailed)
+                throw new LocalizedError(TextConfig.MsgImportFailed)
             }
 
             await adopt(doc)
@@ -135,10 +135,18 @@ export function useMessenger() {
             const server = await getMyKey()
 
             if (!server?.backup) {
-                throw new Error(TextConfig.MsgWrongPassphrase)
+                throw new LocalizedError(TextConfig.MsgWrongPassphrase)
             }
 
-            await adopt(await unwrapKey(server.backup, passphrase))
+            let doc: PrivateKeyDoc
+
+            try {
+                doc = await unwrapKey(server.backup, passphrase)
+            } catch {
+                throw new LocalizedError(TextConfig.MsgWrongPassphrase)
+            }
+
+            await adopt(doc)
         }),
         useLocalKey: () => run(async () => {
             const local = loadStoredKey(uuid)

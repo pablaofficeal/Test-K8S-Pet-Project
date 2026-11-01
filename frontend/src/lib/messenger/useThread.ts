@@ -4,7 +4,8 @@ import { decryptEnvelope, encryptText } from './crypto/envelope.ts'
 import type { DualAlphabets } from './crypto/alphabet.ts'
 import type { PrivateKeyDoc, PublicKeyDoc } from './crypto/types.ts'
 import TextConfig from '../configs/site/text.configs'
-import { describeError } from '../auth/api'
+import { messageOf } from './errors'
+import { AlphabetCharacterError } from './crypto/noise.ts'
 
 const POLL_MS = 3000
 
@@ -90,7 +91,7 @@ export function useThread({ me, peerUuid, privateDoc, alphabets }: ThreadKeys) {
                 }
             } catch (err) {
                 if (!cancelled) {
-                    setError(describeError(err, TextConfig.MsgLoadFailed))
+                    setError(messageOf(err, TextConfig.MsgLoadFailed))
                     setLoaded(true)
                 }
             }
@@ -138,7 +139,9 @@ export function useThread({ me, peerUuid, privateDoc, alphabets }: ThreadKeys) {
 
             return true
         } catch (err) {
-            setError(describeError(err, TextConfig.MsgSendFailed))
+            setError(err instanceof AlphabetCharacterError
+                ? `${TextConfig.MsgCharacterNotAllowed}: ${err.character === '\n' ? '\\n' : err.character}`
+                : messageOf(err, TextConfig.MsgSendFailed))
             getUserKey(peerUuid).then((fresh) => {
                 peerKeyRef.current = fresh
                 setPeerKey(fresh)
@@ -155,7 +158,7 @@ export function useThread({ me, peerUuid, privateDoc, alphabets }: ThreadKeys) {
             await deleteMessage(id)
             setMessages((current) => current.filter((item) => item.id !== id))
         } catch (err) {
-            setError(describeError(err, TextConfig.MsgSendFailed))
+            setError(messageOf(err, TextConfig.MsgSendFailed))
         }
     }
 

@@ -3,6 +3,16 @@ import { maskStream } from './keySchedule.ts'
 import { uint16, uint32 } from './bytes.ts'
 import type { Alphabet } from './types.ts'
 
+export class AlphabetCharacterError extends Error {
+    character: string
+
+    constructor(character: string, position: number) {
+        super(`Символ ${JSON.stringify(character)} в позиции ${position + 1} отсутствует в алфавите`)
+        this.name = 'AlphabetCharacterError'
+        this.character = character
+    }
+}
+
 // Каждый символ превращается в группу из 4-7 токенов: один настоящий (со сдвигом из потока маски) и шум
 export async function addDualNoise(text: string, first: Alphabet, second: Alphabet, maskKey: CryptoKey, nonce: Uint8Array): Promise<string> {
     const order1 = alphabetOrder(first.forward)
@@ -22,7 +32,7 @@ export async function addDualNoise(text: string, first: Alphabet, second: Alphab
         const index2 = order2.indexes.get(character)
 
         if (index1 === undefined || index2 === undefined) {
-            throw new Error(`Символ ${JSON.stringify(character)} в позиции ${position + 1} отсутствует в алфавите`)
+            throw new AlphabetCharacterError(character, position)
         }
 
         const stream = await maskStream(maskKey, nonce, position, 80)
