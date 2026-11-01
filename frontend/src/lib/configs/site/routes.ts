@@ -7,6 +7,7 @@ export const ROUTES = {
     SETTINGS: '/settings',
     VERIFY: '/verify',
     TODO: '/todo',
+    MESSENGER: '/messenger',
 }
 
 export function userDashboardPath(uuid: string) {
@@ -27,6 +28,14 @@ export function userTodoPath(uuid: string) {
 
 export function userTodoBoardPath(uuid: string, boardId: string) {
     return `/users/${uuid}/todo/${boardId}`
+}
+
+export function userMessengerPath(uuid: string) {
+    return `/users/${uuid}/messenger`
+}
+
+export function userMessengerThreadPath(uuid: string, peerUuid: string) {
+    return `/users/${uuid}/messenger/${peerUuid}`
 }
 
 export function loginPathWithRedirect(target: string) {

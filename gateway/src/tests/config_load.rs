@@ -260,6 +260,9 @@ fn the_real_config_protects_user_data() {
         "/main/api/v1/todo/move/my/task/:id",
         "/main/api/v1/start/upload/images",
         "/main/api/v1/verify/confirm",
+        "/main/api/v1/messenger/send/message",
+        "/main/api/v1/messenger/get/my/messages",
+        "/main/api/v1/messenger/put/my/key",
     ] {
         let route = cfg.routes.iter().find(|r| r.path == must_be_private).unwrap_or_else(|| panic!("{must_be_private} is not routed"));
         assert_eq!(route.auth, RouteAuth::Private, "{must_be_private}");

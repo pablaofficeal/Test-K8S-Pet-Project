@@ -7,6 +7,7 @@ on:
     paths:
       - 'backend/**'
       - 'todo/**'
+      - 'messenger/**'
       - 'auth/**'
       - 'gateway/**'
       - 'migrations/**'
@@ -18,6 +19,7 @@ on:
     paths:
       - 'backend/**'
       - 'todo/**'
+      - 'messenger/**'
       - 'auth/**'
       - 'gateway/**'
       - '.github/workflows/docker-publish.yml'
@@ -59,6 +61,27 @@ jobs:
         with:
           go-version-file: todo/go.mod
           cache-dependency-path: todo/go.sum
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./test/... -v
+
+  test-messenger:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: messenger
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: messenger/go.mod
+          cache-dependency-path: messenger/go.sum
 
       - name: Vet
         run: go vet ./...
@@ -131,7 +154,7 @@ jobs:
         run: cargo test --locked
 
   build-and-push:
-    needs: [test-backend, test-todo, test-auth, test-gateway]
+    needs: [test-backend, test-todo, test-messenger, test-auth, test-gateway]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     strategy:
@@ -142,6 +165,8 @@ jobs:
             image: cadence-cloud-backend
           - context: todo
             image: cadence-cloud-todo
+          - context: messenger
+            image: cadence-cloud-messenger
           - context: auth
             image: cadence-cloud-auth
           - context: gateway
@@ -197,7 +222,7 @@ jobs:
           DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           TAG="${GITHUB_SHA::7}"
-          for image in cadence-cloud-todo cadence-cloud-backend cadence-cloud-auth cadence-cloud-gateway cadence-cloud-migrations cadence-cloud-verify; do
+          for image in cadence-cloud-messenger cadence-cloud-todo cadence-cloud-backend cadence-cloud-auth cadence-cloud-gateway cadence-cloud-migrations cadence-cloud-verify; do
             sed -i "/^  - name: $image\$/{n;s|newName: .*|newName: $DH_USER/$image|;n;s|newTag: .*|newTag: $TAG|}" k8s/kustomization.yaml
           done
 

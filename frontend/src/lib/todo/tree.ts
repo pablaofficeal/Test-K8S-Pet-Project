@@ -59,3 +59,36 @@ export function collectTaskIds(tasks: TodoTask[], rootId: string): Set<string> {
 
     return ids
 }
+
+// Поиск и фильтр: оставляем подходящие задачи вместе с их родителями, чтобы дерево не развалилось
+export function filterTasks(tasks: TodoTask[], query: string, hideDone: boolean): TodoTask[] {
+    const needle = query.trim().toLowerCase()
+
+    if (needle === '' && !hideDone) {
+        return tasks
+    }
+
+    const byId = new Map(tasks.map((task) => [task.id, task]))
+    const keep = new Set<string>()
+
+    for (const task of tasks) {
+        const visible = !hideDone || task.status !== 'done'
+        const found = needle === ''
+            || task.title.toLowerCase().includes(needle)
+            || task.description.toLowerCase().includes(needle)
+            || task.tags.some((tag) => tag.toLowerCase().includes(needle))
+
+        if (!visible || !found) {
+            continue
+        }
+
+        let current: TodoTask | undefined = task
+
+        while (current && !keep.has(current.id)) {
+            keep.add(current.id)
+            current = current.parent_id === null ? undefined : byId.get(current.parent_id)
+        }
+    }
+
+    return tasks.filter((task) => keep.has(task.id))
+}

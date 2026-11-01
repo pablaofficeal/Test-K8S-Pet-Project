@@ -1,12 +1,14 @@
 import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Shell from '../../components/menu/shell'
+import ConfirmDialog from '../../components/components/todo/ConfirmDialog'
 import ProjectCard from '../../components/components/todo/ProjectCard'
 import TextConfig from '../../lib/configs/site/text.configs'
 import { userTodoBoardPath } from '../../lib/configs/site/routes'
 import { getUserId } from '../../lib/auth/session'
 import { useBoards } from '../../lib/todo/useBoards'
-import type { TodoBoard } from '../../lib/todo/types'
+import { useConfirm } from '../../lib/todo/useConfirm'
+import type { BoardSummary } from '../../lib/todo/types'
 import '../../assets/css/dashboard.css'
 import '../../assets/css/todo.css'
 
@@ -21,6 +23,10 @@ function Projects() {
     const [title, setTitle] = useState('')
     const [showForm, setShowForm] = useState(false)
     const [importError, setImportError] = useState('')
+    const [search, setSearch] = useState('')
+    const confirm = useConfirm()
+    const needle = search.trim().toLowerCase()
+    const shown = (boards ?? []).filter((board) => board.title.toLowerCase().includes(needle))
 
     async function handleCreate(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -58,8 +64,8 @@ function Projects() {
         }
     }
 
-    function handleDelete(board: TodoBoard) {
-        if (window.confirm(TextConfig.TodoDeleteProjectConfirm)) {
+    async function handleDelete(board: BoardSummary) {
+        if (await confirm.ask(TextConfig.TodoDeleteProjectConfirm)) {
             remove(board.id)
         }
     }
@@ -100,13 +106,25 @@ function Projects() {
                 {(error || importError) && <p className="dashboard-error" role="alert">{error || importError}</p>}
                 {!boards && !error && <p className="dashboard-muted">{TextConfig.DashboardLoading}</p>}
                 {boards && boards.length === 0 && <p className="dashboard-muted">{TextConfig.TodoEmpty}</p>}
-                {boards && boards.length > 0 && (
+                {boards && boards.length > 1 && (
+                    <input
+                        type="search"
+                        className="todo-search"
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder={TextConfig.TodoSearchProjects}
+                        aria-label={TextConfig.TodoSearchProjects}
+                    />
+                )}
+                {boards && boards.length > 0 && shown.length === 0 && <p className="dashboard-muted">{TextConfig.TodoNoProjectsFound}</p>}
+                {shown.length > 0 && (
                     <div className="projects-grid">
-                        {boards.map((board) => (
+                        {shown.map((board) => (
                             <ProjectCard key={board.id} board={board} uuid={uuid} disabled={pending} onDelete={handleDelete} />
                         ))}
                     </div>
                 )}
+                <ConfirmDialog message={confirm.message} onAnswer={confirm.answer} />
             </main>
         </Shell>
     )

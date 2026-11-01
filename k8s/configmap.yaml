@@ -21,4 +21,5 @@ data:
   S3_REGION: "us-east-1"
   S3_USE_SSL: "false"
   TODO_PORT: "8992"
+  MESSENGER_PORT: "8993"
   TODO_POSITION_FLUSH_INTERVAL: "3s"

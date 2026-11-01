@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type FormEvent, type KeyboardEvent } from 'react'
 import TextConfig from "../../../lib/configs/site/text.configs"
 import type { TaskInput, TaskPriority, TaskStatus, TodoTask } from "../../../lib/todo/types"
 
@@ -37,8 +37,20 @@ function TaskForm({ initial, onSubmit, onCancel }: TaskFormProps) {
         setPending(false)
     }
 
+    function handleKeyDown(event: KeyboardEvent<HTMLFormElement>) {
+        if (event.key === 'Escape') {
+            event.stopPropagation()
+            onCancel()
+        }
+
+        if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+            event.preventDefault()
+            event.currentTarget.requestSubmit()
+        }
+    }
+
     return (
-        <form className="task-form" onSubmit={handleSubmit}>
+        <form className="task-form" onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
             <input
                 type="text"
                 value={title}

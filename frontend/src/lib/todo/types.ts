@@ -9,6 +9,12 @@ export interface TodoBoard {
     updated_at: string
 }
 
+export interface BoardSummary extends TodoBoard {
+    nodes_count: number
+    tasks_total: number
+    tasks_done: number
+}
+
 export interface TodoNode {
     id: string
     board_id: string
@@ -46,6 +52,7 @@ export interface TaskInput {
 }
 
 export interface BoardActions {
+    confirm: (message: string) => Promise<boolean>
     renameNode: (id: string, title: string) => Promise<boolean>
     reorderNodes: (order: string[]) => void
     moveTask: (taskId: string, nodeId: string, index: number) => void

@@ -1,7 +1,7 @@
 import { API_CONFIG } from "../configs/api/Api.config"
 import { apiFetch, toApiError } from "../auth/api"
 import { UnauthorizedError } from "../auth/profile"
-import type { BoardView, TaskInput, TodoBoard, TodoNode, TodoTask } from "./types"
+import type { BoardSummary, BoardView, TaskInput, TodoBoard, TodoNode, TodoTask } from "./types"
 
 const TODO = API_CONFIG.TODO
 
@@ -31,7 +31,7 @@ function normalizeTask(task: TodoTask): TodoTask {
     return { ...task, tags: task.tags ?? [] }
 }
 
-export async function getBoards(): Promise<TodoBoard[]> {
+export async function getBoards(): Promise<BoardSummary[]> {
     const data = await (await request(TODO.BOARDS)).json()
 
     return data.boards
