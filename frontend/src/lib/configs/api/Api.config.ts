@@ -19,6 +19,18 @@ export const API_CONFIG = {
         DELETE_AVATAR: "/delete/my/avatar",
         IMAGE: "/get/my/image"
     },
+    MESSENGER: {
+        MY_KEY: "/messenger/put/my/key",
+        GET_MY_KEY: "/messenger/get/my/key",
+        KEY_BACKUP: "/messenger/put/my/key/backup",
+        USER_KEY: "/messenger/get/user/key",
+        SEARCH_USERS: "/messenger/search/users",
+        SEND: "/messenger/send/message",
+        MESSAGES: "/messenger/get/my/messages",
+        CONVERSATIONS: "/messenger/get/my/conversations",
+        MARK_READ: "/messenger/mark/my/messages/read",
+        DELETE_MESSAGE: "/messenger/delete/my/message"
+    },
     TODO: {
         BOARDS: "/todo/get/my/boards",
         BOARD: "/todo/get/my/board",

@@ -56,6 +56,15 @@ export const MENU: MenuSectionDef[] = [
                     { id: 'todo-projects', segment: 'todo', to: ROUTES.TODO, labelKey: 'TodoProjects', icon: ['M3 7h18M3 12h18M3 17h18'] },
                 ],
             },
+            {
+                id: 'messenger',
+                labelKey: 'MessengerTitle',
+                icon: ['M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'],
+                badge: 'beta',
+                children: [
+                    { id: 'messenger-chats', segment: 'messenger', to: ROUTES.MESSENGER, labelKey: 'MessengerChats', icon: ['M3 7h18M3 12h18M3 17h18'] },
+                ],
+            },
         ],
     },
 ]
