@@ -77,24 +77,6 @@ if user != nil {
 И комментарии ни в коем случае не должны содержать матерных слов
 
 
-## 4. Шапка в начале каждого файла
-
-### Так как это приватный проект код будеть проверяться юристами и по этому во всём коде должна быть такая шапка
-
-```go
-/*
- * Copyright (c) 2026-2027 Learning Platform Project. All rights reserved.
- *
- * This file is part of Learning Platform Auth Backend Service.
- *
- * This software is proprietary and confidential.
- * Unauthorized copying, modification, distribution, disclosure,
- * sublicensing, or use of this software, in whole or in part,
- * is strictly prohibited without prior written permission
- * from the copyright holder.
-*/
-```
-
 # Backend - Python
 
 ## 1. Имена файлов
