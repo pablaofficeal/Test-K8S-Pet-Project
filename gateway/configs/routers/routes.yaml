@@ -7,6 +7,7 @@ microservices_timeouts:
   auth: 40s
   backend: 20s
   verify: 20s
+  todo: 20s
 
 microservices_hosts:
   auth:
@@ -18,6 +19,9 @@ microservices_hosts:
   verify:
     host: http://Cadence-Cloud-verify-service:8991
     timeout: ${microservices_timeouts.verify}
+  todo:
+    host: http://Cadence-Cloud-todo-service:8992
+    timeout: ${microservices_timeouts.todo}
 
 public_routes:
   - path: /main/api/v1/
@@ -113,6 +117,84 @@ private_routes:
     target: ${microservices_hosts.backend}
     timeout: ${microservices_hosts.backend.timeout}
     prefix: /api/v1/main/backend/delete/my/image/:key
+
+  - path: /main/api/v1/todo/create/my/board
+    method: POST
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/create/my/board
+
+  - path: /main/api/v1/todo/get/my/boards
+    method: GET
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/get/my/boards
+
+  - path: /main/api/v1/todo/get/my/board/:id
+    method: GET
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/get/my/board/:id
+
+  - path: /main/api/v1/todo/delete/my/board/:id
+    method: DELETE
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/delete/my/board/:id
+
+  - path: /main/api/v1/todo/import/my/board
+    method: POST
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/import/my/board
+
+  - path: /main/api/v1/todo/export/my/board/:id
+    method: GET
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/export/my/board/:id
+
+  - path: /main/api/v1/todo/create/my/board/:id/node
+    method: POST
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/create/my/board/:id/node
+
+  - path: /main/api/v1/todo/edit/my/node/:id
+    method: PATCH
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/edit/my/node/:id
+
+  - path: /main/api/v1/todo/move/my/node/:id
+    method: PATCH
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/move/my/node/:id
+
+  - path: /main/api/v1/todo/delete/my/node/:id
+    method: DELETE
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/delete/my/node/:id
+
+  - path: /main/api/v1/todo/create/my/node/:id/task
+    method: POST
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/create/my/node/:id/task
+
+  - path: /main/api/v1/todo/edit/my/task/:id
+    method: PATCH
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/edit/my/task/:id
+
+  - path: /main/api/v1/todo/delete/my/task/:id
+    method: DELETE
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/delete/my/task/:id
 
   - path: /main/api/v1/verify/status
     method: GET

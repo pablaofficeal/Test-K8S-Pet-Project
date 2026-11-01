@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'backend/**'
+      - 'todo/**'
       - 'auth/**'
       - 'gateway/**'
       - 'migrations/**'
@@ -16,6 +17,7 @@ on:
       - main
     paths:
       - 'backend/**'
+      - 'todo/**'
       - '.github/workflows/docker-publish.yml'
   workflow_dispatch: {}
 
@@ -41,8 +43,29 @@ jobs:
       - name: Test
         run: go test ./test/... -v
 
+  test-todo:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: todo
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: todo/go.mod
+          cache-dependency-path: todo/go.sum
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./test/... -v
+
   build-and-push:
-    needs: test-backend
+    needs: [test-backend, test-todo]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     strategy:
@@ -51,6 +74,8 @@ jobs:
         include:
           - context: backend
             image: cadence-cloud-backend
+          - context: todo
+            image: cadence-cloud-todo
           - context: auth
             image: cadence-cloud-auth
           - context: gateway
@@ -106,7 +131,7 @@ jobs:
           DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           TAG="${GITHUB_SHA::7}"
-          for image in cadence-cloud-backend cadence-cloud-auth cadence-cloud-gateway cadence-cloud-migrations cadence-cloud-verify; do
+          for image in cadence-cloud-todo cadence-cloud-backend cadence-cloud-auth cadence-cloud-gateway cadence-cloud-migrations cadence-cloud-verify; do
             sed -i "/^  - name: $image\$/{n;s|newName: .*|newName: $DH_USER/$image|;n;s|newTag: .*|newTag: $TAG|}" k8s/kustomization.yaml
           done
 

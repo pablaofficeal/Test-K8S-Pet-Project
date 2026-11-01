@@ -60,6 +60,7 @@ put RABBITMQ_VERIFY_URL "$(get RABBITMQ_VERIFY_URL)"
 put VERIFY_CODE_PEPPER "$(get VERIFY_CODE_PEPPER)"
 put JWT_SECRET_KEY "$(get JWT_SECRET_KEY)"
 put JWT_PUBLIC_KEY "$(get JWT_PUBLIC_KEY)"
+put REDIS_URL "$(get REDIS_URL)"
 put S3_ACCESS_KEY "$(get S3_ACCESS_KEY)"
 put S3_SECRET_KEY "$(get S3_SECRET_KEY)"
 
@@ -70,4 +71,5 @@ publish rabbitmq-verify-url --from-file=RABBITMQ_VERIFY_URL="$TMP/RABBITMQ_VERIF
 publish verify-pepper --from-file=VERIFY_CODE_PEPPER="$TMP/VERIFY_CODE_PEPPER"
 publish jwt-private-key --from-file=JWT_SECRET_KEY="$TMP/JWT_SECRET_KEY"
 publish jwt-public-key --from-file=JWT_PUBLIC_KEY="$TMP/JWT_PUBLIC_KEY"
+publish redis-url --from-file=REDIS_URL="$TMP/REDIS_URL"
 publish s3-credentials --from-file=S3_ACCESS_KEY="$TMP/S3_ACCESS_KEY" --from-file=S3_SECRET_KEY="$TMP/S3_SECRET_KEY"

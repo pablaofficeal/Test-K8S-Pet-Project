@@ -16,6 +16,7 @@ k8s/
 ├── database/               # Service + EndpointSlice -> external PostgreSQL on the host
 ├── auth/ backend/ gateway/ verify/
 ├── rabbitmq/               # Service + EndpointSlice -> external RabbitMQ on the host
+├── redis/                  # Service + EndpointSlice -> external Redis on the host
 ├── s3/                     # Service + EndpointSlice -> external RustFS (S3) on the host
 ├── migrations/             # Job: `migrations up` (AutoMigrate + seed), runs as an Argo CD Sync hook
 └── secrets/
@@ -36,6 +37,7 @@ k8s/
 | `jwt-private-key`   | `JWT_SECRET_KEY`                                      | **auth only**              |
 | `jwt-public-key`    | `JWT_PUBLIC_KEY`                                      | auth, backend, gateway     |
 | `s3-credentials`    | `S3_ACCESS_KEY`, `S3_SECRET_KEY`                      | **backend only**           |
+| `redis-url`         | `REDIS_URL`                                           | **todo only**              |
 
 Everything else (`JWT_ALGORITHM`, TTLs, Argon2 parameters, ...) is not secret and lives in the `app-config` ConfigMap.
 The private key is split into its own secret on purpose: only `auth` mounts it.

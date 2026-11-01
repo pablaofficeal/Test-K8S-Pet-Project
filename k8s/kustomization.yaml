@@ -11,6 +11,7 @@ resources:
   - database/service.yaml
   - rabbitmq/service.yaml
   - s3/service.yaml
+  - redis/service.yaml
   - auth/deployment.yaml
   - auth/service.yaml
   - backend/deployment.yaml
@@ -22,6 +23,8 @@ resources:
   - verify/configmap.yaml
   - verify/deployment.yaml
   - verify/service.yaml
+  - todo/deployment.yaml
+  - todo/service.yaml
 
 # Set your registry/tags here (or with `kustomize edit set image`)
 images:
@@ -37,6 +40,9 @@ images:
   - name: cadence-cloud-migrations
     newName: pablaofficeal/cadence-cloud-migrations
     newTag: 5e46410
+  - name: cadence-cloud-todo
+    newName: pablaofficeal/cadence-cloud-todo
+    newTag: latest
   - name: cadence-cloud-gateway
     newName: pablaofficeal/cadence-cloud-gateway
     newTag: 5e46410

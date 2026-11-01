@@ -16,6 +16,7 @@ k8s/
 ├── database/               # Service + EndpointSlice -> внешний PostgreSQL на хосте
 ├── auth/ backend/ gateway/ verify/
 ├── rabbitmq/               # Service + EndpointSlice -> внешний RabbitMQ на хосте
+├── redis/                  # Service + EndpointSlice -> внешний Redis на хосте
 ├── s3/                     # Service + EndpointSlice -> внешний RustFS (S3) на хосте
 ├── migrations/             # Job: `migrations up` (AutoMigrate + seed), запускается как Sync-hook Argo CD
 └── secrets/
@@ -36,6 +37,7 @@ k8s/
 | `jwt-private-key`      | `JWT_SECRET_KEY`                                    | **только auth**        |
 | `jwt-public-key`       | `JWT_PUBLIC_KEY`                                    | auth, backend, gateway |
 | `s3-credentials`       | `S3_ACCESS_KEY`, `S3_SECRET_KEY`                    | **только backend**     |
+| `redis-url`            | `REDIS_URL`                                         | **только todo**        |
 
 Всё остальное (`JWT_ALGORITHM`, TTL, параметры Argon2 и т.д.) не секрет и лежит в ConfigMap `app-config`.
 Приватный ключ вынесен в отдельный секрет намеренно: его монтирует только `auth`.

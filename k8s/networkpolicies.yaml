@@ -34,7 +34,7 @@ spec:
     matchExpressions:
       - key: app.kubernetes.io/name
         operator: In
-        values: [auth, backend, verify]
+        values: [auth, backend, verify, todo]
   policyTypes:
     - Ingress
   ingress:

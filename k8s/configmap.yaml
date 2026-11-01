@@ -20,3 +20,5 @@ data:
   S3_BUCKET: "test-images"
   S3_REGION: "us-east-1"
   S3_USE_SSL: "false"
+  TODO_PORT: "8992"
+  TODO_POSITION_FLUSH_INTERVAL: "3s"
