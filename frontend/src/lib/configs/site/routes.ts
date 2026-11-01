@@ -6,6 +6,7 @@ export const ROUTES = {
     PROFILE: '/profile',
     SETTINGS: '/settings',
     VERIFY: '/verify',
+    TODO: '/todo',
 }
 
 export function userDashboardPath(uuid: string) {
@@ -18,6 +19,14 @@ export function userProfilePath(uuid: string) {
 
 export function userSettingsPath(uuid: string) {
     return `/users/${uuid}/settings`
+}
+
+export function userTodoPath(uuid: string) {
+    return `/users/${uuid}/todo`
+}
+
+export function userTodoBoardPath(uuid: string, boardId: string) {
+    return `/users/${uuid}/todo/${boardId}`
 }
 
 export function loginPathWithRedirect(target: string) {
