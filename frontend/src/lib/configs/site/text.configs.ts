@@ -124,6 +124,7 @@ function TextConfig() {
         SettingsAvatarTooLarge: langDict.SettingsAvatarTooLarge,
 
         // Sidebar menu and Todo
+        TodoMenu: langDict.TodoMenu,
         TodoSearchTasks: langDict.TodoSearchTasks,
         TodoSearchProjects: langDict.TodoSearchProjects,
         TodoHideDone: langDict.TodoHideDone,

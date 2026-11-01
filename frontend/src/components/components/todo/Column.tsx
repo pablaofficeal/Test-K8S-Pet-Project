@@ -1,28 +1,29 @@
 import { useState, type FormEvent } from 'react'
-import { Draggable, Droppable, type DraggableProvided } from '@hello-pangea/dnd'
 import TextConfig from "../../../lib/configs/site/text.configs"
 import type { TaskCounts, TaskTreeNode } from "../../../lib/todo/tree"
 import type { BoardActions, TaskFormState, TodoNode } from "../../../lib/todo/types"
+import type { DragState } from "./engine/DragState"
+import TaskDrag from "./engine/TaskDrag"
+import TaskDropZone from "./engine/TaskDropZone"
+import ColumnMenu from "./ColumnMenu"
 import TaskForm from "./TaskForm"
-import TaskItem from "./TaskItem"
+import TaskRow from "./TaskRow"
 
-type NodeBlockProps = {
+type ColumnProps = {
     node: TodoNode
     tree: TaskTreeNode[]
     totals: TaskCounts
     filtering: boolean
     actions: BoardActions
-    drag: DraggableProvided
-    dragging: boolean
+    drag: DragState
 }
 
-// Один список (колонка) доски: заголовок - ручка для перетаскивания списка, карточки перетаскиваются между списками.
-// Счётчики берём по всем задачам списка, а карточки показываем уже с учётом поиска
-function NodeBlock({ node, tree, totals, filtering, actions, drag, dragging }: NodeBlockProps) {
+// Колонка доски. Только внешний вид: за перетаскивание отвечают компоненты из ./engine,
+// мы лишь получаем от них props и вешаем на нужные элементы
+function Column({ node, tree, totals, filtering, actions, drag }: ColumnProps) {
     const [form, setForm] = useState<TaskFormState>(null)
     const [renaming, setRenaming] = useState(false)
     const [title, setTitle] = useState(node.title)
-    const percent = totals.total === 0 ? 0 : Math.round((totals.done / totals.total) * 100)
 
     async function handleRename(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -61,8 +62,8 @@ function NodeBlock({ node, tree, totals, filtering, actions, drag, dragging }: N
     }
 
     return (
-        <section ref={drag.innerRef} {...drag.draggableProps} className={dragging ? 'todo-node dragging' : 'todo-node'}>
-            <div className="todo-node-header" title={TextConfig.TodoDragBlock} {...drag.dragHandleProps}>
+        <section ref={drag.innerRef} {...drag.containerProps} className={drag.dragging ? 'todo-node dragging' : 'todo-node'}>
+            <div className="todo-node-header" title={TextConfig.TodoDragBlock} {...drag.handleProps}>
                 {renaming ? (
                     <form className="todo-node-rename" onSubmit={handleRename} onKeyDown={(event) => { if (event.key === 'Escape') { cancelRename() } }}>
                         <input type="text" value={title} onChange={(event) => setTitle(event.target.value)} maxLength={200} aria-label={TextConfig.TodoNodeNamePlaceholder} autoFocus />
@@ -71,39 +72,25 @@ function NodeBlock({ node, tree, totals, filtering, actions, drag, dragging }: N
                     <h3>{node.title}</h3>
                 )}
                 {totals.total > 0 && <span className="todo-node-count">{totals.done}/{totals.total}</span>}
-                <div className="todo-node-actions">
-                    <button type="button" onClick={() => setRenaming(true)} title={TextConfig.TodoRenameNode} aria-label={TextConfig.TodoRenameNode}>
-                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
-                    </button>
-                    <button type="button" onClick={handleDelete} title={TextConfig.TodoDeleteNode} aria-label={TextConfig.TodoDeleteNode}>×</button>
-                </div>
+                <ColumnMenu onRename={() => setRenaming(true)} onAddTask={() => setForm({ mode: 'create', parentId: null })} onDelete={handleDelete} />
+                <button type="button" className="todo-icon-button" onClick={handleDelete} title={TextConfig.TodoDeleteNode} aria-label={TextConfig.TodoDeleteNode}>×</button>
             </div>
-            {totals.total > 0 && (
-                <div className="todo-node-progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}>
-                    <span style={{ width: `${percent}%` }} />
-                </div>
-            )}
-            <Droppable droppableId={node.id} type="task">
-                {(drop) => (
-                    <ul ref={drop.innerRef} {...drop.droppableProps} className="task-list task-drop">
+            <TaskDropZone id={node.id}>
+                {(zone) => (
+                    <ul ref={zone.innerRef} {...zone.zoneProps} className="task-list task-drop">
                         {tree.map((item, index) => (
-                            <Draggable key={item.task.id} draggableId={item.task.id} index={index} isDragDisabled={filtering}>
-                                {(card, snapshot) => (
-                                    <li
-                                        ref={card.innerRef}
-                                        {...card.draggableProps}
-                                        {...card.dragHandleProps}
-                                        className={`task-card priority-${item.task.priority}${snapshot.isDragging ? ' dragging' : ''}`}
-                                    >
-                                        <TaskItem item={item} nodeId={node.id} actions={actions} form={form} onForm={setForm} />
+                            <TaskDrag key={item.task.id} id={item.task.id} index={index} disabled={filtering}>
+                                {(card) => (
+                                    <li ref={card.innerRef} {...card.containerProps} {...card.handleProps} className={card.dragging ? 'task-card dragging' : 'task-card'}>
+                                        <TaskRow item={item} nodeId={node.id} actions={actions} form={form} onForm={setForm} />
                                     </li>
                                 )}
-                            </Draggable>
+                            </TaskDrag>
                         ))}
-                        {drop.placeholder}
+                        {zone.placeholder}
                     </ul>
                 )}
-            </Droppable>
+            </TaskDropZone>
             {tree.length === 0 && form === null && (
                 <p className="todo-node-empty">{filtering && totals.total > 0 ? TextConfig.TodoNoResults : TextConfig.TodoNoTasks}</p>
             )}
@@ -117,4 +104,4 @@ function NodeBlock({ node, tree, totals, filtering, actions, drag, dragging }: N
         </section>
     )
 }
-export default NodeBlock
+export default Column

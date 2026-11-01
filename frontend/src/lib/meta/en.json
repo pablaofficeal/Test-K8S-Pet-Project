@@ -162,6 +162,7 @@
     "TodoMarkDone": "Mark as done",
     "TodoMarkTodo": "Mark as not done",
     "TodoDragBlock": "Drag to reorder the block",
+    "TodoMenu": "Menu",
     "TodoSearchTasks": "Search tasks",
     "TodoSearchProjects": "Search projects",
     "TodoHideDone": "Hide completed",

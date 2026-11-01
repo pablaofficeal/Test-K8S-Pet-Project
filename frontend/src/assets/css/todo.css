@@ -1,3 +1,5 @@
+/* Список проектов */
+
 .projects-header {
     display: flex;
     flex-wrap: wrap;
@@ -41,13 +43,20 @@
 }
 
 .todo-button.danger {
-    border-color: rgba(249, 8, 8, 0.4);
+    border-color: rgba(249, 8, 8, 0.45);
     background: transparent;
     color: #ff8a8a;
 }
 
 .todo-button.danger:hover:not(:disabled) {
-    background: rgba(249, 8, 8, 0.08);
+    background: rgba(249, 8, 8, 0.1);
+}
+
+.todo-button.compact {
+    height: 30px;
+    padding: 0 14px;
+    border-radius: 6px;
+    font-size: 13px;
 }
 
 .todo-button:disabled {
@@ -109,6 +118,25 @@
     white-space: nowrap;
 }
 
+.project-card-stats {
+    color: #9aa4ad;
+    font-size: 13px;
+}
+
+.project-card-progress {
+    height: 3px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #1b2227;
+}
+
+.project-card-progress span {
+    display: block;
+    height: 100%;
+    background: #4caf7d;
+    transition: width 0.2s;
+}
+
 .project-card-date {
     color: #6f7a83;
     font-size: 13px;
@@ -142,79 +170,143 @@
     cursor: default;
 }
 
+.todo-search {
+    width: 280px;
+    max-width: 100%;
+    height: 36px;
+    margin-top: 20px;
+    padding: 0 12px;
+    border: 1px solid #262e35;
+    border-radius: 8px;
+    background: #0b0e10;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.todo-search:focus {
+    border-color: #4b5963;
+}
+
+.todo-search.compact {
+    width: 200px;
+    height: 30px;
+    margin-top: 0;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.todo-check-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #9aa4ad;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Страница доски */
+
 .dash-content > main.todo-page {
-    padding: 24px 24px 0;
+    padding: 14px 16px 0;
 }
 
 .todo-board-header {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .todo-back {
     color: #9aa4ad;
-    font-size: 14px;
+    font-size: 13px;
     text-decoration: none;
 }
 
-.todo-back:hover {
-    color: #ffffff;
+.todo-back span {
+    color: #8fb4d6;
+}
+
+.todo-back:hover span {
+    text-decoration: underline;
 }
 
 .todo-board-title {
     margin-right: auto;
-    font-size: 22px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .todo-board-rename {
     display: flex;
     flex: 1;
-    gap: 10px;
+    gap: 8px;
     max-width: 520px;
     margin-right: auto;
 }
 
+.todo-board-rename input {
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.todo-header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Доска: рамка с горизонтальным скроллом, колонки в ряд и сверху */
+
 .todo-board {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-    height: calc(100vh - 150px);
-    padding: 4px 4px 12px;
+    gap: 10px;
+    height: calc(100vh - 80px);
+    padding: 8px;
     overflow-x: auto;
     overflow-y: hidden;
+    border: 1px solid #1c2227;
+    border-radius: 10px;
+    background: #0b0e10;
+    scrollbar-width: thin;
+    scrollbar-color: #2a3238 transparent;
 }
 
 .todo-columns {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
+    gap: 10px;
+    height: 100%;
 }
 
 .todo-node {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    width: 300px;
-    max-height: calc(100vh - 170px);
-    border: 1px solid #232a30;
-    border-radius: 12px;
-    background: #12161a;
+    width: 290px;
+    max-height: 100%;
+    border: 1px solid #1c2227;
+    border-radius: 8px;
+    background: #111417;
 }
 
 .todo-node.dragging {
-    border-color: #4b5963;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
+    border-color: #3a444c;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
 }
 
 .todo-node-header {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    gap: 8px;
-    padding: 12px 10px 10px 14px;
+    gap: 4px;
+    padding: 9px 6px 5px 12px;
     cursor: grab;
     user-select: none;
 }
@@ -223,79 +315,16 @@
     flex: 1;
     min-width: 0;
     overflow: hidden;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.todo-node-footer {
-    flex-shrink: 0;
-    padding: 0 8px 8px;
-}
-
-.task-list.task-drop {
-    flex: 0 1 auto;
-    min-height: 12px;
-    padding: 0 8px;
-    overflow-y: auto;
-}
-
-.task-card {
-    margin-bottom: 4px;
-    border: 1px solid transparent;
-    border-radius: 10px;
-    background: #151a1e;
-}
-
-.task-card.dragging {
-    border-color: #4b5963;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
-}
-
-.todo-add-list,
-.todo-add-list-form {
-    flex-shrink: 0;
-    width: 300px;
-    border-radius: 12px;
-}
-
-.todo-add-list {
-    padding: 12px 14px;
-    border: 1px dashed #2c353c;
-    background: rgba(255, 255, 255, 0.03);
-    color: #9aa4ad;
-    font: inherit;
-    font-size: 14px;
-    text-align: left;
-    cursor: pointer;
-}
-
-.todo-add-list:hover {
-    background: rgba(255, 255, 255, 0.06);
-    color: #ffffff;
-}
-
-.todo-add-list-form {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 10px;
-    border: 1px solid #262e35;
-    background: #12161a;
-}
-
-.todo-add-list-form input {
-    width: 100%;
-    height: 36px;
-    padding: 0 10px;
-    border: 1px solid #262e35;
-    border-radius: 6px;
-    background: #0b0e10;
-    color: #ffffff;
-    font: inherit;
-    font-size: 14px;
-    outline: none;
+.todo-node-count {
+    margin-right: 6px;
+    color: #6f7a83;
+    font-size: 12px;
 }
 
 .todo-node-rename {
@@ -305,50 +334,81 @@
 
 .todo-node-rename input {
     width: 100%;
-    height: 28px;
+    height: 26px;
     padding: 0 8px;
     border: 1px solid #262e35;
     border-radius: 6px;
     background: #0b0e10;
     color: #ffffff;
     font: inherit;
-    font-size: 14px;
+    font-size: 13px;
     outline: none;
 }
 
-.todo-node-count {
-    color: #6f7a83;
-    font-size: 12px;
-}
-
-.todo-node-actions,
-.task-actions {
-    display: flex;
-    gap: 2px;
-}
-
-.todo-node-actions button,
+.todo-icon-button,
 .task-actions button {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     display: grid;
+    flex-shrink: 0;
     place-items: center;
     padding: 0;
     border: 0;
-    border-radius: 6px;
+    border-radius: 4px;
     background: none;
     color: #8b95a0;
     font: inherit;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1;
     cursor: pointer;
 }
 
-.todo-node-actions button:hover,
+.todo-icon-button:hover,
 .task-actions button:hover {
     background: #1d242a;
     color: #ffffff;
 }
+
+.todo-menu {
+    position: relative;
+}
+
+.todo-menu-list {
+    position: absolute;
+    top: 24px;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    min-width: 170px;
+    padding: 4px;
+    border: 1px solid #262e35;
+    border-radius: 8px;
+    background: #151a1e;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+.todo-menu-list button {
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 5px;
+    background: none;
+    color: #e4e8eb;
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.todo-menu-list button:hover {
+    background: #1d242a;
+}
+
+.todo-menu-list button.danger {
+    color: #ff8a8a;
+}
+
+/* Задачи: плоские строки, без карточек */
 
 .task-list {
     margin: 0;
@@ -356,54 +416,53 @@
     list-style: none;
 }
 
+.task-list.task-drop {
+    flex: 0 1 auto;
+    min-height: 8px;
+    padding: 0 6px 2px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #2a3238 transparent;
+}
+
+.task-card {
+    border: 1px solid transparent;
+    border-radius: 6px;
+}
+
+.task-card.dragging {
+    border-color: #2f3940;
+    background: #171c20;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+}
+
 .task-children {
     margin-left: 22px;
-    padding-left: 6px;
-    border-left: 1px solid #232a30;
+    padding-left: 4px;
+    border-left: 1px solid #1c2227;
 }
 
 .task-row {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    padding: 7px 4px;
-    border-radius: 8px;
+    padding: 5px 4px;
+    border-radius: 6px;
 }
 
 .task-row:hover {
-    background: #171d21;
-}
-
-.task-caret,
-.task-caret-space {
-    width: 14px;
-    height: 20px;
-    flex-shrink: 0;
-}
-
-.task-caret {
-    display: grid;
-    place-items: center;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: #6f7a83;
-    cursor: pointer;
-    transition: transform 0.15s;
-}
-
-.task-caret.open {
-    transform: rotate(90deg);
+    background: #151a1e;
 }
 
 .task-check {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     display: grid;
     flex-shrink: 0;
     place-items: center;
+    margin-top: 1px;
     padding: 0;
-    border: 2px solid #3a444c;
+    border: 1.5px solid #3a444c;
     border-radius: 50%;
     background: none;
     color: #0f1214;
@@ -431,19 +490,15 @@
 }
 
 .task-title {
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 13.5px;
+    line-height: 1.35;
     overflow-wrap: anywhere;
-}
-
-.task-title.done {
-    color: #8b95a0;
 }
 
 .task-description {
     margin-top: 2px;
-    color: #6f7a83;
-    font-size: 12.5px;
+    color: #7d8892;
+    font-size: 12px;
     line-height: 1.4;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
@@ -452,27 +507,36 @@
 .task-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 4px;
+    align-items: center;
+    gap: 4px 8px;
+    margin-top: 3px;
 }
 
 .task-meta:empty {
     display: none;
 }
 
-.task-counter,
+.task-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #7d8892;
+    font-size: 11.5px;
+}
+
 .task-chip {
-    padding: 1px 7px;
-    border-radius: 999px;
+    padding: 0 7px;
+    border-radius: 4px;
     background: #1b2227;
     color: #9aa4ad;
     font-size: 11.5px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .task-chip.tag {
-    background: #2b6a4a;
-    color: #d6f2e2;
+    background: #2b8a5a;
+    color: #ffffff;
+    font-weight: 600;
 }
 
 .task-chip.priority-high {
@@ -480,13 +544,22 @@
     color: #ff8a8a;
 }
 
-.task-chip.deadline {
+.task-chip.deadline.overdue {
+    background: rgba(249, 8, 8, 0.15);
+    color: #ff8a8a;
+}
+
+.task-chip.deadline.soon {
     background: rgba(214, 162, 58, 0.15);
     color: #d6a23a;
 }
 
 .task-actions {
-    opacity: 0;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0;
+    opacity: 0.7;
     transition: opacity 0.15s;
 }
 
@@ -495,47 +568,123 @@
     opacity: 1;
 }
 
+.task-caret svg {
+    transition: transform 0.15s;
+}
+
+.task-caret.open svg {
+    transform: rotate(90deg);
+}
+
+.todo-node-empty {
+    padding: 2px 14px 6px;
+    color: #6f7a83;
+    font-size: 12.5px;
+}
+
+.todo-node-footer {
+    flex-shrink: 0;
+    padding: 0 6px 6px;
+}
+
 .todo-new-task {
     width: 100%;
-    margin-top: 4px;
-    padding: 8px 4px;
+    padding: 6px 8px;
     border: 0;
-    border-radius: 8px;
+    border-radius: 6px;
     background: none;
-    color: #8b95a0;
+    color: #6f7a83;
     font: inherit;
-    font-size: 13.5px;
+    font-size: 13px;
     text-align: left;
     cursor: pointer;
 }
 
 .todo-new-task:hover {
-    background: #171d21;
+    background: #151a1e;
     color: #ffffff;
 }
+
+/* Добавление блока */
+
+.todo-add-list,
+.todo-add-list-form {
+    flex-shrink: 0;
+    width: 290px;
+    border-radius: 8px;
+}
+
+.todo-add-list {
+    padding: 10px 12px;
+    border: 1px dashed #2a3238;
+    background: transparent;
+    color: #6f7a83;
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.todo-add-list:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+}
+
+.todo-add-list-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid #1c2227;
+    background: #111417;
+}
+
+.todo-add-list-form input {
+    width: 100%;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid #262e35;
+    border-radius: 6px;
+    background: #0b0e10;
+    color: #ffffff;
+    font: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.todo-board-empty {
+    flex-shrink: 0;
+    width: 260px;
+    padding: 10px 4px;
+    color: #7d8892;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Форма задачи */
 
 .task-form {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin: 4px 0;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid #262e35;
-    border-radius: 10px;
-    background: #0f1316;
+    border-radius: 8px;
+    background: #0d1114;
 }
 
 .task-form input,
 .task-form textarea,
 .task-form select {
     width: 100%;
-    padding: 7px 10px;
+    padding: 6px 9px;
     border: 1px solid #262e35;
     border-radius: 6px;
     background: #0b0e10;
     color: #ffffff;
     font: inherit;
-    font-size: 13.5px;
+    font-size: 13px;
     outline: none;
 }
 
@@ -573,14 +722,14 @@
 }
 
 .task-form-actions button {
-    height: 32px;
-    padding: 0 14px;
+    height: 28px;
+    padding: 0 12px;
     border: 1px solid transparent;
     border-radius: 6px;
     background: #ffffff;
     color: #0f1214;
     font: inherit;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 600;
     cursor: pointer;
 }
@@ -596,15 +745,7 @@
     cursor: default;
 }
 
-@media (max-width: 860px) {
-    .dash-content > main.todo-page {
-        padding: 16px 12px 0;
-    }
-
-    .todo-board {
-        height: calc(100vh - 190px);
-    }
-}
+/* Подтверждение */
 
 .todo-confirm {
     width: min(420px, calc(100vw - 32px));
@@ -631,110 +772,16 @@
     margin-top: 20px;
 }
 
-.todo-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 12px;
-}
+@media (max-width: 860px) {
+    .dash-content > main.todo-page {
+        padding: 12px 10px 0;
+    }
 
-.todo-search {
-    width: 280px;
-    max-width: 100%;
-    height: 36px;
-    margin-top: 20px;
-    padding: 0 12px;
-    border: 1px solid #262e35;
-    border-radius: 8px;
-    background: #0b0e10;
-    color: #ffffff;
-    font: inherit;
-    font-size: 14px;
-    outline: none;
-}
+    .todo-board {
+        height: calc(100vh - 150px);
+    }
 
-.todo-toolbar .todo-search {
-    margin-top: 0;
-}
-
-.todo-search:focus {
-    border-color: #4b5963;
-}
-
-.todo-check-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #9aa4ad;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.todo-filter-note {
-    color: #d6a23a;
-    font-size: 13px;
-}
-
-.todo-node-progress,
-.project-card-progress {
-    height: 3px;
-    overflow: hidden;
-    background: #1b2227;
-}
-
-.todo-node-progress span,
-.project-card-progress span {
-    display: block;
-    height: 100%;
-    background: #4caf7d;
-    transition: width 0.2s;
-}
-
-.project-card-progress {
-    border-radius: 999px;
-}
-
-.project-card-stats {
-    color: #9aa4ad;
-    font-size: 13px;
-}
-
-.todo-node-empty {
-    padding: 4px 16px 8px;
-    color: #6f7a83;
-    font-size: 13px;
-}
-
-.todo-board-empty {
-    flex-shrink: 0;
-    width: 300px;
-    padding: 12px 4px;
-    color: #9aa4ad;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.task-card.priority-high {
-    border-left: 3px solid #ff6b6b;
-}
-
-.task-card.priority-low {
-    border-left: 3px solid #4b5963;
-}
-
-.task-chip.deadline.overdue {
-    background: rgba(249, 8, 8, 0.15);
-    color: #ff8a8a;
-}
-
-.task-chip.deadline.soon {
-    background: rgba(214, 162, 58, 0.15);
-    color: #d6a23a;
-}
-
-.task-chip.deadline.later,
-.task-chip.deadline.done {
-    background: #1b2227;
-    color: #9aa4ad;
+    .todo-search.compact {
+        width: 100%;
+    }
 }
