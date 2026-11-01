@@ -78,6 +78,30 @@ private_routes:
     timeout: ${microservices_hosts.backend.timeout}
     prefix: /api/v1/main/backend/edit/my/email
 
+  - path: /main/api/v1/start/upload/images
+    method: POST
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/start/upload/images
+
+  - path: /main/api/v1/get/my/images
+    method: GET
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/get/my/images
+
+  - path: /main/api/v1/get/my/image/:key
+    method: GET
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/get/my/image/:key
+
+  - path: /main/api/v1/delete/my/image/:key
+    method: DELETE
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/delete/my/image/:key
+
   - path: /main/api/v1/verify/status
     method: GET
     target: ${microservices_hosts.verify}

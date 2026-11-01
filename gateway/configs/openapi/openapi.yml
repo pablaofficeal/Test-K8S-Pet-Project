@@ -175,6 +175,118 @@ paths:
                     format: date-time
                     example: "2026-10-22T09:14:25Z"
 
+  /main/api/v1/start/upload/images:
+    post:
+      tags: [Images]
+      summary: Upload an image
+      description: Upload a jpeg, png, webp or gif image (up to 10 MB) to the authenticated user's storage.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    example: 3f2b8c1e-5a47-4d0e-9a52-0c6f5f2b7d11.png
+                  content_type:
+                    type: string
+                    example: image/png
+                  size:
+                    type: integer
+                    example: 68
+        "400":
+          description: File is missing
+        "413":
+          description: File is larger than 10 MB
+        "415":
+          description: Unsupported file type
+
+  /main/api/v1/get/my/images:
+    get:
+      tags: [Images]
+      summary: List my images
+      description: Keys of all images uploaded by the authenticated user.
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                          example: 3f2b8c1e-5a47-4d0e-9a52-0c6f5f2b7d11.png
+                        size:
+                          type: integer
+                          example: 68
+                        last_modified:
+                          type: string
+                          format: date-time
+
+  /main/api/v1/get/my/image/{key}:
+    get:
+      tags: [Images]
+      summary: Download an image
+      description: Returns the image bytes. Only the owner can read an image.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Image not found
+
+  /main/api/v1/delete/my/image/{key}:
+    delete:
+      tags: [Images]
+      summary: Delete an image
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
   /main/api/v1/verify/status:
     get:
       tags: [Verify]
