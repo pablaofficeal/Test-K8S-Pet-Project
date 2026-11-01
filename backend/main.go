@@ -4,9 +4,11 @@ import (
 	"Test-K8s-Pet-Project-Backend/utils/middleware"
 	"Test-K8s-Pet-Project-Backend/core/routers"
 	"Test-K8s-Pet-Project-Backend/configs"
+	"Test-K8s-Pet-Project-Backend/storage"
 	"Test-K8s-Pet-Project-Backend/models"
 	"Test-K8s-Pet-Project-Backend/db"
 	"github.com/gin-gonic/gin"
+	"context"
 	"fmt"
 	"log"
 	"io"
@@ -21,6 +23,10 @@ func main() {
 	interval := configs.WatchInterval()
 	db.WaitForDB(dsn, interval)
 	db.WaitForTables(interval, &models.User{})
+
+	if err := storage.InitS3(context.Background()); err != nil {
+		log.Fatalf("s3 init failed: %v", err)
+	}
 
 	gin.DisableConsoleColor()
 	os.MkdirAll("logs", 0755)

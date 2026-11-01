@@ -35,12 +35,10 @@ func JWTAlgorithm() string {
 	return JWT_ALGORITHM
 }
 
-
 func JWTAccessTTL() time.Duration {
 	JWT_ACCESS_TTL := os.Getenv("JWT_ACCESS_TTL")
 	return MustParseTTL(JWT_ACCESS_TTL)
 }
-
 
 func JWTRefreshTTL() time.Duration {
 	JWT_REFRESH_TTL := os.Getenv("JWT_REFRESH_TTL")
@@ -50,7 +48,6 @@ func JWTRefreshTTL() time.Duration {
 func WatchInterval() time.Duration {
 	return 10 * time.Second
 }
-
 
 func MustParseTTL(value string) time.Duration {
 	if d, err := time.ParseDuration(value); err == nil {
@@ -71,4 +68,26 @@ func MustParseTTL(value string) time.Duration {
 		}
 	}
 	panic("invalid TTL value: " + value)
+}
+
+func S3Endpoint() string {
+	return os.Getenv("S3_ENDPOINT") 
+}
+func S3AccessKey() string { 
+	return os.Getenv("S3_ACCESS_KEY") 
+}
+func S3SecretKey() string { 
+	return os.Getenv("S3_SECRET_KEY") 
+}
+func S3Bucket() string { 
+	return os.Getenv("S3_BUCKET") 
+}
+func S3Region() string {
+	if r := os.Getenv("S3_REGION"); r != "" {
+		return r
+	}
+	return "us-east-1"
+}
+func S3UseSSL() bool { 
+	return os.Getenv("S3_USE_SSL") == "true" 
 }
