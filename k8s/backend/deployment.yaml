@@ -39,6 +39,16 @@ spec:
                 secretKeyRef:
                   name: jwt-public-key
                   key: JWT_PUBLIC_KEY
+            - name: S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: S3_ACCESS_KEY
+            - name: S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: S3_SECRET_KEY
           startupProbe:
             tcpSocket:
               port: http

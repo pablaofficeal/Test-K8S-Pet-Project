@@ -10,6 +10,7 @@ resources:
   - networkpolicies.yaml
   - database/service.yaml
   - rabbitmq/service.yaml
+  - s3/service.yaml
   - auth/deployment.yaml
   - auth/service.yaml
   - backend/deployment.yaml
