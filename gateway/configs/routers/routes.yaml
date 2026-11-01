@@ -78,6 +78,18 @@ private_routes:
     timeout: ${microservices_hosts.backend.timeout}
     prefix: /api/v1/main/backend/edit/my/email
 
+  - path: /main/api/v1/start/upload/my/avatar
+    method: POST
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/start/upload/my/avatar
+
+  - path: /main/api/v1/delete/my/avatar
+    method: DELETE
+    target: ${microservices_hosts.backend}
+    timeout: ${microservices_hosts.backend.timeout}
+    prefix: /api/v1/main/backend/delete/my/avatar
+
   - path: /main/api/v1/start/upload/images
     method: POST
     target: ${microservices_hosts.backend}

@@ -32,5 +32,8 @@ func GetImage(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "image not found"})
 		return
 	}
-	c.DataFromReader(http.StatusOK, st.Size, st.ContentType, obj, nil)
+	c.DataFromReader(http.StatusOK, st.Size, st.ContentType, obj, map[string]string{
+		"Cache-Control": "private, max-age=31536000, immutable",
+		"ETag":          "\"" + st.ETag + "\"",
+	})
 }

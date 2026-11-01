@@ -10,6 +10,7 @@ type User struct {
 	IsActive bool `json:"is_active" gorm:"not null;default:true"`
 	EmailVerified bool `json:"email_verified" gorm:"not null;default:false"`
 	EmailVerifiedAt *time.Time `json:"email_verified_at"`
+	AvatarKey *string `json:"avatar_key" gorm:"type:text"`
 	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 }

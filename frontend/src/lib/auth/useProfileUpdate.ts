@@ -7,13 +7,13 @@ import { UnauthorizedError } from './profile'
 import { clearAuthSession } from './session'
 
 // Общая обработка сохранения поля профиля: загрузка, ошибка, "сохранено" и выход при 401
-export function useProfileUpdate<T>(save: (value: string) => Promise<T>) {
+export function useProfileUpdate<T, V = string>(save: (value: V) => Promise<T>) {
     const navigate = useNavigate()
     const [pending, setPending] = useState(false)
     const [error, setError] = useState('')
     const [saved, setSaved] = useState(false)
 
-    async function run(value: string): Promise<T | null> {
+    async function run(value: V): Promise<T | null> {
         setPending(true)
         setError('')
         setSaved(false)

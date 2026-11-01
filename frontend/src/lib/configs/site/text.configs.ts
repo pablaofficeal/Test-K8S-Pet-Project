@@ -116,6 +116,12 @@ function TextConfig() {
         ProfileEdit: langDict.ProfileEdit,
         ProfileUpdated: langDict.ProfileUpdated,
         ProfileAccountTitle: langDict.ProfileAccountTitle,
+        SettingsAvatar: langDict.SettingsAvatar,
+        SettingsAvatarHint: langDict.SettingsAvatarHint,
+        SettingsAvatarChoose: langDict.SettingsAvatarChoose,
+        SettingsAvatarRemove: langDict.SettingsAvatarRemove,
+        SettingsAvatarBadType: langDict.SettingsAvatarBadType,
+        SettingsAvatarTooLarge: langDict.SettingsAvatarTooLarge,
 
         // Email verification
         VerifyTitle: langDict.VerifyTitle,

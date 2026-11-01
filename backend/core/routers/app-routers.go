@@ -28,6 +28,8 @@ func AuthRouters(app *gin.Engine) {
 		protected.GET("/get/my/profile/info", profile.GetProfileInfo)
 		protected.PATCH("/edit/my/name", profile.EditMyName)
 		protected.PATCH("/edit/my/email", profile.EditMyEmail)
+		protected.POST("/start/upload/my/avatar", profile.UploadAvatar)
+		protected.DELETE("/delete/my/avatar", profile.DeleteAvatar)
 		protected.POST("/start/upload/images", images.UploadImage)
 		protected.GET("/get/my/images", images.ListImages)
 		protected.GET("/get/my/image/:key", images.GetImage)

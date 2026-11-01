@@ -1,4 +1,5 @@
 import Shell from '../../components/menu/shell'
+import AvatarForm from '../../components/components/settings/AvatarForm'
 import NameForm from '../../components/components/settings/NameForm'
 import VerifyBanner from '../../components/components/profile/VerifyBanner'
 import EmailForm from '../../components/components/settings/EmailForm'
@@ -22,6 +23,7 @@ function Settings() {
                     <>
                         {!profile.email_verified && <VerifyBanner />}
                         <div className="settings-list">
+                            <AvatarForm uuid={profile.uuid} username={profile.username} current={profile.avatar_key} onChanged={(avatar_key) => setProfile({ ...profile, avatar_key })} />
                             <NameForm current={profile.username} onSaved={(username) => setProfile({ ...profile, username })} />
                             <EmailForm current={profile.email} onSaved={(email) => setProfile({ ...profile, email, email_verified: false })} />
                         </div>

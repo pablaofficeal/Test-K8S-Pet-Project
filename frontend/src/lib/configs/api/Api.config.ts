@@ -14,6 +14,9 @@ export const API_CONFIG = {
     PROFILE: {
         INFO: "/get/my/profile/info",
         EDIT_NAME: "/edit/my/name",
-        EDIT_EMAIL: "/edit/my/email"
+        EDIT_EMAIL: "/edit/my/email",
+        UPLOAD_AVATAR: "/start/upload/my/avatar",
+        DELETE_AVATAR: "/delete/my/avatar",
+        IMAGE: "/get/my/image"
     },
 }

@@ -161,6 +161,10 @@ paths:
                   email:
                     type: string
                     example: test@test.test
+                  avatar_key:
+                    type: string
+                    nullable: true
+                    example: 3f2b8c1e-5a47-4d0e-9a52-0c6f5f2b7d11.png
                   first_name:
                     type: string
                     example: John
@@ -174,6 +178,52 @@ paths:
                     type: string
                     format: date-time
                     example: "2026-10-22T09:14:25Z"
+
+  /main/api/v1/start/upload/my/avatar:
+    post:
+      tags: [Profile]
+      summary: Upload my avatar
+      description: Upload a jpeg, png, webp or gif image (up to 5 MB) as the avatar. The previous avatar is removed.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatar_key:
+                    type: string
+                    example: 3f2b8c1e-5a47-4d0e-9a52-0c6f5f2b7d11.png
+        "400":
+          description: File is missing
+        "413":
+          description: File is larger than 5 MB
+        "415":
+          description: Unsupported file type
+
+  /main/api/v1/delete/my/avatar:
+    delete:
+      tags: [Profile]
+      summary: Delete my avatar
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Deleted
 
   /main/api/v1/start/upload/images:
     post:
