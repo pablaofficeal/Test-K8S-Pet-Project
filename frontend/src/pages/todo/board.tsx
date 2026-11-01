@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Shell from '../../components/menu/shell'
+import ConfirmDialog from '../../components/components/todo/ConfirmDialog'
 import Lists from '../../components/components/todo/Lists'
 import TextConfig from '../../lib/configs/site/text.configs'
 import { userTodoPath } from '../../lib/configs/site/routes'
@@ -14,9 +15,11 @@ function Board() {
     const uuid = params.uuid ?? getUserId() ?? ''
     const boardId = params.boardId ?? ''
     const navigate = useNavigate()
-    const { view, error, actions, addNode, renameBoard, removeBoard, exportMarkdown } = useBoard(boardId)
+    const { view, error, actions, addNode, renameBoard, removeBoard, exportMarkdown, confirmMessage, answerConfirm } = useBoard(boardId)
     const [editing, setEditing] = useState(false)
     const [title, setTitle] = useState('')
+    const [query, setQuery] = useState('')
+    const [hideDone, setHideDone] = useState(false)
 
     async function handleRename(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -43,7 +46,7 @@ function Board() {
     }
 
     async function handleDelete() {
-        if (window.confirm(TextConfig.TodoDeleteProjectConfirm) && await removeBoard()) {
+        if (await actions.confirm(TextConfig.TodoDeleteProjectConfirm) && await removeBoard()) {
             navigate(userTodoPath(uuid), { replace: true })
         }
     }
@@ -72,9 +75,25 @@ function Board() {
                                 <button type="button" className="todo-button danger" onClick={handleDelete}>{TextConfig.TodoDelete}</button>
                             </div>
                         </div>
-                        <Lists nodes={view.nodes} tasks={view.tasks} actions={actions} onAddNode={addNode} />
+                        <div className="todo-toolbar">
+                            <input
+                                type="search"
+                                className="todo-search"
+                                value={query}
+                                onChange={(event) => setQuery(event.target.value)}
+                                placeholder={TextConfig.TodoSearchTasks}
+                                aria-label={TextConfig.TodoSearchTasks}
+                            />
+                            <label className="todo-check-option">
+                                <input type="checkbox" checked={hideDone} onChange={(event) => setHideDone(event.target.checked)} />
+                                <span>{TextConfig.TodoHideDone}</span>
+                            </label>
+                            {(query.trim() !== '' || hideDone) && <span className="todo-filter-note">{TextConfig.TodoFilterActive}</span>}
+                        </div>
+                        <Lists nodes={view.nodes} tasks={view.tasks} query={query} hideDone={hideDone} actions={actions} onAddNode={addNode} />
                     </>
                 )}
+                <ConfirmDialog message={confirmMessage} onAnswer={answerConfirm} />
             </main>
         </Shell>
     )

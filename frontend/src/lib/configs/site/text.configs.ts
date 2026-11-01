@@ -124,6 +124,17 @@ function TextConfig() {
         SettingsAvatarTooLarge: langDict.SettingsAvatarTooLarge,
 
         // Sidebar menu and Todo
+        TodoSearchTasks: langDict.TodoSearchTasks,
+        TodoSearchProjects: langDict.TodoSearchProjects,
+        TodoHideDone: langDict.TodoHideDone,
+        TodoNoResults: langDict.TodoNoResults,
+        TodoNoTasks: langDict.TodoNoTasks,
+        TodoBoardEmpty: langDict.TodoBoardEmpty,
+        TodoNoProjectsFound: langDict.TodoNoProjectsFound,
+        TodoTasksLabel: langDict.TodoTasksLabel,
+        TodoBlocksLabel: langDict.TodoBlocksLabel,
+        TodoOverdue: langDict.TodoOverdue,
+        TodoFilterActive: langDict.TodoFilterActive,
         SidebarSectionAccount: langDict.SidebarSectionAccount,
         SidebarSectionProducts: langDict.SidebarSectionProducts,
         BadgeBeta: langDict.BadgeBeta,

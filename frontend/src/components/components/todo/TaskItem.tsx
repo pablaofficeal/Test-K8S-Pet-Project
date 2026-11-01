@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import TextConfig from "../../../lib/configs/site/text.configs"
-import { formatDeadline } from "../../../lib/todo/date"
+import { deadlineState, formatDeadline } from "../../../lib/todo/date"
 import { countTasks, type TaskTreeNode } from "../../../lib/todo/tree"
 import type { BoardActions, TaskFormState } from "../../../lib/todo/types"
 import TaskCheck from "./TaskCheck"
@@ -27,7 +27,7 @@ function TaskItem({ item, nodeId, actions, form, onForm }: TaskItemProps) {
     }
 
     async function handleDelete() {
-        if (window.confirm(TextConfig.TodoDeleteTaskConfirm)) {
+        if (await actions.confirm(TextConfig.TodoDeleteTaskConfirm)) {
             await actions.deleteTask(task.id)
         }
     }
@@ -82,7 +82,15 @@ function TaskItem({ item, nodeId, actions, form, onForm }: TaskItemProps) {
                             </span>
                         )}
                         {task.tags.map((tag) => <span key={tag} className="task-chip tag">{tag}</span>)}
-                        {task.deadline && <time className="task-chip deadline" dateTime={task.deadline}>{formatDeadline(task.deadline)}</time>}
+                        {task.deadline && (
+                            <time
+                                className={`task-chip deadline ${deadlineState(task.deadline, task.status === 'done')}`}
+                                dateTime={task.deadline}
+                                title={deadlineState(task.deadline, task.status === 'done') === 'overdue' ? TextConfig.TodoOverdue : undefined}
+                            >
+                                {formatDeadline(task.deadline)}
+                            </time>
+                        )}
                     </div>
                 </div>
                 <div className="task-actions">

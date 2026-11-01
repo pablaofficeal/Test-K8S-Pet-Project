@@ -1,5 +1,6 @@
 import { DragDropContext, Draggable, Droppable, type DropResult } from '@hello-pangea/dnd'
-import { buildTaskTree } from "../../../lib/todo/tree"
+import TextConfig from "../../../lib/configs/site/text.configs"
+import { buildTaskTree, countTasks, filterTasks } from "../../../lib/todo/tree"
 import type { BoardActions, TodoNode, TodoTask } from "../../../lib/todo/types"
 import AddList from "./AddList"
 import NodeBlock from "./NodeBlock"
@@ -7,13 +8,19 @@ import NodeBlock from "./NodeBlock"
 type ListsProps = {
     nodes: TodoNode[]
     tasks: TodoTask[]
+    query: string
+    hideDone: boolean
     actions: BoardActions
     onAddNode: (title: string) => Promise<boolean>
 }
 
 // Доска как в Taskcafe: списки стоят в ряд, их порядок меняется перетаскиванием заголовка,
-// карточки переносятся между списками. Индекс назначения совпадает с позицией среди карточек верхнего уровня
-function Lists({ nodes, tasks, actions, onAddNode }: ListsProps) {
+// карточки переносятся между списками. Индекс назначения совпадает с позицией среди карточек верхнего уровня,
+// поэтому пока включён фильтр, перетаскивание карточек выключено (индексы отфильтрованного списка не совпали бы с серверными)
+function Lists({ nodes, tasks, query, hideDone, actions, onAddNode }: ListsProps) {
+    const filtering = query.trim() !== '' || hideDone
+    const visible = filterTasks(tasks, query, hideDone)
+
     function handleDragEnd(result: DropResult) {
         const { source, destination, type, draggableId } = result
 
@@ -41,7 +48,15 @@ function Lists({ nodes, tasks, actions, onAddNode }: ListsProps) {
                             {nodes.map((node, index) => (
                                 <Draggable key={node.id} draggableId={node.id} index={index}>
                                     {(drag, snapshot) => (
-                                        <NodeBlock node={node} tree={buildTaskTree(tasks, node.id)} actions={actions} drag={drag} dragging={snapshot.isDragging} />
+                                        <NodeBlock
+                                            node={node}
+                                            tree={buildTaskTree(visible, node.id)}
+                                            totals={countTasks(buildTaskTree(tasks, node.id))}
+                                            filtering={filtering}
+                                            actions={actions}
+                                            drag={drag}
+                                            dragging={snapshot.isDragging}
+                                        />
                                     )}
                                 </Draggable>
                             ))}
@@ -49,6 +64,7 @@ function Lists({ nodes, tasks, actions, onAddNode }: ListsProps) {
                         </div>
                     )}
                 </Droppable>
+                {nodes.length === 0 && <p className="todo-board-empty">{TextConfig.TodoBoardEmpty}</p>}
                 <AddList onAdd={onAddNode} />
             </div>
         </DragDropContext>

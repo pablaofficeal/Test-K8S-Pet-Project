@@ -33,7 +33,7 @@ function AddList({ onAdd }: AddListProps) {
     }
 
     return (
-        <form className="todo-add-list-form" onSubmit={handleSubmit}>
+        <form className="todo-add-list-form" onSubmit={handleSubmit} onKeyDown={(event) => { if (event.key === 'Escape') { setOpen(false) } }}>
             <input type="text" value={title} onChange={(event) => setTitle(event.target.value)} placeholder={TextConfig.TodoNodeNamePlaceholder} aria-label={TextConfig.TodoNodeNamePlaceholder} maxLength={200} disabled={pending} autoFocus />
             <div className="task-form-actions">
                 <button type="submit" disabled={pending || title.trim() === ''}>{TextConfig.TodoCreate}</button>

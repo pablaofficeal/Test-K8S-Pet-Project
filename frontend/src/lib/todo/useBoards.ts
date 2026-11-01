@@ -6,12 +6,12 @@ import { describeError } from '../auth/api'
 import { UnauthorizedError } from '../auth/profile'
 import { clearAuthSession } from '../auth/session'
 import { createBoard, deleteBoard, getBoards, importBoard } from './api'
-import type { TodoBoard } from './types'
+import type { BoardSummary } from './types'
 
 // Список проектов: загрузка, создание, импорт markdown и удаление
 export function useBoards() {
     const navigate = useNavigate()
-    const [boards, setBoards] = useState<TodoBoard[] | null>(null)
+    const [boards, setBoards] = useState<BoardSummary[] | null>(null)
     const [error, setError] = useState('')
     const [pending, setPending] = useState(false)
 
@@ -65,7 +65,7 @@ export function useBoards() {
         const board = await run(() => createBoard(title))
 
         if (board) {
-            setBoards((current) => [...(current ?? []), board])
+            setBoards((current) => [{ ...board, nodes_count: 0, tasks_total: 0, tasks_done: 0 }, ...(current ?? [])])
         }
 
         return board

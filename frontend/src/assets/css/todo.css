@@ -605,3 +605,136 @@
         height: calc(100vh - 190px);
     }
 }
+
+.todo-confirm {
+    width: min(420px, calc(100vw - 32px));
+    padding: 22px;
+    border: 1px solid #262e35;
+    border-radius: 14px;
+    background: #12161a;
+    color: #ffffff;
+}
+
+.todo-confirm::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.todo-confirm p {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.todo-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.todo-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.todo-search {
+    width: 280px;
+    max-width: 100%;
+    height: 36px;
+    margin-top: 20px;
+    padding: 0 12px;
+    border: 1px solid #262e35;
+    border-radius: 8px;
+    background: #0b0e10;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.todo-toolbar .todo-search {
+    margin-top: 0;
+}
+
+.todo-search:focus {
+    border-color: #4b5963;
+}
+
+.todo-check-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #9aa4ad;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.todo-filter-note {
+    color: #d6a23a;
+    font-size: 13px;
+}
+
+.todo-node-progress,
+.project-card-progress {
+    height: 3px;
+    overflow: hidden;
+    background: #1b2227;
+}
+
+.todo-node-progress span,
+.project-card-progress span {
+    display: block;
+    height: 100%;
+    background: #4caf7d;
+    transition: width 0.2s;
+}
+
+.project-card-progress {
+    border-radius: 999px;
+}
+
+.project-card-stats {
+    color: #9aa4ad;
+    font-size: 13px;
+}
+
+.todo-node-empty {
+    padding: 4px 16px 8px;
+    color: #6f7a83;
+    font-size: 13px;
+}
+
+.todo-board-empty {
+    flex-shrink: 0;
+    width: 300px;
+    padding: 12px 4px;
+    color: #9aa4ad;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.task-card.priority-high {
+    border-left: 3px solid #ff6b6b;
+}
+
+.task-card.priority-low {
+    border-left: 3px solid #4b5963;
+}
+
+.task-chip.deadline.overdue {
+    background: rgba(249, 8, 8, 0.15);
+    color: #ff8a8a;
+}
+
+.task-chip.deadline.soon {
+    background: rgba(214, 162, 58, 0.15);
+    color: #d6a23a;
+}
+
+.task-chip.deadline.later,
+.task-chip.deadline.done {
+    background: #1b2227;
+    color: #9aa4ad;
+}

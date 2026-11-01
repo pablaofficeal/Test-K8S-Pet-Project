@@ -7,6 +7,7 @@ import { UnauthorizedError } from '../auth/profile'
 import { clearAuthSession } from '../auth/session'
 import * as api from './api'
 import { collectTaskIds } from './tree'
+import { useConfirm } from './useConfirm'
 import type { BoardActions, BoardView, TaskInput } from './types'
 
 // Состояние одного проекта (канваса): блоки, задачи и все изменения.
@@ -15,6 +16,7 @@ export function useBoard(boardId: string) {
     const navigate = useNavigate()
     const [view, setView] = useState<BoardView | null>(null)
     const [error, setError] = useState('')
+    const confirm = useConfirm()
 
     const fail = useCallback((err: unknown, fallback: string) => {
         if (err instanceof UnauthorizedError) {
@@ -90,6 +92,8 @@ export function useBoard(boardId: string) {
     }
 
     const actions: BoardActions = {
+        confirm: confirm.ask,
+
         async renameNode(id: string, title: string) {
             const done = await run(() => api.renameNode(id, title).then(() => true))
 
@@ -210,5 +214,5 @@ export function useBoard(boardId: string) {
         },
     }
 
-    return { view, error, actions, addNode, renameBoard, removeBoard, exportMarkdown }
+    return { view, error, actions, addNode, renameBoard, removeBoard, exportMarkdown, confirmMessage: confirm.message, answerConfirm: confirm.answer }
 }
