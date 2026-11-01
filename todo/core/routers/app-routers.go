@@ -21,6 +21,7 @@ func AppRouters(app *gin.Engine) {
 		protected.POST("/create/my/board", boards.CreateBoard)
 		protected.GET("/get/my/boards", boards.ListBoards)
 		protected.GET("/get/my/board/:id", boards.GetBoard)
+		protected.PATCH("/edit/my/board/:id", boards.EditBoard)
 		protected.DELETE("/delete/my/board/:id", boards.DeleteBoard)
 		protected.POST("/import/my/board", boards.ImportBoard)
 		protected.GET("/export/my/board/:id", boards.ExportBoard)

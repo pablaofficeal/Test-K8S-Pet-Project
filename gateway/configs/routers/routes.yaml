@@ -136,6 +136,12 @@ private_routes:
     timeout: ${microservices_hosts.todo.timeout}
     prefix: /api/v1/main/todo/get/my/board/:id
 
+  - path: /main/api/v1/todo/edit/my/board/:id
+    method: PATCH
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/edit/my/board/:id
+
   - path: /main/api/v1/todo/delete/my/board/:id
     method: DELETE
     target: ${microservices_hosts.todo}
