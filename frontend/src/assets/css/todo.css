@@ -234,7 +234,8 @@
     padding: 0 8px 8px;
 }
 
-.task-drop {
+.task-list.task-drop {
+    flex: 0 1 auto;
     min-height: 12px;
     padding: 0 8px;
     overflow-y: auto;
