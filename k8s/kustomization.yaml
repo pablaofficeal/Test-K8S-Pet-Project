@@ -32,25 +32,25 @@ resources:
 images:
   - name: cadence-cloud-auth
     newName: pablaofficeal/cadence-cloud-auth
-    newTag: 79f7729
+    newTag: 8b3726f
   - name: cadence-cloud-backend
     newName: pablaofficeal/cadence-cloud-backend
-    newTag: 79f7729
+    newTag: 8b3726f
   - name: cadence-cloud-verify
     newName: pablaofficeal/cadence-cloud-verify
-    newTag: 79f7729
+    newTag: 8b3726f
   - name: cadence-cloud-migrations
     newName: pablaofficeal/cadence-cloud-migrations
-    newTag: 79f7729
+    newTag: 8b3726f
   - name: cadence-cloud-todo
     newName: pablaofficeal/cadence-cloud-todo
-    newTag: 79f7729
+    newTag: 8b3726f
   - name: cadence-cloud-messenger
     newName: pablaofficeal/cadence-cloud-messenger
-    newTag: latest
+    newTag: 8b3726f
   - name: cadence-cloud-gateway
     newName: pablaofficeal/cadence-cloud-gateway
-    newTag: 79f7729
+    newTag: 8b3726f
 
 labels:
   - pairs:
