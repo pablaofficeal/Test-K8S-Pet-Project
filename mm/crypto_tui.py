@@ -10,9 +10,9 @@ import os
 import sys
 from pathlib import Path
 from typing import Any
-from cryptography.hazmat.primitives import *
+from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric.x25519 import *
-from cryptography.hazmat.primitives.kdf.hkdf import *
+from cryptography.hazmat.primitives.kdf.hkdf import HKDF
 
 
 KEY_VERSION = 1

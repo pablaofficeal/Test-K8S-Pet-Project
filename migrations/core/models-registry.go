@@ -26,5 +26,7 @@ func Targets() []any {
 		&models.TodoBoard{},
 		&models.TodoNode{},
 		&models.TodoTask{},
+		&models.MessengerKey{},
+		&models.MessengerMessage{},
 	}
 }

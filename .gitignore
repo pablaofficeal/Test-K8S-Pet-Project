@@ -4,3 +4,10 @@
 *target/
 pub.pem 
 priv.pem
+
+# Messenger prototype: generated keys and messages must never be committed
+mm/private*.json
+mm/public*.json
+mm/message*.json
+**/private.json
+**/public.json
