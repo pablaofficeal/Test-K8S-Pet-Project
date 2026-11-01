@@ -1,9 +1,9 @@
 package main
 
 import (
-	"Analog-WakaTime-Migration-Service/configs"
-	"Analog-WakaTime-Migration-Service/core"
-	"Analog-WakaTime-Migration-Service/db"
+	"Cadence-Cloud-Migrations/configs"
+	"Cadence-Cloud-Migrations/core"
+	"Cadence-Cloud-Migrations/db"
 	"log"
 	"fmt"
 	"os"

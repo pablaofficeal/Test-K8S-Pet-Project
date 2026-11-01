@@ -15,7 +15,7 @@ spec:
       serviceAccountName: auth
       containers:
         - name: auth
-          image: low-code-bot-platform-auth:latest
+          image: cadence-cloud-auth:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

@@ -2,7 +2,7 @@ import { ROUTES } from '../configs/site/routes'
 
 // Куку выставляет сервер при входе. Она читается из JS и нужна только для URL и отображения,
 // доверять ей нельзя: права проверяет шлюз по HttpOnly access-токену
-const USER_COOKIE = 'Low-Code-Bot-Platform-User-Id'
+const USER_COOKIE = 'Cadence-Cloud-User-Id'
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 export function getUserId() {

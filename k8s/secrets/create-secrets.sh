@@ -5,7 +5,7 @@
 # --seal : writes SealedSecret manifests to ./sealed/ (safe to commit) instead.
 set -euo pipefail
 
-NAMESPACE="${NAMESPACE:-low-code-bot-platform}"
+NAMESPACE="${NAMESPACE:-cadence-cloud}"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE=".env"
 SEAL=0

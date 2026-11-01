@@ -2,9 +2,9 @@ from datetime import datetime, timezone
 from flask import request, jsonify
 from configs.app_config import Config
 
-ACCESS_COOKIE = "Low-Code-Bot-Platform-Auth-Token"
-REFRESH_COOKIE = "Low-Code-Bot-Platform-Refresh-Token"
-USER_COOKIE = "Low-Code-Bot-Platform-User-Id"
+ACCESS_COOKIE = "Cadence-Cloud-Auth-Token"
+REFRESH_COOKIE = "Cadence-Cloud-Refresh-Token"
+USER_COOKIE = "Cadence-Cloud-User-Id"
 REFRESH_COOKIE_PATH = "/main/api/v1/start"
 CSRF_HEADER = "X-Requested-With"
 

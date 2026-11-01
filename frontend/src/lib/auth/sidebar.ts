@@ -1,4 +1,4 @@
-const SIDEBAR_COOKIE = 'Low-Code-Bot-Platform-Sidebar'
+const SIDEBAR_COOKIE = 'Cadence-Cloud-Sidebar'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 365
 
 export function isSidebarCollapsed() {

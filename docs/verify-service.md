@@ -87,5 +87,5 @@ The passwords in `.env` and `definitions.json` are public **mock** values. Gener
 | Pod `CreateContainerConfigError`, `secret "rabbitmq-verify-url" not found` | Secrets are not in git. Run `k8s/secrets/create-secrets.sh --env-file .env`. |
 | Log: `tables not ready` forever | The `migrations` Job has not run. It runs in sync wave `-1`, before the Deployments, on every Argo CD sync. |
 | Log: `rabbitmq consumer stopped ... connection refused` | The AMQP port is not published on the host. `docker-compose.yml` must contain `"${RABBITMQ_PORT}:5672"` for `rabbitmq` (the management port alone is not enough). |
-| Registration works but no code arrives, auth log says `RABBITMQ_AUTH_URL is empty` | `auth` started before the `rabbitmq-auth-url` secret existed (it is optional). `kubectl -n low-code-bot-platform rollout restart deploy/auth`. |
+| Registration works but no code arrives, auth log says `RABBITMQ_AUTH_URL is empty` | `auth` started before the `rabbitmq-auth-url` secret existed (it is optional). `kubectl -n cadence-cloud rollout restart deploy/auth`. |
 

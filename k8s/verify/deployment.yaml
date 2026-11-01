@@ -19,7 +19,7 @@ spec:
         runAsGroup: 10001
       containers:
         - name: verify
-          image: low-code-bot-platform-verify:latest
+          image: cadence-cloud-verify:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

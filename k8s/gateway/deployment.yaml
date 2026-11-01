@@ -15,7 +15,7 @@ spec:
       serviceAccountName: gateway
       containers:
         - name: gateway
-          image: low-code-bot-platform-gateway:latest
+          image: cadence-cloud-gateway:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

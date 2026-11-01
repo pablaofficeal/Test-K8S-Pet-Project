@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2026-2027 Analog WakaTime. All rights reserved.
+ * Copyright (c) 2026-2027 Cadence Cloud. All rights reserved.
  *
- * This file is part of Analog WakaTime Migration Service.
+ * This file is part of Cadence Cloud Migration Service.
  *
  * This software is proprietary and confidential.
  * Unauthorized copying, modification, distribution, disclosure,
@@ -13,7 +13,7 @@
 package core
 
 import (
-	"Analog-WakaTime-Migration-Service/configs"
+	"Cadence-Cloud-Migrations/configs"
 	"gorm.io/gorm"
 	"strings"
 	"bufio"

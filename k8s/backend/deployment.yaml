@@ -20,7 +20,7 @@ spec:
         fsGroup: 10001
       containers:
         - name: backend
-          image: test-k8s-api:latest
+          image: cadence-cloud-backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

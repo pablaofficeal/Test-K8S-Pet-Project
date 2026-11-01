@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2026-2027 Analog WakaTime. All rights reserved.
+ * Copyright (c) 2026-2027 Cadence Cloud. All rights reserved.
  *
- * This file is part of Analog WakaTime Migration Service.
+ * This file is part of Cadence Cloud Migration Service.
  *
  * This software is proprietary and confidential.
  * Unauthorized copying, modification, distribution, disclosure,
@@ -13,7 +13,7 @@
 package core
 
 import (
-	"Analog-WakaTime-Migration-Service/models"
+	"Cadence-Cloud-Migrations/models"
 	"gorm.io/gorm"
 	"fmt"
 )
@@ -32,10 +32,6 @@ func Seed(conn *gorm.DB) error {
 		if err := conn.FirstOrCreate(&r, models.Roles{RoleID: r.RoleID}).Error; err != nil {
 			return fmt.Errorf("seed role: %w", err)
 		}
-	}
-	free := models.Plan{Key: "free", Name: "Free", MaxBots: 3, MemoryMB: 200, CPUMillis: 350, Pids: 64, DailyMessages: 200}
-	if err := conn.FirstOrCreate(&free, models.Plan{Key: free.Key}).Error; err != nil {
-		return fmt.Errorf("seed plan: %w", err)
 	}
 	return nil
 }

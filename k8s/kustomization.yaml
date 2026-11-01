@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: low-code-bot-platform
+namespace: cadence-cloud
 
 resources:
   - namespace.yaml
@@ -25,22 +25,22 @@ resources:
 
 # Set your registry/tags here (or with `kustomize edit set image`)
 images:
-  - name: low-code-bot-platform-auth
-    newName: pablaofficeal/low-code-bot-platform-auth
+  - name: cadence-cloud-auth
+    newName: pablaofficeal/cadence-cloud-auth
     newTag: 5e46410
-  - name: test-k8s-api
-    newName: pablaofficeal/test-k8s-api
+  - name: cadence-cloud-backend
+    newName: pablaofficeal/cadence-cloud-backend
     newTag: 5e46410
-  - name: low-code-bot-platform-verify
-    newName: pablaofficeal/low-code-bot-platform-verify
+  - name: cadence-cloud-verify
+    newName: pablaofficeal/cadence-cloud-verify
     newTag: 5e46410
-  - name: low-code-bot-platform-migrations
-    newName: pablaofficeal/low-code-bot-platform-migrations
+  - name: cadence-cloud-migrations
+    newName: pablaofficeal/cadence-cloud-migrations
     newTag: 5e46410
-  - name: low-code-bot-platform-gateway
-    newName: pablaofficeal/low-code-bot-platform-gateway
+  - name: cadence-cloud-gateway
+    newName: pablaofficeal/cadence-cloud-gateway
     newTag: 5e46410
 
 labels:
   - pairs:
-      app.kubernetes.io/part-of: low-code-bot-platform
+      app.kubernetes.io/part-of: cadence-cloud

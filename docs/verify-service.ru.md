@@ -87,5 +87,5 @@ Vhost `cadence`, обменники и очереди объявлены зар�
 | Под `CreateContainerConfigError`, `secret "rabbitmq-verify-url" not found` | Секретов нет в git. Запусти `k8s/secrets/create-secrets.sh --env-file .env`. |
 | В логе вечно `tables not ready` | Не отработал Job `migrations`. Он идёт в sync-wave `-1`, перед Deployment, при каждой синхронизации Argo CD. |
 | В логе `rabbitmq consumer stopped ... connection refused` | Порт AMQP не проброшен на хост. В `docker-compose.yml` у `rabbitmq` должен быть `"${RABBITMQ_PORT}:5672"` (одного порта управления мало). |
-| Регистрация проходит, но код не приходит, в логе `auth` `RABBITMQ_AUTH_URL is empty` | `auth` запустился раньше, чем появился секрет `rabbitmq-auth-url` (он необязательный). `kubectl -n low-code-bot-platform rollout restart deploy/auth`. |
+| Регистрация проходит, но код не приходит, в логе `auth` `RABBITMQ_AUTH_URL is empty` | `auth` запустился раньше, чем появился секрет `rabbitmq-auth-url` (он необязательный). `kubectl -n cadence-cloud rollout restart deploy/auth`. |
 

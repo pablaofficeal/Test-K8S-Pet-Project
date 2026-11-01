@@ -1,12 +1,12 @@
 # RabbitMQ runs outside the cluster (docker compose on the host, 192.168.0.15:56772).
 # Same approach as k8s/database: a Service + EndpointSlice gives it a stable in-cluster name,
-# so RABBITMQ_*_URL keeps the host `low-code-bot-platform-rabbitmq` and port 5672.
+# so RABBITMQ_*_URL keeps the host `cadence-cloud-rabbitmq` and port 5672.
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
-  name: low-code-bot-platform-rabbitmq
+  name: cadence-cloud-rabbitmq
 spec:
   ports:
     - name: amqp
@@ -18,9 +18,9 @@ kind: EndpointSlice
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "-2"
-  name: low-code-bot-platform-rabbitmq-external
+  name: cadence-cloud-rabbitmq-external
   labels:
-    kubernetes.io/service-name: low-code-bot-platform-rabbitmq
+    kubernetes.io/service-name: cadence-cloud-rabbitmq
 addressType: IPv4
 ports:
   - name: amqp

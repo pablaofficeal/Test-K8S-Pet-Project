@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Low-Code-Bot-Platform Api documentation
+  title: Cadence-Cloud Api documentation
   version: 1.0.0
-  description: OpenAPI documentation for the Low-Code-Bot-Platform Api.
+  description: OpenAPI documentation for the Cadence-Cloud Api.
 
 tags:
   - name: Health

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: low-code-bot-platform-auth-service
+  name: cadence-cloud-auth-service
 spec:
   type: ClusterIP
   selector:

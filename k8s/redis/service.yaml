@@ -1,0 +1,31 @@
+# Redis runs outside the cluster (docker compose on the host, 192.168.0.15:56379).
+# Same approach as k8s/database: a Service + EndpointSlice gives it a stable in-cluster name,
+# so REDIS_URL keeps the host `cadence-cloud-redis` and port 6379.
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+  name: cadence-cloud-redis
+spec:
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 56379
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+  name: cadence-cloud-redis-external
+  labels:
+    kubernetes.io/service-name: cadence-cloud-redis
+addressType: IPv4
+ports:
+  - name: redis
+    protocol: TCP
+    port: 56379
+endpoints:
+  - addresses:
+      - 192.168.0.15

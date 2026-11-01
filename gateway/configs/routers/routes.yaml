@@ -10,13 +10,13 @@ microservices_timeouts:
 
 microservices_hosts:
   auth:
-    host: http://Low-Code-Bot-Platform-auth-service:6637
+    host: http://Cadence-Cloud-auth-service:6637
     timeout: ${microservices_timeouts.auth}
   backend:
-    host: http://Low-Code-Bot-Platform-users-backend:8989
+    host: http://Cadence-Cloud-users-backend:8989
     timeout: ${microservices_timeouts.backend}
   verify:
-    host: http://Low-Code-Bot-Platform-verify-service:8991
+    host: http://Cadence-Cloud-verify-service:8991
     timeout: ${microservices_timeouts.verify}
 
 public_routes:

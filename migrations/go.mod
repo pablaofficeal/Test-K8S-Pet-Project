@@ -1,4 +1,4 @@
-module Analog-WakaTime-Migration-Service
+module Cadence-Cloud-Migrations
 
 go 1.26.0
 

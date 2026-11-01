@@ -50,15 +50,15 @@ jobs:
       matrix:
         include:
           - context: backend
-            image: test-k8s-api
+            image: cadence-cloud-backend
           - context: auth
-            image: low-code-bot-platform-auth
+            image: cadence-cloud-auth
           - context: gateway
-            image: low-code-bot-platform-gateway
+            image: cadence-cloud-gateway
           - context: migrations
-            image: low-code-bot-platform-migrations
+            image: cadence-cloud-migrations
           - context: verify
-            image: low-code-bot-platform-verify
+            image: cadence-cloud-verify
 
     steps:
       - name: Checkout repository
@@ -106,7 +106,7 @@ jobs:
           DH_USER: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           TAG="${GITHUB_SHA::7}"
-          for image in test-k8s-api low-code-bot-platform-auth low-code-bot-platform-gateway low-code-bot-platform-migrations low-code-bot-platform-verify; do
+          for image in cadence-cloud-backend cadence-cloud-auth cadence-cloud-gateway cadence-cloud-migrations cadence-cloud-verify; do
             sed -i "/^  - name: $image\$/{n;s|newName: .*|newName: $DH_USER/$image|;n;s|newTag: .*|newTag: $TAG|}" k8s/kustomization.yaml
           done
 

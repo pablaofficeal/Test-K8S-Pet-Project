@@ -9,7 +9,7 @@ The frontend is **not** part of the cluster (it is hosted on Vercel). The cluste
 ```
 k8s/
 ├── kustomization.yaml      # entry point: kubectl apply -k k8s/
-├── namespace.yaml          # low-code-bot-platform
+├── namespace.yaml          # cadence-cloud
 ├── configmap.yaml          # non-secret settings (TTLs, algorithm, Argon2, ...)
 ├── serviceaccounts.yaml    # one per workload, API token not mounted
 ├── networkpolicies.yaml    # default deny + gateway -> auth/backend
@@ -70,12 +70,12 @@ Plain Kubernetes Secrets are only base64 and are readable by anyone with `get se
 
 1. Generate a new pair ([jwt-keys.md](jwt-keys.md)) and update your env file.
 2. Re-run `create-secrets.sh`.
-3. Restart the workloads: `kubectl -n low-code-bot-platform rollout restart deploy/auth deploy/backend deploy/gateway`.
+3. Restart the workloads: `kubectl -n cadence-cloud rollout restart deploy/auth deploy/backend deploy/gateway`.
 4. All issued tokens become invalid; users must log in again.
 
 ## Email verification
 
-See [verify-service.md](verify-service.md). RabbitMQ runs on the host like PostgreSQL (`k8s/rabbitmq/service.yaml` maps `low-code-bot-platform-rabbitmq:5672` to `192.168.0.15:56772`); the `verify` Deployment is configured by `k8s/verify/configmap.yaml` and uses the **test provider** with a fixed code for now.
+See [verify-service.md](verify-service.md). RabbitMQ runs on the host like PostgreSQL (`k8s/rabbitmq/service.yaml` maps `cadence-cloud-rabbitmq:5672` to `192.168.0.15:56772`); the `verify` Deployment is configured by `k8s/verify/configmap.yaml` and uses the **test provider** with a fixed code for now.
 
 ## Argo CD
 
@@ -105,11 +105,11 @@ It runs on every sync (idempotent). Run other commands (`status`, `down`, `seed`
 
 ## Notes and assumptions
 
-- The gateway `routes.yaml` points to `Low-Code-Bot-Platform-*` service hostnames; the Services are named in lowercase
-  (`low-code-bot-platform-auth-service`, `...-users-backend`) — DNS is case-insensitive, so the gateway resolves them.
+- The gateway `routes.yaml` points to `Cadence-Cloud-*` service hostnames; the Services are named in lowercase
+  (`cadence-cloud-auth-service`, `...-users-backend`) — DNS is case-insensitive, so the gateway resolves them.
 - `bot` service referenced by the gateway has no manifests yet (no source in the repo).
 - The gateway Service is `ClusterIP`; it is reached through ingress-nginx (see Ingress), e.g. `http://192.168.0.31:30080/main/api/v1/`.
 - `networkpolicies.yaml` is enforced: the cluster runs Calico (VXLAN, pod CIDR `10.244.0.0/16`). Ingress is default-deny; the gateway accepts traffic from anywhere (needed for NodePort), `auth`/`backend` only from the gateway.
 - Replicas are set to 1 and memory limits are low because the workers have ~4 GB RAM.
-- `DATABASE_URL` keeps the compose-style host `low-code-bot-platform-postgresql:5432`; inside the cluster it resolves via `k8s/database/service.yaml` to the host DB. If the host IP or `POSTGRES_PORT` changes, edit that file. The DB container must be running and publish its port on the LAN.
-- CI (`.github/workflows/docker-publish.yml`) builds and pushes `backend` (`test-k8s-api`), `auth` and `gateway` to Docker Hub. Needs the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repo secrets.
+- `DATABASE_URL` keeps the compose-style host `cadence-cloud-postgresql:5432`; inside the cluster it resolves via `k8s/database/service.yaml` to the host DB. If the host IP or `POSTGRES_PORT` changes, edit that file. The DB container must be running and publish its port on the LAN.
+- CI (`.github/workflows/docker-publish.yml`) builds and pushes `backend` (`cadence-cloud-backend`), `auth` and `gateway` to Docker Hub. Needs the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repo secrets.

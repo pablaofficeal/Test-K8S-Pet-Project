@@ -14,7 +14,7 @@ use crate::{
     utils::jwt::{algorithm_from_name, validate_token},
 };
 
-const ACCESS_COOKIE: &str = "Low-Code-Bot-Platform-Auth-Token";
+const ACCESS_COOKIE: &str = "Cadence-Cloud-Auth-Token";
 const CSRF_HEADER: &str = "x-requested-with";
 
 fn bearer_token(headers: &HeaderMap) -> Option<String> {

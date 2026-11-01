@@ -9,7 +9,7 @@
 ```
 k8s/
 ├── kustomization.yaml      # точка входа: kubectl apply -k k8s/
-├── namespace.yaml          # low-code-bot-platform
+├── namespace.yaml          # cadence-cloud
 ├── configmap.yaml          # несекретные настройки (TTL, алгоритм, Argon2, ...)
 ├── serviceaccounts.yaml    # по одному на сервис, токен API не монтируется
 ├── networkpolicies.yaml    # default deny + gateway -> auth/backend
@@ -70,12 +70,12 @@ k8s/
 
 1. Сгенерируй новую пару ([jwt-keys.ru.md](jwt-keys.ru.md)) и обнови env-файл.
 2. Запусти `create-secrets.sh` заново.
-3. Перезапусти сервисы: `kubectl -n low-code-bot-platform rollout restart deploy/auth deploy/backend deploy/gateway`.
+3. Перезапусти сервисы: `kubectl -n cadence-cloud rollout restart deploy/auth deploy/backend deploy/gateway`.
 4. Все выданные токены станут невалидными, пользователям придётся войти заново.
 
 ## Подтверждение почты
 
-См. [verify-service.ru.md](verify-service.ru.md). RabbitMQ работает на хосте, как и PostgreSQL (`k8s/rabbitmq/service.yaml` связывает `low-code-bot-platform-rabbitmq:5672` с `192.168.0.15:56772`); `verify` настраивается через `k8s/verify/configmap.yaml` и пока работает с **тестовым провайдером** и фиксированным кодом.
+См. [verify-service.ru.md](verify-service.ru.md). RabbitMQ работает на хосте, как и PostgreSQL (`k8s/rabbitmq/service.yaml` связывает `cadence-cloud-rabbitmq:5672` с `192.168.0.15:56772`); `verify` настраивается через `k8s/verify/configmap.yaml` и пока работает с **тестовым провайдером** и фиксированным кодом.
 
 ## Argo CD
 
@@ -105,11 +105,11 @@ WebSocket upgrade, `X-Real-IP`, `X-Forwarded-For` и `X-Request-ID` ingress-ngin
 
 ## Заметки и допущения
 
-- В `routes.yaml` шлюза хосты записаны как `Low-Code-Bot-Platform-*`; Service названы в нижнем регистре
-  (`low-code-bot-platform-auth-service`, `...-users-backend`) — DNS не чувствителен к регистру, так что шлюз их найдёт.
+- В `routes.yaml` шлюза хосты записаны как `Cadence-Cloud-*`; Service названы в нижнем регистре
+  (`cadence-cloud-auth-service`, `...-users-backend`) — DNS не чувствителен к регистру, так что шлюз их найдёт.
 - Для сервиса `bot`, на который ссылается шлюз, манифестов пока нет (исходников в репозитории нет).
 - Service шлюза — `ClusterIP`; снаружи он доступен через ingress-nginx (см. «Ingress»), например `http://192.168.0.31:30080/main/api/v1/`.
 - `networkpolicies.yaml` применяется: в кластере Calico (VXLAN, pod CIDR `10.244.0.0/16`). Входящий трафик по умолчанию закрыт; шлюз принимает отовсюду (нужно для NodePort), `auth`/`backend` — только от шлюза.
 - Реплик по 1 и небольшие лимиты памяти, потому что на воркерах ~4 ГБ RAM.
-- `DATABASE_URL` сохраняет compose-хост `low-code-bot-platform-postgresql:5432`; внутри кластера он резолвится через `k8s/database/service.yaml` в БД на хосте. Если поменяются IP хоста или `POSTGRES_PORT`, правь этот файл. Контейнер БД должен быть запущен и публиковать порт в LAN.
-- CI (`.github/workflows/docker-publish.yml`) собирает и пушит `backend` (`test-k8s-api`), `auth` и `gateway` в Docker Hub. Нужны секреты репозитория `DOCKERHUB_USERNAME` и `DOCKERHUB_TOKEN`.
+- `DATABASE_URL` сохраняет compose-хост `cadence-cloud-postgresql:5432`; внутри кластера он резолвится через `k8s/database/service.yaml` в БД на хосте. Если поменяются IP хоста или `POSTGRES_PORT`, правь этот файл. Контейнер БД должен быть запущен и публиковать порт в LAN.
+- CI (`.github/workflows/docker-publish.yml`) собирает и пушит `backend` (`cadence-cloud-backend`), `auth` и `gateway` в Docker Hub. Нужны секреты репозитория `DOCKERHUB_USERNAME` и `DOCKERHUB_TOKEN`.
