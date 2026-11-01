@@ -42,6 +42,6 @@ func DeleteNode(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})
 		return
 	}
-	cache.DeletePosition(ctx, node.BoardID, nodeID)
+	cache.RemoveFromOrder(ctx, node.BoardID, nodeID)
 	c.Status(http.StatusNoContent)
 }

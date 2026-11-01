@@ -54,14 +54,14 @@ function TaskItem({ item, nodeId, actions, form, onForm }: TaskItemProps) {
 
     if (editing) {
         return (
-            <li className="task-item">
+            <div className="task-item">
                 <TaskForm initial={task} onSubmit={(input) => handleSave(input)} onCancel={() => onForm(null)} />
-            </li>
+            </div>
         )
     }
 
     return (
-        <li className="task-item">
+        <div className="task-item">
             <div className="task-row">
                 {children.length > 0 ? (
                     <button type="button" className={open ? 'task-caret open' : 'task-caret'} onClick={() => setOpen(!open)} aria-expanded={open} aria-label={TextConfig.TodoToggleSubtasks} title={TextConfig.TodoToggleSubtasks}>
@@ -96,7 +96,9 @@ function TaskItem({ item, nodeId, actions, form, onForm }: TaskItemProps) {
             {showChildren && (
                 <ul className="task-list task-children">
                     {children.map((child) => (
-                        <TaskItem key={child.task.id} item={child} nodeId={nodeId} actions={actions} form={form} onForm={onForm} />
+                        <li key={child.task.id}>
+                            <TaskItem item={child} nodeId={nodeId} actions={actions} form={form} onForm={onForm} />
+                        </li>
                     ))}
                     {addingChild && (
                         <li className="task-item">
@@ -105,7 +107,7 @@ function TaskItem({ item, nodeId, actions, form, onForm }: TaskItemProps) {
                     )}
                 </ul>
             )}
-        </li>
+        </div>
     )
 }
 export default TaskItem

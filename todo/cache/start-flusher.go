@@ -14,13 +14,13 @@ func StartFlusher(ctx context.Context, interval time.Duration, done chan<- struc
 		for {
 			select {
 			case <-ticker.C:
-				if _, err := FlushPositions(ctx); err != nil {
-					log.Printf("position flush error: %v", err)
+				if _, err := FlushOrders(ctx); err != nil {
+					log.Printf("order flush error: %v", err)
 				}
 			case <-ctx.Done():
 				final, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-				if _, err := FlushPositions(final); err != nil {
-					log.Printf("final position flush error: %v", err)
+				if _, err := FlushOrders(final); err != nil {
+					log.Printf("final order flush error: %v", err)
 				}
 				cancel()
 				return

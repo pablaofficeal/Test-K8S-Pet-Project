@@ -27,10 +27,11 @@ func AppRouters(app *gin.Engine) {
 		protected.GET("/export/my/board/:id", boards.ExportBoard)
 		protected.POST("/create/my/board/:id/node", nodes.CreateNode)
 		protected.PATCH("/edit/my/node/:id", nodes.EditNode)
-		protected.PATCH("/move/my/node/:id", nodes.MoveNode)
+		protected.PUT("/reorder/my/board/:id", nodes.ReorderNodes)
 		protected.DELETE("/delete/my/node/:id", nodes.DeleteNode)
 		protected.POST("/create/my/node/:id/task", tasks.CreateTask)
 		protected.PATCH("/edit/my/task/:id", tasks.EditTask)
+		protected.PATCH("/move/my/task/:id", tasks.MoveTask)
 		protected.DELETE("/delete/my/task/:id", tasks.DeleteTask)
 	}
 }

@@ -24,7 +24,8 @@ func TestBoardHandlersUnauthorized(t *testing.T) {
 	r.GET("/e/:id", boards.ExportBoard)
 	r.POST("/b/:id/n", nodes.CreateNode)
 	r.PATCH("/n/:id", nodes.EditNode)
-	r.PATCH("/m/:id", nodes.MoveNode)
+	r.PUT("/o/:id", nodes.ReorderNodes)
+	r.PATCH("/mt/:id", tasks.MoveTask)
 	r.DELETE("/n/:id", nodes.DeleteNode)
 	r.POST("/n/:id/t", tasks.CreateTask)
 	r.PATCH("/t/:id", tasks.EditTask)
@@ -32,7 +33,7 @@ func TestBoardHandlersUnauthorized(t *testing.T) {
 	id := uuid.NewString()
 	for _, tc := range [][2]string{
 		{"POST", "/b"}, {"GET", "/b"}, {"GET", "/b/" + id}, {"DELETE", "/b/" + id}, {"POST", "/i"}, {"GET", "/e/" + id},
-		{"POST", "/b/" + id + "/n"}, {"PATCH", "/n/" + id}, {"PATCH", "/m/" + id}, {"DELETE", "/n/" + id},
+		{"POST", "/b/" + id + "/n"}, {"PATCH", "/n/" + id}, {"PUT", "/o/" + id}, {"PATCH", "/mt/" + id}, {"DELETE", "/n/" + id},
 		{"POST", "/n/" + id + "/t"}, {"PATCH", "/t/" + id}, {"DELETE", "/t/" + id},
 	} {
 		w := httptest.NewRecorder()
@@ -68,9 +69,10 @@ func TestInvalidIDsAreRejected(t *testing.T) {
 	r.GET("/b/:id", boards.GetBoard)
 	r.DELETE("/b/:id", boards.DeleteBoard)
 	r.GET("/e/:id", boards.ExportBoard)
-	r.PATCH("/m/:id", nodes.MoveNode)
+	r.PUT("/o/:id", nodes.ReorderNodes)
+	r.PATCH("/mt/:id", tasks.MoveTask)
 	r.PATCH("/t/:id", tasks.EditTask)
-	for _, tc := range [][2]string{{"GET", "/b/x"}, {"DELETE", "/b/x"}, {"GET", "/e/x"}, {"PATCH", "/m/x"}, {"PATCH", "/t/x"}} {
+	for _, tc := range [][2]string{{"GET", "/b/x"}, {"DELETE", "/b/x"}, {"GET", "/e/x"}, {"PUT", "/o/x"}, {"PATCH", "/mt/x"}, {"PATCH", "/t/x"}} {
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, httptest.NewRequest(tc[0], tc[1], strings.NewReader("{}")))
 		if w.Code != 400 {

@@ -6,12 +6,11 @@ import { describeError } from '../auth/api'
 import { UnauthorizedError } from '../auth/profile'
 import { clearAuthSession } from '../auth/session'
 import * as api from './api'
-import { nextNodePosition } from './grid'
 import { collectTaskIds } from './tree'
 import type { BoardActions, BoardView, TaskInput } from './types'
 
 // Состояние одного проекта (канваса): блоки, задачи и все изменения.
-// Перемещение блока сразу применяется локально, на сервер уходит один запрос при отпускании
+// Перестановка блоков и перенос карточек сразу применяются локально, на сервер уходит один запрос при отпускании
 export function useBoard(boardId: string) {
     const navigate = useNavigate()
     const [view, setView] = useState<BoardView | null>(null)
@@ -71,8 +70,7 @@ export function useBoard(boardId: string) {
     }
 
     async function addNode(title: string) {
-        const position = nextNodePosition((view?.nodes ?? []).map((node) => node.pos_x))
-        const node = await run(() => api.createNode(boardId, title, position.x, position.y))
+        const node = await run(() => api.createNode(boardId, title))
 
         if (node) {
             setView((current) => current && { ...current, nodes: [...current.nodes, node] })
@@ -102,9 +100,57 @@ export function useBoard(boardId: string) {
             return done === true
         },
 
-        moveNode(id: string, x: number, y: number) {
-            setView((current) => current && { ...current, nodes: current.nodes.map((node) => (node.id === id ? { ...node, pos_x: x, pos_y: y } : node)) })
-            run(() => api.moveNode(id, x, y)).then((result) => {
+        reorderNodes(order: string[]) {
+            setView((current) => {
+                if (!current) {
+                    return current
+                }
+
+                const byId = new Map(current.nodes.map((node) => [node.id, node]))
+
+                return { ...current, nodes: order.flatMap((id) => byId.get(id) ?? []) }
+            })
+            run(() => api.reorderNodes(boardId, order)).then((result) => {
+                if (result === null) {
+                    api.getBoard(boardId).then(setView, () => undefined)
+                }
+            })
+        },
+
+        moveTask(taskId: string, nodeId: string, index: number) {
+            setView((current) => {
+                if (!current) {
+                    return current
+                }
+
+                const card = current.tasks.find((task) => task.id === taskId)
+
+                if (!card) {
+                    return current
+                }
+
+                const moving = collectTaskIds(current.tasks, taskId)
+                const siblings = current.tasks
+                    .filter((task) => task.node_id === nodeId && task.parent_id === null && task.id !== taskId)
+                    .sort((a, b) => a.sort_order - b.sort_order)
+                const position = Math.min(index, siblings.length)
+                const ranks = new Map<string, number>()
+
+                siblings.splice(position, 0, card)
+                siblings.forEach((task, rank) => ranks.set(task.id, rank))
+
+                return {
+                    ...current,
+                    tasks: current.tasks.map((task) => {
+                        if (moving.has(task.id)) {
+                            return { ...task, node_id: nodeId, sort_order: ranks.get(task.id) ?? task.sort_order }
+                        }
+
+                        return ranks.has(task.id) ? { ...task, sort_order: ranks.get(task.id) as number } : task
+                    }),
+                }
+            })
+            run(() => api.moveTask(taskId, nodeId, index)).then((result) => {
                 if (result === null) {
                     api.getBoard(boardId).then(setView, () => undefined)
                 }

@@ -14,8 +14,6 @@ export interface TodoNode {
     board_id: string
     title: string
     sort_order: number
-    pos_x: number
-    pos_y: number
 }
 
 export interface TodoTask {
@@ -49,7 +47,8 @@ export interface TaskInput {
 
 export interface BoardActions {
     renameNode: (id: string, title: string) => Promise<boolean>
-    moveNode: (id: string, x: number, y: number) => void
+    reorderNodes: (order: string[]) => void
+    moveTask: (taskId: string, nodeId: string, index: number) => void
     deleteNode: (id: string) => Promise<boolean>
     createTask: (nodeId: string, parentId: string | null, input: TaskInput) => Promise<boolean>
     editTask: (id: string, patch: Partial<TaskInput>) => Promise<boolean>

@@ -172,11 +172,11 @@ private_routes:
     timeout: ${microservices_hosts.todo.timeout}
     prefix: /api/v1/main/todo/edit/my/node/:id
 
-  - path: /main/api/v1/todo/move/my/node/:id
-    method: PATCH
+  - path: /main/api/v1/todo/reorder/my/board/:id
+    method: PUT
     target: ${microservices_hosts.todo}
     timeout: ${microservices_hosts.todo.timeout}
-    prefix: /api/v1/main/todo/move/my/node/:id
+    prefix: /api/v1/main/todo/reorder/my/board/:id
 
   - path: /main/api/v1/todo/delete/my/node/:id
     method: DELETE
@@ -195,6 +195,12 @@ private_routes:
     target: ${microservices_hosts.todo}
     timeout: ${microservices_hosts.todo.timeout}
     prefix: /api/v1/main/todo/edit/my/task/:id
+
+  - path: /main/api/v1/todo/move/my/task/:id
+    method: PATCH
+    target: ${microservices_hosts.todo}
+    timeout: ${microservices_hosts.todo.timeout}
+    prefix: /api/v1/main/todo/move/my/task/:id
 
   - path: /main/api/v1/todo/delete/my/task/:id
     method: DELETE

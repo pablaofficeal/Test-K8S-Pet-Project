@@ -29,8 +29,6 @@ func DeleteBoard(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "board not found"})
 		return
 	}
-	nodeIDs := []string{}
-	db.DB.WithContext(ctx).Model(&models.TodoNode{}).Where("board_id = ?", boardID).Pluck("id", &nodeIDs)
 	err := db.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("board_id = ?", boardID).Delete(&models.TodoTask{}).Error; err != nil {
 			return err
@@ -45,8 +43,6 @@ func DeleteBoard(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal error"})
 		return
 	}
-	for _, nodeID := range nodeIDs {
-		cache.DeletePosition(ctx, boardID, nodeID)
-	}
+	cache.Client.Del(ctx, "todo:order:"+boardID)
 	c.Status(http.StatusNoContent)
 }

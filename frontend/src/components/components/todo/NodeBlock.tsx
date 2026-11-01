@@ -1,6 +1,6 @@
-import { useRef, useState, type FormEvent, type PointerEvent } from 'react'
+import { useState, type FormEvent } from 'react'
+import { Draggable, Droppable, type DraggableProvided } from '@hello-pangea/dnd'
 import TextConfig from "../../../lib/configs/site/text.configs"
-import { NODE_WIDTH, snapToGrid } from "../../../lib/todo/grid"
 import { countTasks, type TaskTreeNode } from "../../../lib/todo/tree"
 import type { BoardActions, TaskFormState, TodoNode } from "../../../lib/todo/types"
 import TaskForm from "./TaskForm"
@@ -10,68 +10,16 @@ type NodeBlockProps = {
     node: TodoNode
     tree: TaskTreeNode[]
     actions: BoardActions
-    fits: (id: string, x: number, y: number, width: number, height: number) => boolean
+    drag: DraggableProvided
+    dragging: boolean
 }
 
-type DragState = {
-    x: number
-    y: number
-    blocked: boolean
-}
-
-type DragStart = {
-    pointerX: number
-    pointerY: number
-    originX: number
-    originY: number
-}
-
-function NodeBlock({ node, tree, actions, fits }: NodeBlockProps) {
-    const blockRef = useRef<HTMLElement>(null)
-    const startRef = useRef<DragStart | null>(null)
-    const [drag, setDrag] = useState<DragState | null>(null)
+// Один список (колонка) доски: заголовок - ручка для перетаскивания списка, карточки перетаскиваются между списками
+function NodeBlock({ node, tree, actions, drag, dragging }: NodeBlockProps) {
     const [form, setForm] = useState<TaskFormState>(null)
     const [renaming, setRenaming] = useState(false)
     const [title, setTitle] = useState(node.title)
     const counts = countTasks(tree)
-
-    function handlePointerDown(event: PointerEvent<HTMLDivElement>) {
-        if (event.button !== 0 || (event.target as HTMLElement).closest('button, input')) {
-            return
-        }
-
-        event.currentTarget.setPointerCapture(event.pointerId)
-        startRef.current = { pointerX: event.clientX, pointerY: event.clientY, originX: node.pos_x, originY: node.pos_y }
-        setDrag({ x: node.pos_x, y: node.pos_y, blocked: false })
-    }
-
-    function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
-        const start = startRef.current
-        const block = blockRef.current
-
-        if (!start || !block) {
-            return
-        }
-
-        const x = snapToGrid(start.originX + event.clientX - start.pointerX)
-        const y = snapToGrid(start.originY + event.clientY - start.pointerY)
-        setDrag({ x, y, blocked: !fits(node.id, x, y, block.offsetWidth, block.offsetHeight) })
-    }
-
-    function handlePointerUp() {
-        const current = drag
-        startRef.current = null
-        setDrag(null)
-
-        if (current && !current.blocked && (current.x !== node.pos_x || current.y !== node.pos_y)) {
-            actions.moveNode(node.id, current.x, current.y)
-        }
-    }
-
-    function handlePointerCancel() {
-        startRef.current = null
-        setDrag(null)
-    }
 
     async function handleRename(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -104,23 +52,9 @@ function NodeBlock({ node, tree, actions, fits }: NodeBlockProps) {
         return done
     }
 
-    const className = drag ? (drag.blocked ? 'todo-node dragging blocked' : 'todo-node dragging') : 'todo-node'
-
     return (
-        <section
-            ref={blockRef}
-            className={className}
-            data-node-id={node.id}
-            style={{ left: drag?.x ?? node.pos_x, top: drag?.y ?? node.pos_y, width: NODE_WIDTH }}
-        >
-            <div
-                className="todo-node-header"
-                title={TextConfig.TodoDragBlock}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerCancel={handlePointerCancel}
-            >
+        <section ref={drag.innerRef} {...drag.draggableProps} className={dragging ? 'todo-node dragging' : 'todo-node'}>
+            <div className="todo-node-header" title={TextConfig.TodoDragBlock} {...drag.dragHandleProps}>
                 {renaming ? (
                     <form className="todo-node-rename" onSubmit={handleRename}>
                         <input type="text" value={title} onChange={(event) => setTitle(event.target.value)} maxLength={200} aria-label={TextConfig.TodoNodeNamePlaceholder} autoFocus />
@@ -136,12 +70,23 @@ function NodeBlock({ node, tree, actions, fits }: NodeBlockProps) {
                     <button type="button" onClick={handleDelete} title={TextConfig.TodoDeleteNode} aria-label={TextConfig.TodoDeleteNode}>×</button>
                 </div>
             </div>
-            <div className="todo-node-body">
-                <ul className="task-list">
-                    {tree.map((item) => (
-                        <TaskItem key={item.task.id} item={item} nodeId={node.id} actions={actions} form={form} onForm={setForm} />
-                    ))}
-                </ul>
+            <Droppable droppableId={node.id} type="task">
+                {(drop) => (
+                    <ul ref={drop.innerRef} {...drop.droppableProps} className="task-list task-drop">
+                        {tree.map((item, index) => (
+                            <Draggable key={item.task.id} draggableId={item.task.id} index={index}>
+                                {(card, snapshot) => (
+                                    <li ref={card.innerRef} {...card.draggableProps} {...card.dragHandleProps} className={snapshot.isDragging ? 'task-card dragging' : 'task-card'}>
+                                        <TaskItem item={item} nodeId={node.id} actions={actions} form={form} onForm={setForm} />
+                                    </li>
+                                )}
+                            </Draggable>
+                        ))}
+                        {drop.placeholder}
+                    </ul>
+                )}
+            </Droppable>
+            <div className="todo-node-footer">
                 {form?.mode === 'create' && form.parentId === null ? (
                     <TaskForm onSubmit={handleCreate} onCancel={() => setForm(null)} />
                 ) : (

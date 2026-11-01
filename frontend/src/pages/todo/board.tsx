@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Shell from '../../components/menu/shell'
-import Canvas from '../../components/components/todo/Canvas'
+import Lists from '../../components/components/todo/Lists'
 import TextConfig from '../../lib/configs/site/text.configs'
 import { userTodoPath } from '../../lib/configs/site/routes'
 import { getUserId } from '../../lib/auth/session'
@@ -17,8 +17,6 @@ function Board() {
     const { view, error, actions, addNode, renameBoard, removeBoard, exportMarkdown } = useBoard(boardId)
     const [editing, setEditing] = useState(false)
     const [title, setTitle] = useState('')
-    const [addingNode, setAddingNode] = useState(false)
-    const [nodeTitle, setNodeTitle] = useState('')
 
     async function handleRename(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -26,16 +24,6 @@ function Board() {
 
         if (next === '' || next === view?.board.title || await renameBoard(next)) {
             setEditing(false)
-        }
-    }
-
-    async function handleAddNode(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        const name = nodeTitle.trim()
-
-        if (name !== '' && await addNode(name)) {
-            setNodeTitle('')
-            setAddingNode(false)
         }
     }
 
@@ -82,16 +70,9 @@ function Board() {
                                 <button type="button" className="todo-button secondary" onClick={() => { setTitle(view.board.title); setEditing(true) }}>{TextConfig.TodoEdit}</button>
                                 <button type="button" className="todo-button secondary" onClick={handleExport}>{TextConfig.TodoExport}</button>
                                 <button type="button" className="todo-button danger" onClick={handleDelete}>{TextConfig.TodoDelete}</button>
-                                <button type="button" className="todo-button" onClick={() => setAddingNode(!addingNode)}>{TextConfig.TodoNewNode}</button>
                             </div>
                         </div>
-                        {addingNode && (
-                            <form className="project-form" onSubmit={handleAddNode}>
-                                <input type="text" value={nodeTitle} onChange={(event) => setNodeTitle(event.target.value)} placeholder={TextConfig.TodoNodeNamePlaceholder} aria-label={TextConfig.TodoNodeNamePlaceholder} maxLength={200} autoFocus />
-                                <button type="submit" className="todo-button" disabled={nodeTitle.trim() === ''}>{TextConfig.TodoCreate}</button>
-                            </form>
-                        )}
-                        <Canvas nodes={view.nodes} tasks={view.tasks} actions={actions} />
+                        <Lists nodes={view.nodes} tasks={view.tasks} actions={actions} onAddNode={addNode} />
                     </>
                 )}
             </main>

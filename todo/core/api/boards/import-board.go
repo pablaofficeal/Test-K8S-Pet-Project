@@ -83,7 +83,7 @@ func ImportBoard(c *gin.Context) {
 			return nil
 		}
 		for i, n := range doc.Nodes {
-			node := models.TodoNode{BoardID: board.ID, Title: n.Title, SortOrder: i, PosX: float64(i) * 340, PosY: 0}
+			node := models.TodoNode{BoardID: board.ID, Title: n.Title, SortOrder: i}
 			if err := tx.Create(&node).Error; err != nil {
 				return err
 			}

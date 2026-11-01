@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func FlushPositions(ctx context.Context) (int, error) {
+func FlushOrders(ctx context.Context) (int, error) {
 	flushed := 0
 	for {
 		boards, err := Client.SPopN(ctx, "todo:dirty", 100).Result()
@@ -19,12 +19,11 @@ func FlushPositions(ctx context.Context) (int, error) {
 			return flushed, nil
 		}
 		for _, boardID := range boards {
-			positions, err := GetPositions(ctx, boardID)
-			if err == nil {
+			ids, found, err := GetOrder(ctx, boardID)
+			if err == nil && found {
 				err = db.DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-					for nodeID, p := range positions {
-						update := map[string]any{"pos_x": p[0], "pos_y": p[1]}
-						if err := tx.Model(&models.TodoNode{}).Where("id = ? AND board_id = ?", nodeID, boardID).Updates(update).Error; err != nil {
+					for index, nodeID := range ids {
+						if err := tx.Model(&models.TodoNode{}).Where("id = ? AND board_id = ?", nodeID, boardID).Update("sort_order", index).Error; err != nil {
 							return err
 						}
 					}
@@ -32,11 +31,11 @@ func FlushPositions(ctx context.Context) (int, error) {
 				})
 			}
 			if err != nil {
-				log.Printf("flush positions of board %s failed: %v", boardID, err)
+				log.Printf("flush order of board %s failed: %v", boardID, err)
 				Client.SAdd(ctx, "todo:dirty", boardID)
 				return flushed, err
 			}
-			flushed += len(positions)
+			flushed += len(ids)
 		}
 	}
 }

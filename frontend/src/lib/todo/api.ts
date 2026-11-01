@@ -70,16 +70,20 @@ export async function exportBoard(id: string): Promise<string> {
     return (await request(`${TODO.EXPORT_BOARD}/${id}`)).text()
 }
 
-export async function createNode(boardId: string, title: string, x: number, y: number): Promise<TodoNode> {
-    return (await request(`${TODO.CREATE_BOARD}/${boardId}/node`, jsonInit("POST", { title, pos_x: x, pos_y: y }))).json()
+export async function createNode(boardId: string, title: string): Promise<TodoNode> {
+    return (await request(`${TODO.CREATE_BOARD}/${boardId}/node`, jsonInit("POST", { title }))).json()
 }
 
 export async function renameNode(id: string, title: string) {
     await request(`${TODO.EDIT_NODE}/${id}`, jsonInit("PATCH", { title }))
 }
 
-export async function moveNode(id: string, x: number, y: number) {
-    await request(`${TODO.MOVE_NODE}/${id}`, jsonInit("PATCH", { x, y }))
+export async function reorderNodes(boardId: string, order: string[]) {
+    await request(`${TODO.REORDER_NODES}/${boardId}`, jsonInit("PUT", { order }))
+}
+
+export async function moveTask(id: string, nodeId: string, index: number) {
+    await request(`${TODO.MOVE_TASK}/${id}`, jsonInit("PATCH", { node_id: nodeId, index }))
 }
 
 export async function deleteNode(id: string) {

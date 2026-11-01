@@ -80,12 +80,6 @@ func TestImportAndExportSampleAgainstPostgres(t *testing.T) {
 		t.Errorf("import result = %+v", created)
 	}
 
-	var positions int64
-	tx.Model(&models.TodoNode{}).Where("board_id = ? AND (pos_x <> 0 OR pos_y <> 0)", created.Board.ID).Count(&positions)
-	if positions != 6 {
-		t.Errorf("sections must get an initial grid layout, %d have a position", positions)
-	}
-
 	w = httptest.NewRecorder()
 	r.ServeHTTP(w, httptest.NewRequest("GET", "/e/"+created.Board.ID, nil))
 	if w.Code != 200 || !strings.HasPrefix(w.Header().Get("Content-Type"), "text/markdown") {
