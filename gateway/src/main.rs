@@ -5,6 +5,9 @@ mod proxy;
 mod state;
 mod utils;
 
+#[cfg(test)]
+mod tests;
+
 use std::net::SocketAddr;
 use std::sync::Arc;
 
@@ -16,7 +19,7 @@ use axum::{
     http::{StatusCode, header},
     middleware::{Next, from_fn, from_fn_with_state},
     response::{IntoResponse, Response},
-    routing::{MethodRouter, any, delete, get, patch, post, put},
+    routing::{MethodRouter, delete, get, patch, post, put},
 };
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -73,9 +76,23 @@ async fn not_found() -> Response {
         .into_response()
 }
 
+// any() кладёт хэндлер в fallback, а route_layer на таком роутере паникует при старте,
+// поэтому "ANY" регистрируем как набор обычных методов
+fn any_method<H, T>(handler: H) -> MethodRouter<AppState>
+where
+    H: Handler<T, AppState> + Clone,
+    T: 'static,
+{
+    get(handler.clone())
+        .post(handler.clone())
+        .put(handler.clone())
+        .patch(handler.clone())
+        .delete(handler)
+}
+
 fn local_route<H, T>(method: &str, handler: H) -> MethodRouter<AppState>
 where
-    H: Handler<T, AppState>,
+    H: Handler<T, AppState> + Clone,
     T: 'static,
 {
     match method {
@@ -84,7 +101,7 @@ where
         "PUT" => put(handler),
         "PATCH" => patch(handler),
         "DELETE" => delete(handler),
-        _ => any(handler),
+        _ => any_method(handler),
     }
 }
 
@@ -133,7 +150,7 @@ fn register_route(app: Router<AppState>, route: &Route, state: &AppState) -> Rou
                 "PUT" => put(proxy_handler),
                 "PATCH" => patch(proxy_handler),
                 "DELETE" => delete(proxy_handler),
-                _ => any(proxy_handler),
+                _ => any_method(proxy_handler),
             }
             .route_layer(Extension(proxy_state))
         }
@@ -149,6 +166,20 @@ fn register_route(app: Router<AppState>, route: &Route, state: &AppState) -> Rou
         handler
     };
     app.route(&route.path, handler)
+}
+
+fn build_app(routes: &[Route], state: AppState) -> Router {
+    let mut app = Router::new();
+    for route in routes {
+        app = register_route(app, route, &state);
+    }
+
+    app.fallback(not_found)
+        .layer(from_fn_with_state(state.clone(), metrics_middleware))
+        .layer(from_fn(gin_log_middleware))
+        .layer(cors_layer())
+        .layer(from_fn(trace_middleware))
+        .with_state(state)
 }
 
 fn jwt_algorithm() -> String {
@@ -215,19 +246,7 @@ async fn main() {
         jwt_algorithm: jwt_algorithm(),
     };
     let listen_addr = cfg.listen_addr.clone();
-
-    let mut app = Router::new();
-    for route in &cfg.routes {
-        app = register_route(app, route, &state);
-    }
-
-    let app = app
-        .fallback(not_found)
-        .layer(from_fn_with_state(state.clone(), metrics_middleware))
-        .layer(from_fn(gin_log_middleware))
-        .layer(cors_layer())
-        .layer(from_fn(trace_middleware))
-        .with_state(state);
+    let app = build_app(&cfg.routes, state);
 
     let listener = tokio::net::TcpListener::bind(&listen_addr)
         .await

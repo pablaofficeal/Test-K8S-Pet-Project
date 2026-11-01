@@ -59,7 +59,7 @@ struct FileConfig {
     rate_limits: String,
 }
 
-#[derive(Debug, Deserialize, Default)]
+#[derive(Debug, Deserialize)]
 struct ServerConfig {
     #[serde(default = "default_port")]
     port: u16,
@@ -67,6 +67,16 @@ struct ServerConfig {
     gateway_host: String,
     #[serde(default = "default_microservices_host")]
     microservices_host: String,
+}
+
+impl Default for ServerConfig {
+    fn default() -> Self {
+        Self {
+            port: default_port(),
+            gateway_host: default_host(),
+            microservices_host: default_microservices_host(),
+        }
+    }
 }
 
 #[derive(Debug, Deserialize)]
