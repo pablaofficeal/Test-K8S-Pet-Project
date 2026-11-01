@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cadence-cloud-messenger-service
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: messenger
+  ports:
+    - name: http
+      port: 8993
+      targetPort: http

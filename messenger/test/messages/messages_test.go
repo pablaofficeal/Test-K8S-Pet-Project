@@ -7,7 +7,6 @@ import (
 	"net/http/httptest"
 	"encoding/json"
 	"strings"
-	"testing"
 )
 
 type world struct {

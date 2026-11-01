@@ -21,3 +21,7 @@ microservices:
     - by: ip
       limit: 20
       window: 1m
+  messenger:
+    - by: ip
+      limit: 600
+      window: 1m

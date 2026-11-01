@@ -15,6 +15,7 @@
 | `gateway/`  | API gateway (Rust): routing, middleware, metrics |
 | `frontend/` | Web client (React + Vite + TypeScript)        |
 | `verify/`   | Email verification service (Go, RabbitMQ)     |
+| `messenger/` | Messenger relay: public keys and opaque encrypted envelopes (Go) |
 | `todo/`     | Todo canvas: boards, nodes, tasks, markdown (Go, Redis) |
 | `migrations/` | Database schema migrations (Go)             |
 | `Infra/`    | Infrastructure configs (PostgreSQL)           |

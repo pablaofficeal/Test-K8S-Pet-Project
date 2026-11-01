@@ -87,8 +87,8 @@ func TestConversationsReadAndDelete(t *testing.T) {
 
 	var body struct {
 		Conversations []struct {
-			PeerUUID, Username string
-			Unread, LastID int64 `json:"last_id"`
+			PeerUUID string `json:"peer_uuid"`
+			Username string `json:"username"`
 		}
 	}
 	rec := w.call(alice, "GET", "/conversations", nil)

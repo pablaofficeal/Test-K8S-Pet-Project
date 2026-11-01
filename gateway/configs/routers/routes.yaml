@@ -8,6 +8,7 @@ microservices_timeouts:
   backend: 20s
   verify: 20s
   todo: 20s
+  messenger: 20s
 
 microservices_hosts:
   auth:
@@ -22,6 +23,9 @@ microservices_hosts:
   todo:
     host: http://Cadence-Cloud-todo-service:8992
     timeout: ${microservices_timeouts.todo}
+  messenger:
+    host: http://Cadence-Cloud-messenger-service:8993
+    timeout: ${microservices_timeouts.messenger}
 
 public_routes:
   - path: /main/api/v1/
@@ -207,6 +211,66 @@ private_routes:
     target: ${microservices_hosts.todo}
     timeout: ${microservices_hosts.todo.timeout}
     prefix: /api/v1/main/todo/delete/my/task/:id
+
+  - path: /main/api/v1/messenger/put/my/key
+    method: PUT
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/put/my/key
+
+  - path: /main/api/v1/messenger/get/my/key
+    method: GET
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/get/my/key
+
+  - path: /main/api/v1/messenger/put/my/key/backup
+    method: PUT
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/put/my/key/backup
+
+  - path: /main/api/v1/messenger/get/user/key/:uuid
+    method: GET
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/get/user/key/:uuid
+
+  - path: /main/api/v1/messenger/search/users
+    method: GET
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/search/users
+
+  - path: /main/api/v1/messenger/send/message
+    method: POST
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/send/message
+
+  - path: /main/api/v1/messenger/get/my/messages
+    method: GET
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/get/my/messages
+
+  - path: /main/api/v1/messenger/get/my/conversations
+    method: GET
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/get/my/conversations
+
+  - path: /main/api/v1/messenger/mark/my/messages/read
+    method: PATCH
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/mark/my/messages/read
+
+  - path: /main/api/v1/messenger/delete/my/message/:id
+    method: DELETE
+    target: ${microservices_hosts.messenger}
+    timeout: ${microservices_hosts.messenger.timeout}
+    prefix: /api/v1/main/messenger/delete/my/message/:id
 
   - path: /main/api/v1/verify/status
     method: GET

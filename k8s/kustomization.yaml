@@ -25,6 +25,8 @@ resources:
   - verify/service.yaml
   - todo/deployment.yaml
   - todo/service.yaml
+  - messenger/deployment.yaml
+  - messenger/service.yaml
 
 # Set your registry/tags here (or with `kustomize edit set image`)
 images:
@@ -43,6 +45,9 @@ images:
   - name: cadence-cloud-todo
     newName: pablaofficeal/cadence-cloud-todo
     newTag: 79f7729
+  - name: cadence-cloud-messenger
+    newName: pablaofficeal/cadence-cloud-messenger
+    newTag: latest
   - name: cadence-cloud-gateway
     newName: pablaofficeal/cadence-cloud-gateway
     newTag: 79f7729

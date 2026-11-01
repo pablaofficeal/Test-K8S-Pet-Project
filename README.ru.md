@@ -15,6 +15,7 @@
 | `gateway/`  | API-шлюз (Rust): маршрутизация, middleware, метрики |
 | `frontend/` | Веб-клиент (React + Vite + TypeScript)            |
 | `verify/`   | Подтверждение почты (Go, RabbitMQ)                |
+| `messenger/` | Курьер мессенджера: публичные ключи и непрозрачные зашифрованные конверты (Go) |
 | `todo/`     | Todo-канвас: доски, ноды, задачи, markdown (Go, Redis) |
 | `migrations/` | Миграции схемы БД (Go)                          |
 | `Infra/`    | Конфиги инфраструктуры (PostgreSQL)               |

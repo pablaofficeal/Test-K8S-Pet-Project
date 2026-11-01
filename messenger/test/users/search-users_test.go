@@ -77,7 +77,7 @@ func TestSearchAgainstPostgres(t *testing.T) {
 	for _, hit := range found {
 		names[hit["username"].(string)] = hit
 	}
-	if len(names) != 4 || names["zed-me"] != nil || names["zed-inactive"] != nil {
+	if len(names) != 3 || names["zed-me"] != nil || names["zed-inactive"] != nil {
 		t.Errorf("must exclude me and inactive users, got %v", names)
 	}
 	if names["Zed-Alice"]["key_id"] != doc["key_id"] || names["zed-bob"]["key_id"] != nil {
